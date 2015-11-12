@@ -23,14 +23,14 @@ class BMSClient(AsyncClient):
 		Get an instantaneous snapshot of the data coming from the BMS system.
 		Intended to be called once per second.
 		"""
-		line = ser.readline()
+		line = self.ser.readline()
 		if line[4] != 'S':  # Ensure that we have a full line
-			line = ser.readline()
+			line = self.ser.readline()
 
 		charge = int(line[19:22])
 		cur = int(line[34:39])
-		vals['charge'] = charge
-		vals['cur'] = cur
+		self.vals['charge'] = charge
+		self.vals['cur'] = cur
 
-		queue.put(vals)
+		self.queue.put(vals)
 		print("BMS to queue")

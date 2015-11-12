@@ -1,98 +1,80 @@
 #!/bin/sh
 ### BEGIN INIT INFO
-# Provides:
+# Provides: hygenlogger
 # Required-Start:    $remote_fs $syslog
 # Required-Stop:     $remote_fs $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Start daemon at boot time
-# Description:       Enable service provided by daemon.
+# Short-Description: Log key metrics on the Planetary Power Hygen
+# Description:       Read data about the battery, temperatures, customer
+# power usage, and engine stats. Log these to file, and when appropriate,
+# send signals to update the user interface panel
 ### END INIT INFO
 
-dir=""
-cmd=""
-user=""
+# Using the LSB functions
+# Standard followed:
+# http://refspecs.linuxbase.org/LSB_3.1.0/LSB-Core-generic/LSB-Core-generic/iniscrptact.html
+. /lib/lsb/init-functions
 
-name=`basename $0`
-pid_file="/var/run/$name.pid"
-stdout_log="/var/log/$name.log"
-stderr_log="/var/log/$name.err"
+# Process name (for display)
+NAME=hygenlogger
+# Daemon name (actual executable)
+DAEMON=/home/hygen/hygenlogger
+# pid file for the daemon
+PIDFILE=/var/run/hygenlogger.pid
 
-get_pid() {
-    cat "$pid_file"
-}
+# Test if the daemon is not there
+# exit "Program not installed" if missing
+test -x $DAEMON || exit 5
 
-is_running() {
-    [ -f "$pid_file" ] && ps `get_pid` > /dev/null 2>&1
-}
-
-case "$1" in
+case $1 in
     start)
-    if is_running; then
-        echo "Already started"
-    else
-        echo "Starting $name"
-        cd "$dir"
-        if [ -z "$user" ]; then
-            sudo $cmd >> "$stdout_log" 2>> "$stderr_log" &
+        if [ -e $PIDFILE ]; then
+            status_of_proc -p $PIDFILE $DAEMON "$NAME process" && status="0" || status="$?"
+            # If status is SUCCESS, don't start again
+            if [ $status = "0" ]; then
+                exit # Exit
+            fi
+        fi
+        # Start the daemon
+        log_daemon_msg "Starting the process" "$NAME"
+        # Start the daemon with the help of start-stop-daemon
+        # Log the start
+        if start-stop-daemon --start --quiet --oknodo --pidfile $PIDFILE --exec $DAEMON ; then
+            log_end_msg 0
         else
-            sudo -u "$user" $cmd >> "$stdout_log" 2>> "$stderr_log" &
+            log_end_msg 1
         fi
-        echo $! > "$pid_file"
-        if ! is_running; then
-            echo "Unable to start, see $stdout_log and $stderr_log"
-            exit 1
-        fi
-    fi
-    ;;
+        ;;
     stop)
-    if is_running; then
-        echo -n "Stopping $name.."
-        kill `get_pid`
-        for i in {1..10}
-        do
-            if ! is_running; then
-                break
+        if [ -e $PIDFILE ]; then
+            status_of_proc -p $PIDFILE $DAEMON "Stopping the $NAME process" && status="0" || status="$?"
+            if [ "$status" = 0 ]; then
+                start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE
+                /bin/rm -rf $PIDFILE
             fi
-
-            echo -n "."
-            sleep 1
-        done
-        echo
-
-        if is_running; then
-            echo "Not stopped; may still be shutting down or shutdown may have failed"
-            exit 1
         else
-            echo "Stopped"
-            if [ -f "$pid_file" ]; then
-                rm "$pid_file"
-            fi
+            log_daemon_msg "$NAME process is not running"
+            log_end_msg 0
         fi
-    else
-        echo "Not running"
-    fi
-    ;;
-    restart)
-    $0 stop
-    if is_running; then
-        echo "Unable to stop, will not attempt to start"
-        exit 1
-    fi
-    $0 start
-    ;;
+        ;;
+    restart|reload|force-reload)
+        # Restart the daemon
+        $0 stop && $sleep 2 && $0 start
+        ;;
     status)
-    if is_running; then
-        echo "Running"
-    else
-        echo "Stopped"
-        exit 1
-    fi
-    ;;
+        # Check the status of the process
+        if [ -e $PIDFILE ]; then
+            status_of_proc -p $PIDFILE $DAEMON "$NAME process" && exit 0 || exit $?
+        else
+            log_daemon_msg "$NAME Process is not running"
+            log_end_msg 0
+        fi
+        ;;
     *)
-    echo "Usage: $0 {start|stop|restart|status}"
-    exit 1
-    ;;
+        echo "Usage: $0 {start|stop|restart|status}"
+        exit 2
+        ;;
 esac
 
 exit 0
