@@ -31,7 +31,7 @@ MdfDef="V1.csv"
 MDF=input("Measurement description file (%s): "%(MdfDef))
 if MDF=="":
     MDF=MdfDef
-    
+
 mdf=open(MDF)
 MList=mdf.readlines()
 MeasList=[]
@@ -70,7 +70,7 @@ inPortDef="1003"
 inPORT=input("Port # (%s)? "%(inPortDef))
 if inPORT=="":
     inPORT=inPortDef
-inPORT=int(inPORT)           
+inPORT=int(inPORT)
 try:
     c = ModbusClient(host=inHOST, port=inPORT)
 except ValueError:
@@ -86,7 +86,7 @@ comDef="No Comment"
 comment=input("Enter a Comment/Description line: ")
 if comment=="":
     comment=comDef
-    
+
 lf.write(comment+"\n")
 lf.write(labels+"\n")
 
@@ -123,7 +123,7 @@ try:
         else:
             print("Reopen")
             c.open()
-            
+
         time.sleep(1)
         if USESCALES:
             scale = ser.readlines()
