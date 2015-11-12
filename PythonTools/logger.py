@@ -18,7 +18,7 @@ from twisted.internet import reactor, protocol
 ##############################
 # Import my files
 ##############################
-from deepseaclient import DeepSeaClient
+from deepseaserialclient import DeepSeaClient
 from bmsclient import BMSClient
 
 ###############################
@@ -33,6 +33,7 @@ host, port, logfile, comment = "", 0, "", ""
 ##################################
 # Switch on command line arguments
 ##################################
+# TODO switch to a argument parsing library
 args = sys.argv[1:]
 for arg in args:
 	if arg == "--help" or arg == "-h":
@@ -40,6 +41,9 @@ for arg in args:
 	elif arg == "-c" or arg == "--config":
 		config = True
 
+#################################
+# Utility functions
+#################################
 def get_input(s):
 	if sys.version_info < (3,0):
 		x = raw_input(s)
@@ -47,30 +51,35 @@ def get_input(s):
 		x = input(s)
 	return x
 
+def read_measurement_description(filename):
+	MeasList = []
+	with open(filename) as mdf:
+		MList=mdf.readlines()
+		MeasList=[]
+		labels=""
+		for (n,line) in enumerate(MList):
+			#print(n,line)
+			rline=line.split(',')
+			#print(rline)
+			if n>=2:
+				MeasList.append([rline[0], rline[1], int(rline[2]),
+					int(rline[3]), float(rline[4]), float(rline[5])])
+			labels = labels+format("%s,"%rline[0])
+	return MeasList
+
+
+
 ##############################################
 # get and scan the measurement description file
 ##############################################
+# TODO separate out into its own function / file
 if config:
 	MDF=get_input("Measurement description file (%s): "%(MdfDef))
-
 	if MDF=="":
 		MDF=MdfDef
 else:
 	MDF = MdfDef
-mdf=open(MDF)
-
-MList=mdf.readlines()
-MeasList=[]
-labels=""
-for (n,line) in enumerate(MList):
-	#print(n,line)
-	rline=line.split(',')
-	#print(rline)
-	if n>=2:
-		MeasList.append([rline[0],rline[1],int(rline[2]),int(rline[3]),float(rline[4]),float(rline[5])])
-	#print(MeasList)
-	labels = labels+format("%s,"%rline[0])
-
+MeasList = read_measurement_description(MDF)
 #print(labels)
 
 ##############################################
@@ -136,7 +145,7 @@ except:
 #############################
 deepSeaQueue = Queue.Queue(10)
 bmsQueue = Queue.Queue(10)
-deepSea = DeepSeaClient(deepSeaQueue, host, port, MeasList)
+deepSea = DeepSeaClient(deepSeaQueue, MeasList)
 bms = BMSClient(bmsQueue, port="/dev/ttyO1")
 
 clients = []
