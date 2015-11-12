@@ -14,10 +14,12 @@ import os
 import os.path
 import Queue
 import threading
+import thread
 
 ##############################
 # Import my files
 ##############################
+#from deepseatcpclient import DeepSeaClient
 from deepseaserialclient import DeepSeaClient
 from bmsclient import BMSClient
 
@@ -27,40 +29,45 @@ def main(config):
 	Enter a main loop, polling values from sources enabled in config
 	"""
 	try:
-		lf = open(logfile, mode='w')
+		lf = open(config['datafile'], mode='w')
 	except:
 		raise  # pass through whatever exception
 
 
 	# Open each client in its own thread
-	deepSeaQueue = Queue.Queue(10)
-	bmsQueue = Queue.Queue(10)
-	deepSea = DeepSeaClient(deepSeaQueue, MeasList)
-	bms = BMSClient(bmsQueue, port="/dev/ttyO1")
-
 	clients = []
-	clients.append(deepSea)
+	dataQueue = Queue.Queue()
 
-	# deepSea.readDataFrame()
-	# vals = deepSeaQueue.get(True, 0.5)
-	# print(vals)
-	for client in clients:
-		client.start()
 
-	# Later this will be reading in serial
+	if 'deepsea' in config['enabled']:
+		deepSea = DeepSeaClient(dataQueue, config['deepsea']['mlist'])
+		clients.append(deepSea)
+
+	thread.start_new_thread(deepSea.readDataFrame, ())
 
 	while True:
-		for client in clients:
-			try:
-				vals = client.queue.get(True, 1.0)
-			except KeyboardInterrupt:
-				for c in clients:
-					c.stop()
-					exit(1)
-				pass
-			except Queue.Empty:
-				print("No values found for client" + str(client))
-				pass
-			else:
-				client.printDataFrame(vals)
+		print(dataQueue.get())
+
+
+# 	if 'bms' in config['enabled']:
+# 		bms = BMSClient(dataQueue, port="/dev/ttyO1")
+# 		clients.append(bms)
+
+
+# 	for client in clients:
+# 		client.start()
+
+# 	while True:
+# 		# try:
+# 		# 	vals = dataQueue.get(True)
+# 		# 	print("Got a value")
+# 		# except:
+# 		# 	for c in clients:
+# 		# 		c.stop()
+# 		# 	raise
+# 		# else:
+# 		# 	client = vals['client']
+# 		# 	client.printDataFrame(vals)
+# 		vals = dataQueue.get(True, 10)
+# 		print(vals)
 

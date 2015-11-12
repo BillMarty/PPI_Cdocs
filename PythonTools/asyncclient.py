@@ -3,7 +3,7 @@ from repeatedtimer import RepeatedTimer
 class AsyncClient(object):
 	def __init__(self, queue):
 		self.queue = queue
-		self.rt = RepeatedTimer(1, self.readDataFrame)
+		self.rt = RepeatedTimer(5, self.readDataFrame)
 
 	def __del__(self):
 		self.rt.stop()

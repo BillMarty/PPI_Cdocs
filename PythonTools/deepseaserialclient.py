@@ -1,5 +1,5 @@
 from pymodbus.client.sync import ModbusSerialClient as ModbusClient
-from time import sleep
+import time
 
 from repeatedtimer import RepeatedTimer
 from asyncclient import AsyncClient
@@ -10,7 +10,8 @@ max32=2**32
 
 class DeepSeaClient(AsyncClient):
 	def __init__(self, queue, MList):
-		self.client = ModbusClient(method='rtu', port="/dev/ttyO1", baudrate=9600)
+		self.client = ModbusClient(method='rtu', port="/dev/ttyUSB0", baudrate=9600)
+		self.queue = queue
 		self.MList = MList
 		self.client.connect()
 		super(DeepSeaClient, self).__init__(queue)
@@ -18,9 +19,6 @@ class DeepSeaClient(AsyncClient):
 	def __del__(self):
 		self.rt.stop()
 		self.client.close()
-
-	def start(self):
-		self.rt.start()
 
 	def readDataFrame(self):
 		"""
@@ -39,38 +37,48 @@ class DeepSeaClient(AsyncClient):
 		#           ["EGT","degC",43978,1,1.0,0.0],
 		#           ["Bat T","degC",43981,1,1.0,0.0]]
 		"""
-
 		# Make a map to pass back
 		# The map will have the form:
 		# {"Oil P": (0.0, "psi"), "Eng T": (0.0, "degC"), ...}
 		vals = {}
 #		for m in self.MList:
 #			vals[m[MLname]] = (0.0, m[MLunits])
+		# print("time1")
 
 		for m in self.MList:
 			try:
-				rr = self.client.read_holding_registers(m[MLaddr], m[MLlen])
-				registers = rr.registers
-				if type(rr) == 'NoneType':
+				# print("time2")
+				# before = time.clock()
+				rr = self.client.read_holding_registers(m[MLaddr], m[MLlen], unit=0x08)
+				# after = time.clock()
+				# print("time3")
+				x = 0
+				if rr == None:
 					x = -9999.9     # special place holder / flag for missed MODBUS data
 				else:
+					registers = rr.registers
 					x = registers[0]
 					if m[MLlen]==2:
-						# print("Meas: " + m[MLname])
-						# print("Val: " + str(registers))
 						x = (x << 16) + registers[1]
 
 					if x > max31:
 						x = x - max32 - 1
-						# print(x)
 					x = float(x) * m[MLgain] + m[MLoff]
+				# print("time4")
 			except TypeError as e:  # flag error for debug purposes
-				print("reg=", registers)
-				print("meas=",m)
+				# print("reg=", rr.registers)
+				# print("meas=",m)
 				raise (e)
 				x=-9999.8
+				# print("time5")
+			except:
+				raise
+			# print("time6")
 			vals[m[MLname]] = (x, m[MLunits])
+			# print("time7")
 
+		# print("time8")
+		vals['client'] = self
 		self.queue.put(vals)
 
 	def printDataFrame(self, vals):

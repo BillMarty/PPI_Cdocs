@@ -1,4 +1,5 @@
 import socket
+import copy
 import ast
 import sys
 import os
@@ -133,6 +134,8 @@ def get_deepsea_configuration():
 
 	try:
 		mlist = read_measurement_description(ans)
+		dconfig['mlistfile'] = ans
+		dconfig['mlist'] = mlist
 	except:
 		print("Problem reading measurement list. Exiting...")
 		exit(-1)
@@ -163,7 +166,12 @@ def write_config_file(config, path):
 
 	try:
 		with open(path, 'w') as f:
-			f.write(str(config))
+			# Remove the measurement list from the written file
+			# we want to read that in every time.
+			config_to_write = copy.deepcopy(config)
+			if 'deepsea' in config_to_write:
+				config_to_write['deepsea'].pop('mlist', 0)
+			f.write(str(config_to_write))
 			f.write('\n')
 	except:
 		raise
@@ -225,6 +233,13 @@ def get_configuration(fromConsole=False, config_file=default_config_file):
 			with open(config_file, 'r') as f:
 				s = f.read()
 				config = ast.literal_eval(s)
+				if 'deepsea' in config and 'mlistfile' in config['deepsea']:
+					try:
+						mlist = read_measurement_description(config['deepsea']['mlistfile'])
+						config['deepsea']['mlist'] = mlist
+					except:
+						print("Error reading Measurement description file")
+						raise
 		except:
 			print("Could not open configuration file \"%s\". Exiting..."%(config_file))
 			raise

@@ -1,4 +1,4 @@
-from pymodbus.client.sync import ModbusTcpClient as ModbusClient
+from pymodbus.client.sync import ModbusTcpClient, ModbusSerialClient
 from time import sleep
 
 from repeatedtimer import RepeatedTimer
@@ -9,8 +9,19 @@ max31=2**31
 max32=2**32
 
 class DeepSeaClient(AsyncClient):
-	def __init__(self, queue, host, port, MList):
-		self.client = ModbusClient(host=host, port=port)
+	def __init__(self, dconfig):
+		if not 'mode' in dconfig:
+			raise ValueError("Incomplete DeepSea configuration")
+		mode = dconfig['mode']
+
+		if mode == "rtp":
+			pass
+		if mode == "tcp":
+			if not ('host' in dconfig and 'port' in dconfig):
+				raise ValueError("Incomplete DeepSea configuration")
+			host = dconfig['host']
+			port = dconfig['port']
+			self.client = ModbusTcpClient(host=host, port=port)
 		self.MList = MList
 		self.client.connect()
 		super(DeepSeaClient, self).__init__(queue)
@@ -50,10 +61,10 @@ class DeepSeaClient(AsyncClient):
 		for m in self.MList:
 			try:
 				rr = self.client.read_holding_registers(m[MLaddr], m[MLlen])
-				registers = rr.registers
 				if type(rr) == 'NoneType':
 					x = -9999.9     # special place holder / flag for missed MODBUS data
 				else:
+					registers = rr.registers
 					x = registers[0]
 					if m[MLlen]==2:
 						# print("Meas: " + m[MLname])
@@ -71,6 +82,7 @@ class DeepSeaClient(AsyncClient):
 				x=-9999.8
 			vals[m[MLname]] = (x, m[MLunits])
 
+		vals['client'] = self
 		self.queue.put(vals)
 
 	def printDataFrame(self, vals):

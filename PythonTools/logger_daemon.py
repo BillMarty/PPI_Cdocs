@@ -49,14 +49,14 @@ context = daemon.DaemonContext(
 
 
 # TODO handle signals (SIGINT, etc.)
-context.signal_map = { signal.SIGTERM: None, # program cleanup
-		signal.SIGHUP: None, # hangup
-		signal.SIGTSTP: None, # suspend - configurable
-		signal.SIGQUIT: None, # core dump
-		signal.SIGSTOP: None, # suspend; un-configurable
-		signal.SIGTTIN: None, # tried to read from tty from background
-		signal.SIGTTOU: None, # Tried to write to tty from background
-		}
+# context.signal_map = { signal.SIGTERM: None, # program cleanup
+# 		signal.SIGHUP: None, # hangup
+# 		signal.SIGTSTP: None, # suspend - configurable
+# 		signal.SIGQUIT: None, # core dump
+# 		signal.SIGSTOP: None, # suspend; un-configurable
+# 		signal.SIGTTIN: None, # tried to read from tty from background
+# 		signal.SIGTTOU: None, # Tried to write to tty from background
+# 		}
 
 # TODO do program configuration here
 # Parse arguments
@@ -70,9 +70,7 @@ if args.config:
 else:
 	config = get_configuration()
 
-print(config)
 # with context:
-# 	# TODO do program main call
-# 	# main(config)
+main(config)
 # 	pass
 
