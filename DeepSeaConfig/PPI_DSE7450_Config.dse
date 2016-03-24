@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="1" ModuleMinorVersion="3">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.69.1.0">23-Mar-16 15:14:01</Saved_on>
+      <Saved_on ConfigSuite_Version="3.69.1.0">23-Mar-16 18:03:14</Saved_on>
       <MajorVersion>1</MajorVersion>
       <MinorVersion>3</MinorVersion>
     </Header>
@@ -85,7 +85,7 @@
         </Digital_Input_8>
         <Digital_Input_9>
           <Function Comment="User Configured">0</Function>
-          <Action Comment="Warning">5</Action>
+          <Action Comment="Indication">6</Action>
           <Arming Comment="Always">1</Arming>
           <Polarity Comment="Close to Activate">0</Polarity>
           <Timer Comment="0s">0</Timer>
@@ -94,7 +94,7 @@
         </Digital_Input_9>
         <Digital_Input_10>
           <Function Comment="User Configured">0</Function>
-          <Action Comment="Warning">5</Action>
+          <Action Comment="Indication">6</Action>
           <Arming Comment="Always">1</Arming>
           <Polarity Comment="Close to Activate">0</Polarity>
           <Timer Comment="0s">0</Timer>
@@ -259,8 +259,8 @@
         <Arming Comment="Always">1</Arming>
         <Type Comment="Analogue Greater Than">3</Type>
         <Timer Comment="0">0</Timer>
-        <Trip Comment="600 RPM">600</Trip>
-        <Return Comment="600 RPM">600</Return>
+        <Trip Comment="500 RPM">500</Trip>
+        <Return Comment="500 RPM">500</Return>
       </Crank_Disconnect_on_Engine_Speed>
       <Crank_Disconnect_on_Oil_Pressure>
         <Function Comment="Crank Disconnect">27</Function>
@@ -1040,11 +1040,11 @@
       </Gen_LED>
       <LED_Control>
         <Programmable_LED_1>
-          <Control_Source Comment="Not Used">0</Control_Source>
+          <Control_Source Comment="Digital Input I">39</Control_Source>
           <Polarity Comment="Lit">0</Polarity>
         </Programmable_LED_1>
         <Programmable_LED_2>
-          <Control_Source Comment="Not Used">0</Control_Source>
+          <Control_Source Comment="Digital Input J">40</Control_Source>
           <Polarity Comment="Lit">0</Polarity>
         </Programmable_LED_2>
         <Programmable_LED_3>
@@ -1052,7 +1052,7 @@
           <Polarity Comment="Lit">0</Polarity>
         </Programmable_LED_3>
         <Programmable_LED_4>
-          <Control_Source Comment="Not Used">0</Control_Source>
+          <Control_Source Comment="PLC Output Flag 1">12288</Control_Source>
           <Polarity Comment="Lit">0</Polarity>
         </Programmable_LED_4>
       </LED_Control>
@@ -1140,12 +1140,45 @@
       </LED20>
     </Virtual_Outputs>
     <PLC>
-      <Logic_Blocks />
+      <Logic_Blocks>
+        <Ladder>
+          <Conditions>
+            <And>
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="40" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12288" />
+            </And>
+          </Conditions>
+          <Actions>
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="3" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <And>
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="39" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
+            </And>
+          </Conditions>
+          <Actions>
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="8" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
+          </Conditions>
+          <Actions>
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="10" />
+          </Actions>
+        </Ladder>
+      </Logic_Blocks>
       <Strings />
       <Alarm_Blocks>
         <Alarm1>
-          <Function Comment="User Configured">0</Function>
-          <Action Comment="Warning">5</Action>
+          <Function Comment="Remote Start On Load">1</Function>
+          <Action Comment="None">0</Action>
           <Arming Comment="Always">1</Arming>
           <Polarity Comment="Close to Activate">0</Polarity>
           <Timer Comment="0s">0</Timer>
@@ -1154,9 +1187,9 @@
         </Alarm1>
         <Alarm2>
           <Function Comment="User Configured">0</Function>
-          <Action Comment="Warning">5</Action>
+          <Action Comment="Electrical Trip">2</Action>
           <Arming Comment="Always">1</Arming>
-          <Polarity Comment="Close to Activate">0</Polarity>
+          <Polarity Comment="Open to Activate">1</Polarity>
           <Timer Comment="0s">0</Timer>
           <Param1 Comment="0">0</Param1>
           <Param2 Comment="0">0</Param2>
@@ -1343,7 +1376,7 @@
       <Overspeed_Overshoot Comment="0s">0</Overspeed_Overshoot>
       <Breaker_Close_Pulse Comment="0.5s">0.5</Breaker_Close_Pulse>
       <Breaker_Trip_Pulse Comment="0.5s">0.5</Breaker_Trip_Pulse>
-      <Start_Delay_-_Remote_Start_Off_Load Comment="5s">50</Start_Delay_-_Remote_Start_Off_Load>
+      <Start_Delay_-_Remote_Start_Off_Load Comment="0s">0</Start_Delay_-_Remote_Start_Off_Load>
       <Return_Delay Comment="30s">300</Return_Delay>
       <Transfer_Delay Comment="0.7s">7</Transfer_Delay>
       <Mains_Transient_Delay Comment="2.0s">2.0</Mains_Transient_Delay>
@@ -1358,7 +1391,7 @@
       <Engage_Rest Comment="1.6s">1.6</Engage_Rest>
       <Preheat_Bypass Comment="5m">3000</Preheat_Bypass>
       <Sensor_Fail Comment="2.0s">2.0</Sensor_Fail>
-      <Start_Delay_Remote_Start_On_Load Comment="5s">50</Start_Delay_Remote_Start_On_Load>
+      <Start_Delay_Remote_Start_On_Load Comment="0s">0</Start_Delay_Remote_Start_On_Load>
       <Start_Delay_Mains_Failure Comment="5s">50</Start_Delay_Mains_Failure>
       <Start_Delay_Telemetry Comment="5s">50</Start_Delay_Telemetry>
       <Fuel_Logging_Interval Comment="1m">600</Fuel_Logging_Interval>
@@ -1393,7 +1426,7 @@
           <Gen_VT_Fitted>False</Gen_VT_Fitted>
           <Mains_VT_Fitted>False</Mains_VT_Fitted>
           <Audible_Alarm>True</Audible_Alarm>
-          <Start_Attempts Comment="3">3</Start_Attempts>
+          <Start_Attempts Comment="1">1</Start_Attempts>
           <Sleep_Enable>False</Sleep_Enable>
           <CAN_Params>
             <Engine_Type Comment="1">1</Engine_Type>
@@ -1414,7 +1447,7 @@
           <Event_Log_Disable_Flags Comment="0">0</Event_Log_Disable_Flags>
           <Manual_Fuel_Pump_Control>False</Manual_Fuel_Pump_Control>
           <Disable_Coolant_Cooler_Output_When_Set_Not_Available>False</Disable_Coolant_Cooler_Output_When_Set_Not_Available>
-          <Start_Button_Hold_to_Crank>True</Start_Button_Hold_to_Crank>
+          <Start_Button_Hold_to_Crank>False</Start_Button_Hold_to_Crank>
           <Multiple_Starter_Engage_Attempts>False</Multiple_Starter_Engage_Attempts>
           <Number_of_Engage_Attempts Comment="2">2</Number_of_Engage_Attempts>
           <Inhibit_Retransfer_to_Mains>False</Inhibit_Retransfer_to_Mains>
@@ -4202,12 +4235,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>45321</CRC>
+      <CRC>35487</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.69.1.0">23-Mar-16 15:14:01</Saved_on>
+        <Saved_on ConfigSuite_Version="3.69.1.0">23-Mar-16 18:03:14</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -13992,7 +14025,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>42496</CRC>
+        <CRC>41240</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
