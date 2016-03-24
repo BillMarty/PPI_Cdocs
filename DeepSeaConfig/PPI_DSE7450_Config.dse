@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="1" ModuleMinorVersion="3">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.69.1.0">23-Mar-16 18:32:17</Saved_on>
+      <Saved_on ConfigSuite_Version="3.69.1.0">24-Mar-16 11:14:54</Saved_on>
       <MajorVersion>1</MajorVersion>
       <MinorVersion>3</MinorVersion>
     </Header>
@@ -1883,8 +1883,8 @@
             <Arming Comment="From Safety On">3</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="2700 RPM">2700</Trip>
-            <Return Comment="2700 RPM">2700</Return>
+            <Trip Comment="3000 RPM">3000</Trip>
+            <Return Comment="3000 RPM">3000</Return>
           </Overspeed_Shutdown>
           <Under_Frequency_Warning>
             <Function Comment="User Configured">0</Function>
@@ -2027,8 +2027,8 @@
             <Arming Comment="Overshoot Activation">5</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="2700 RPM">2700</Trip>
-            <Return Comment="2700 RPM">2700</Return>
+            <Trip Comment="3000 RPM">3000</Trip>
+            <Return Comment="3000 RPM">3000</Return>
           </Overspeed_Overshoot_Shutdown>
           <Overspeed_Delayed_Warning>
             <Function Comment="User Configured">0</Function>
@@ -2045,8 +2045,8 @@
             <Arming Comment="Overshoot Activation">5</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0s">0</Timer>
-            <Trip Comment="2700 RPM">2700</Trip>
-            <Return Comment="2700 RPM">2700</Return>
+            <Trip Comment="3000 RPM">3000</Trip>
+            <Return Comment="3000 RPM">3000</Return>
           </Overspeed_Delayed_Shutdown>
           <Generator_Over_Frequency_Overshoot_Warning>
             <Function Comment="User Configured">0</Function>
@@ -4235,12 +4235,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>36344</CRC>
+      <CRC>31149</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.69.1.0">23-Mar-16 18:32:17</Saved_on>
+        <Saved_on ConfigSuite_Version="3.69.1.0">24-Mar-16 11:14:54</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14025,7 +14025,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>37125</CRC>
+        <CRC>37417</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
