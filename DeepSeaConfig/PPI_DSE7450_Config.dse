@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="1" ModuleMinorVersion="3">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.69.1.0">23-Mar-16 18:03:14</Saved_on>
+      <Saved_on ConfigSuite_Version="3.69.1.0">23-Mar-16 18:32:17</Saved_on>
       <MajorVersion>1</MajorVersion>
       <MinorVersion>3</MinorVersion>
     </Header>
@@ -1365,11 +1365,11 @@
       <Crank_attempt Comment="5s">5</Crank_attempt>
       <Crank_Rest Comment="10s">10</Crank_Rest>
       <Manual_Crank_Timer Comment="30s">30</Manual_Crank_Timer>
-      <Smoke_Limiting Comment="30s">30</Smoke_Limiting>
-      <Smoke_Limiting_Ramp Comment="6s">6</Smoke_Limiting_Ramp>
-      <Safety_On_Delay Comment="40s">40</Safety_On_Delay>
-      <Warming Comment="30s">300</Warming>
-      <Cooling Comment="1m">600</Cooling>
+      <Smoke_Limiting Comment="1s">1</Smoke_Limiting>
+      <Smoke_Limiting_Ramp Comment="1s">1</Smoke_Limiting_Ramp>
+      <Safety_On_Delay Comment="5s">5</Safety_On_Delay>
+      <Warming Comment="1s">10</Warming>
+      <Cooling Comment="1s">10</Cooling>
       <FanOverrunDelay Comment="0s">0</FanOverrunDelay>
       <Fail_To_Stop Comment="40s">40</Fail_To_Stop>
       <ETS_Hold Comment="5s">5</ETS_Hold>
@@ -1377,7 +1377,7 @@
       <Breaker_Close_Pulse Comment="0.5s">0.5</Breaker_Close_Pulse>
       <Breaker_Trip_Pulse Comment="0.5s">0.5</Breaker_Trip_Pulse>
       <Start_Delay_-_Remote_Start_Off_Load Comment="0s">0</Start_Delay_-_Remote_Start_Off_Load>
-      <Return_Delay Comment="30s">300</Return_Delay>
+      <Return_Delay Comment="1s">10</Return_Delay>
       <Transfer_Delay Comment="0.7s">7</Transfer_Delay>
       <Mains_Transient_Delay Comment="2.0s">2.0</Mains_Transient_Delay>
       <Gas_engine_choke_timer Comment="2s">2</Gas_engine_choke_timer>
@@ -4235,12 +4235,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>35487</CRC>
+      <CRC>36344</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.69.1.0">23-Mar-16 18:03:14</Saved_on>
+        <Saved_on ConfigSuite_Version="3.69.1.0">23-Mar-16 18:32:17</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14025,7 +14025,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>41240</CRC>
+        <CRC>37125</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
