@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="1" ModuleMinorVersion="3">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.69.1.0">24-Mar-16 11:14:54</Saved_on>
+      <Saved_on ConfigSuite_Version="3.69.1.0">28-Mar-16 09:25:57</Saved_on>
       <MajorVersion>1</MajorVersion>
       <MinorVersion>3</MinorVersion>
     </Header>
@@ -1475,14 +1475,14 @@
           <DC_Battery>
             <DC_Battery_Sender_Usage Comment="Flexible sensor">1</DC_Battery_Sender_Usage>
             <Shunt_1>
-              <Shunt_Location Comment="Battery">0</Shunt_Location>
-              <Current_Rating Comment="600 A">600</Current_Rating>
-              <Voltage_Rating Comment="125 mV">125</Voltage_Rating>
+              <Shunt_Location Comment="Charge">2</Shunt_Location>
+              <Current_Rating Comment="50 A">50</Current_Rating>
+              <Voltage_Rating Comment="50 mV">50</Voltage_Rating>
             </Shunt_1>
             <Shunt_2>
-              <Shunt_Location Comment="Charge">2</Shunt_Location>
-              <Current_Rating Comment="600 A">600</Current_Rating>
-              <Voltage_Rating Comment="125 mV">125</Voltage_Rating>
+              <Shunt_Location Comment="Load">1</Shunt_Location>
+              <Current_Rating Comment="50 A">50</Current_Rating>
+              <Voltage_Rating Comment="50 mV">50</Voltage_Rating>
             </Shunt_2>
             <Enable_Alarm_1 Comment="0">0</Enable_Alarm_1>
             <Enable_Alarm_2 Comment="0">0</Enable_Alarm_2>
@@ -1815,8 +1815,8 @@
     </Modem_Strings>
     <ConfigurableStatus>
       <Page1 Comment="Summary Screen">1</Page1>
-      <Page2 Comment="Not Used">0</Page2>
-      <Page3 Comment="Not Used">0</Page3>
+      <Page2 Comment="Charge Current">28</Page2>
+      <Page3 Comment="Engine Run Time">6</Page3>
       <Page4 Comment="Not Used">0</Page4>
       <Page5 Comment="Not Used">0</Page5>
       <Page6 Comment="Not Used">0</Page6>
@@ -2214,7 +2214,7 @@
             <DC_OC_IDMT>
               <Function Comment="User Configured">0</Function>
               <Action Comment="Electrical Trip">2</Action>
-              <Arming Comment="Always">1</Arming>
+              <Arming Comment="Never">0</Arming>
               <Type Comment="Analogue Overcurrent Trip Curve">4</Type>
               <Timer Comment="0">0</Timer>
               <Trip Comment="400 A">400</Trip>
@@ -4235,12 +4235,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>31149</CRC>
+      <CRC>54179</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.69.1.0">24-Mar-16 11:14:54</Saved_on>
+        <Saved_on ConfigSuite_Version="3.69.1.0">28-Mar-16 09:25:57</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14025,7 +14025,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>37417</CRC>
+        <CRC>32612</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
