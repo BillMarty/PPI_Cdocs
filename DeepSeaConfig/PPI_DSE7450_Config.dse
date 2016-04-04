@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="1" ModuleMinorVersion="3">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.69.1.0">28-Mar-16 09:25:57</Saved_on>
+      <Saved_on ConfigSuite_Version="3.69.1.0">04-Apr-16 11:20:52</Saved_on>
       <MajorVersion>1</MajorVersion>
       <MinorVersion>3</MinorVersion>
     </Header>
@@ -1002,7 +1002,7 @@
           <Polarity Comment="Energise">0</Polarity>
         </Gen_Relay>
         <Mains_Relay>
-          <Control_Source Comment="Close Mains Output">21</Control_Source>
+          <Control_Source Comment="PLC Output Flag 2">12289</Control_Source>
           <Polarity Comment="De-Energise">1</Polarity>
         </Mains_Relay>
       </Common_Outputs>
@@ -1171,6 +1171,17 @@
           </Conditions>
           <Actions>
             <Action Type="Trigger" Operator="0" ValueType="0" Value_1="10" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <Or>
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="15" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12" />
+            </Or>
+          </Conditions>
+          <Actions>
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="14" Value_2="1" />
           </Actions>
         </Ladder>
       </Logic_Blocks>
@@ -1365,11 +1376,11 @@
       <Crank_attempt Comment="5s">5</Crank_attempt>
       <Crank_Rest Comment="10s">10</Crank_Rest>
       <Manual_Crank_Timer Comment="30s">30</Manual_Crank_Timer>
-      <Smoke_Limiting Comment="1s">1</Smoke_Limiting>
+      <Smoke_Limiting Comment="20s">20</Smoke_Limiting>
       <Smoke_Limiting_Ramp Comment="1s">1</Smoke_Limiting_Ramp>
       <Safety_On_Delay Comment="5s">5</Safety_On_Delay>
       <Warming Comment="1s">10</Warming>
-      <Cooling Comment="1s">10</Cooling>
+      <Cooling Comment="20s">200</Cooling>
       <FanOverrunDelay Comment="0s">0</FanOverrunDelay>
       <Fail_To_Stop Comment="40s">40</Fail_To_Stop>
       <ETS_Hold Comment="5s">5</ETS_Hold>
@@ -4235,12 +4246,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>54179</CRC>
+      <CRC>10545</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.69.1.0">28-Mar-16 09:25:57</Saved_on>
+        <Saved_on ConfigSuite_Version="3.69.1.0">04-Apr-16 11:20:52</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14025,7 +14036,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>32612</CRC>
+        <CRC>35373</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
