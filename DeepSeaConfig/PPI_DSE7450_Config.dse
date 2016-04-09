@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="1" ModuleMinorVersion="3">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.69.1.0">04-Apr-16 11:20:52</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">08-Apr-16 17:03:04</Saved_on>
       <MajorVersion>1</MajorVersion>
       <MinorVersion>3</MinorVersion>
     </Header>
@@ -761,8 +761,8 @@
         <Arming Comment="Never">0</Arming>
         <Type Comment="Analogue Greater Than">3</Type>
         <Timer Comment="0">0</Timer>
-        <Trip Comment="186V PhN">186</Trip>
-        <Return Comment="186V PhN">186</Return>
+        <Trip Comment="322V PhPh">186</Trip>
+        <Return Comment="322V PhPh">186</Return>
       </Crank_Disconnect_on_Gen_Voltage>
       <High_Coolant_Temperature_Electrical_Trip>
         <Function Comment="User Configured">0</Function>
@@ -1198,7 +1198,7 @@
         </Alarm1>
         <Alarm2>
           <Function Comment="User Configured">0</Function>
-          <Action Comment="Electrical Trip">2</Action>
+          <Action Comment="Shutdown">1</Action>
           <Arming Comment="Always">1</Arming>
           <Polarity Comment="Open to Activate">1</Polarity>
           <Timer Comment="0s">0</Timer>
@@ -1207,7 +1207,7 @@
         </Alarm2>
         <Alarm3>
           <Function Comment="User Configured">0</Function>
-          <Action Comment="Warning">5</Action>
+          <Action Comment="Shutdown">1</Action>
           <Arming Comment="Always">1</Arming>
           <Polarity Comment="Close to Activate">0</Polarity>
           <Timer Comment="0s">0</Timer>
@@ -1510,7 +1510,7 @@
         <Mains_VT_Secondary Comment="110 V PhPh">110</Mains_VT_Secondary>
         <Droop_Percent Comment="4.0 %">4.0</Droop_Percent>
         <Oil_Sensor Comment="Not used">0</Oil_Sensor>
-        <New Comment="230V PhN">230</New>
+        <New Comment="398V PhPh">230</New>
         <Coolant_Sensor Comment="VDO 120 °C">3</Coolant_Sensor>
         <Fuel_Sensor Comment="Not used">0</Fuel_Sensor>
         <Fuel_Tank_Capacity Comment="1000">1000</Fuel_Tank_Capacity>
@@ -1855,9 +1855,9 @@
           <Run_Generator_on_Low_Battery>False</Run_Generator_on_Low_Battery>
         </Misc_16_Bit>
         <Misc_32_Bit>
-          <Nominal_Voltage Comment="113V PhN">113</Nominal_Voltage>
+          <Nominal_Voltage Comment="195V PhPh">113</Nominal_Voltage>
           <Nominal_Frequency Comment="50.0 Hz">50.0</Nominal_Frequency>
-          <KWRating Comment="6 kW">6</KWRating>
+          <KWRating Comment="7 kW">7</KWRating>
           <Min_Float_Charge_Timer Comment="0s">0</Min_Float_Charge_Timer>
         </Misc_32_Bit>
         <Alarms>
@@ -1939,8 +1939,8 @@
             <Arming Comment="From Safety On">3</Arming>
             <Type Comment="Analogue Less Than">2</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="94V PhN">94</Trip>
-            <Return Comment="99V PhN">99</Return>
+            <Trip Comment="162V PhPh">94</Trip>
+            <Return Comment="171V PhPh">99</Return>
           </Generator_Under_Voltage_Warning>
           <Generator_Under_Voltage_Shutdown>
             <Function Comment="User Configured">0</Function>
@@ -1948,8 +1948,8 @@
             <Arming Comment="From Safety On">3</Arming>
             <Type Comment="Analogue Less Than">2</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="88V PhN">88</Trip>
-            <Return Comment="88V PhN">88</Return>
+            <Trip Comment="152V PhPh">88</Trip>
+            <Return Comment="152V PhPh">88</Return>
           </Generator_Under_Voltage_Shutdown>
           <Generator_Over_Voltage_Warning>
             <Function Comment="User Configured">0</Function>
@@ -1957,8 +1957,8 @@
             <Arming Comment="From Safety On">3</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="127V PhN">127</Trip>
-            <Return Comment="121V PhN">121</Return>
+            <Trip Comment="219V PhPh">127</Trip>
+            <Return Comment="209V PhPh">121</Return>
           </Generator_Over_Voltage_Warning>
           <Generator_Over_Voltage_Shutdown>
             <Function Comment="User Configured">0</Function>
@@ -1966,8 +1966,8 @@
             <Arming Comment="Always">1</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="132V PhN">132</Trip>
-            <Return Comment="132V PhN">132</Return>
+            <Trip Comment="228V PhPh">132</Trip>
+            <Return Comment="228V PhPh">132</Return>
           </Generator_Over_Voltage_Shutdown>
           <Generator_Loading_Frequency>
             <Function Comment="Generator Loading Frequency OK">28</Function>
@@ -1984,8 +1984,8 @@
             <Arming Comment="Loading Alarms Activation">7</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0">0</Timer>
-            <Trip Comment="99V PhN">99</Trip>
-            <Return Comment="99V PhN">99</Return>
+            <Trip Comment="171V PhPh">99</Trip>
+            <Return Comment="171V PhPh">99</Return>
           </Generator_Loading_Voltage>
           <Mains_Under_Frequency>
             <Function Comment="Mains Fail">32</Function>
@@ -2011,8 +2011,8 @@
             <Arming Comment="Always">1</Arming>
             <Type Comment="Analogue Less Than">2</Type>
             <Timer Comment="0">0</Timer>
-            <Trip Comment="184V PhN">184</Trip>
-            <Return Comment="207V PhN">207</Return>
+            <Trip Comment="318V PhPh">184</Trip>
+            <Return Comment="358V PhPh">207</Return>
           </Mains_Under_Voltage>
           <Mains_Over_Voltage>
             <Function Comment="Mains Fail">32</Function>
@@ -2020,8 +2020,8 @@
             <Arming Comment="Always">1</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0">0</Timer>
-            <Trip Comment="276V PhN">276</Trip>
-            <Return Comment="253V PhN">253</Return>
+            <Trip Comment="478V PhPh">276</Trip>
+            <Return Comment="438V PhPh">253</Return>
           </Mains_Over_Voltage>
           <Overspeed_Overshoot_Warning>
             <Function Comment="User Configured">0</Function>
@@ -2128,8 +2128,8 @@
             <Arming Comment="Loading Alarms Activation">7</Arming>
             <Type Comment="Analogue Less Than">2</Type>
             <Timer Comment="0">0</Timer>
-            <Trip Comment="99V PhN">99</Trip>
-            <Return Comment="99V PhN">99</Return>
+            <Trip Comment="171V PhPh">99</Trip>
+            <Return Comment="171V PhPh">99</Return>
           </Under_Loading_Voltage>
           <DC_Alt_Alarms>
             <Short_Circuit>
@@ -2165,8 +2165,8 @@
               <Arming Comment="Never">0</Arming>
               <Type Comment="Analogue Greater Than">3</Type>
               <Timer Comment="0.0s">0.0</Timer>
-              <Trip Comment="53.9 V DC">53.9</Trip>
-              <Return Comment="53.0 V DC">53.0</Return>
+              <Trip Comment="30.7 V DC">30.7</Trip>
+              <Return Comment="30.3 V DC">30.3</Return>
             </BHV_Warning>
             <BHV_Shutdown>
               <Function Comment="User Configured">0</Function>
@@ -2183,17 +2183,17 @@
               <Arming Comment="Never">0</Arming>
               <Type Comment="Analogue Less Than">2</Type>
               <Timer Comment="0.0s">0.0</Timer>
-              <Trip Comment="2 %">2</Trip>
-              <Return Comment="3 %">3</Return>
+              <Trip Comment="25 %">25</Trip>
+              <Return Comment="26 %">26</Return>
             </Low_Charge_Warning>
             <Low_Charge_Shutdown>
               <Function Comment="User Configured">0</Function>
               <Action Comment="Shutdown">1</Action>
-              <Arming Comment="Never">0</Arming>
+              <Arming Comment="Always">1</Arming>
               <Type Comment="Analogue Less Than">2</Type>
               <Timer Comment="0.0s">0.0</Timer>
               <Trip Comment="0 %">0</Trip>
-              <Return Comment="1 %">1</Return>
+              <Return Comment="24 %">24</Return>
             </Low_Charge_Shutdown>
             <Charge_OC_Shutdown>
               <Function Comment="User Configured">0</Function>
@@ -2271,7 +2271,7 @@
             <Run_on_Low_Battery>False</Run_on_Low_Battery>
           </Misc_16>
           <Misc_32>
-            <Nominal_Voltage Comment="110V PhN">110</Nominal_Voltage>
+            <Nominal_Voltage Comment="190V PhPh">110</Nominal_Voltage>
             <Nominal_Frequency Comment="50.0 Hz">50.0</Nominal_Frequency>
             <Kilowatt_Rating Comment="345kW">345</Kilowatt_Rating>
             <DC_Battery_Min_Float_Charge_Timer Comment="0s">0</DC_Battery_Min_Float_Charge_Timer>
@@ -2356,8 +2356,8 @@
             <Arming Comment="From Safety On">3</Arming>
             <Type Comment="Analogue Less Than">2</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="94V PhN">94</Trip>
-            <Return Comment="99V PhN">99</Return>
+            <Trip Comment="162V PhPh">94</Trip>
+            <Return Comment="171V PhPh">99</Return>
           </Gen_Low_Volts_Warning>
           <Gen_Low_Volts_Shutdown>
             <Function Comment="User Configured">0</Function>
@@ -2365,8 +2365,8 @@
             <Arming Comment="From Safety On">3</Arming>
             <Type Comment="Analogue Less Than">2</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="88V PhN">88</Trip>
-            <Return Comment="88V PhN">88</Return>
+            <Trip Comment="152V PhPh">88</Trip>
+            <Return Comment="152V PhPh">88</Return>
           </Gen_Low_Volts_Shutdown>
           <Gen_High_Volts_Warning>
             <Function Comment="User Configured">0</Function>
@@ -2374,8 +2374,8 @@
             <Arming Comment="From Safety On">3</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="127V PhN">127</Trip>
-            <Return Comment="121V PhN">121</Return>
+            <Trip Comment="219V PhPh">127</Trip>
+            <Return Comment="209V PhPh">121</Return>
           </Gen_High_Volts_Warning>
           <Gen_High_Volts_Shutdown>
             <Function Comment="User Configured">0</Function>
@@ -2383,8 +2383,8 @@
             <Arming Comment="Always">1</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="132V PhN">132</Trip>
-            <Return Comment="132V PhN">132</Return>
+            <Trip Comment="228V PhPh">132</Trip>
+            <Return Comment="228V PhPh">132</Return>
           </Gen_High_Volts_Shutdown>
           <Loading_Frequency>
             <Function Comment="Generator Loading Frequency OK">28</Function>
@@ -2401,8 +2401,8 @@
             <Arming Comment="Loading Alarms Activation">7</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0">0</Timer>
-            <Trip Comment="99V PhN">99</Trip>
-            <Return Comment="99V PhN">99</Return>
+            <Trip Comment="171V PhPh">99</Trip>
+            <Return Comment="171V PhPh">99</Return>
           </Loading_Voltage>
           <Mains_Low_Frequency>
             <Function Comment="Mains Fail">32</Function>
@@ -2428,8 +2428,8 @@
             <Arming Comment="Always">1</Arming>
             <Type Comment="Analogue Less Than">2</Type>
             <Timer Comment="0">0</Timer>
-            <Trip Comment="184V PhN">184</Trip>
-            <Return Comment="207V PhN">207</Return>
+            <Trip Comment="318V PhPh">184</Trip>
+            <Return Comment="358V PhPh">207</Return>
           </Mains_Low_Voltage>
           <Mains_High_Voltage>
             <Function Comment="Mains Fail">32</Function>
@@ -2437,8 +2437,8 @@
             <Arming Comment="Always">1</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0">0</Timer>
-            <Trip Comment="276V PhN">276</Trip>
-            <Return Comment="253V PhN">253</Return>
+            <Trip Comment="478V PhPh">276</Trip>
+            <Return Comment="438V PhPh">253</Return>
           </Mains_High_Voltage>
           <Overspeed_Overshoot_Warning>
             <Function Comment="User Configured">0</Function>
@@ -2545,8 +2545,8 @@
             <Arming Comment="Loading Alarms Activation">7</Arming>
             <Type Comment="Analogue Less Than">2</Type>
             <Timer Comment="0">0</Timer>
-            <Trip Comment="99V PhN">99</Trip>
-            <Return Comment="99V PhN">99</Return>
+            <Trip Comment="171V PhPh">99</Trip>
+            <Return Comment="171V PhPh">99</Return>
           </Under_Loading_Voltage_Shutdown>
           <DC_Alternative_Alarms>
             <Short_Circuit>
@@ -2688,7 +2688,7 @@
             <Run_on_Low_Battery>False</Run_on_Low_Battery>
           </Misc_16>
           <Misc_32>
-            <Nominal_Voltage Comment="110V PhN">110</Nominal_Voltage>
+            <Nominal_Voltage Comment="190V PhPh">110</Nominal_Voltage>
             <Nominal_Frequency Comment="50.0 Hz">50.0</Nominal_Frequency>
             <Kilowatt_Rating Comment="345kW">345</Kilowatt_Rating>
             <DC_Battery_Min_Float_Charge_Timer Comment="0s">0</DC_Battery_Min_Float_Charge_Timer>
@@ -2773,8 +2773,8 @@
             <Arming Comment="From Safety On">3</Arming>
             <Type Comment="Analogue Less Than">2</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="94V PhN">94</Trip>
-            <Return Comment="99V PhN">99</Return>
+            <Trip Comment="162V PhPh">94</Trip>
+            <Return Comment="171V PhPh">99</Return>
           </Gen_Low_Volts_Warning>
           <Gen_Low_Volts_Shutdown>
             <Function Comment="User Configured">0</Function>
@@ -2782,8 +2782,8 @@
             <Arming Comment="From Safety On">3</Arming>
             <Type Comment="Analogue Less Than">2</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="88V PhN">88</Trip>
-            <Return Comment="88V PhN">88</Return>
+            <Trip Comment="152V PhPh">88</Trip>
+            <Return Comment="152V PhPh">88</Return>
           </Gen_Low_Volts_Shutdown>
           <Gen_High_Volts_Warning>
             <Function Comment="User Configured">0</Function>
@@ -2791,8 +2791,8 @@
             <Arming Comment="From Safety On">3</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="127V PhN">127</Trip>
-            <Return Comment="121V PhN">121</Return>
+            <Trip Comment="219V PhPh">127</Trip>
+            <Return Comment="209V PhPh">121</Return>
           </Gen_High_Volts_Warning>
           <Gen_High_Volts_Shutdown>
             <Function Comment="User Configured">0</Function>
@@ -2800,8 +2800,8 @@
             <Arming Comment="Always">1</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="132V PhN">132</Trip>
-            <Return Comment="132V PhN">132</Return>
+            <Trip Comment="228V PhPh">132</Trip>
+            <Return Comment="228V PhPh">132</Return>
           </Gen_High_Volts_Shutdown>
           <Loading_Frequency>
             <Function Comment="Generator Loading Frequency OK">28</Function>
@@ -2818,8 +2818,8 @@
             <Arming Comment="Loading Alarms Activation">7</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0">0</Timer>
-            <Trip Comment="99V PhN">99</Trip>
-            <Return Comment="99V PhN">99</Return>
+            <Trip Comment="171V PhPh">99</Trip>
+            <Return Comment="171V PhPh">99</Return>
           </Loading_Voltage>
           <Mains_Low_Frequency>
             <Function Comment="Mains Fail">32</Function>
@@ -2845,8 +2845,8 @@
             <Arming Comment="Always">1</Arming>
             <Type Comment="Analogue Less Than">2</Type>
             <Timer Comment="0">0</Timer>
-            <Trip Comment="184V PhN">184</Trip>
-            <Return Comment="207V PhN">207</Return>
+            <Trip Comment="318V PhPh">184</Trip>
+            <Return Comment="358V PhPh">207</Return>
           </Mains_Low_Voltage>
           <Mains_High_Voltage>
             <Function Comment="Mains Fail">32</Function>
@@ -2854,8 +2854,8 @@
             <Arming Comment="Always">1</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0">0</Timer>
-            <Trip Comment="276V PhN">276</Trip>
-            <Return Comment="253V PhN">253</Return>
+            <Trip Comment="478V PhPh">276</Trip>
+            <Return Comment="438V PhPh">253</Return>
           </Mains_High_Voltage>
           <Overspeed_Overshoot_Warning>
             <Function Comment="User Configured">0</Function>
@@ -2962,8 +2962,8 @@
             <Arming Comment="Loading Alarms Activation">7</Arming>
             <Type Comment="Analogue Less Than">2</Type>
             <Timer Comment="0">0</Timer>
-            <Trip Comment="99V PhN">99</Trip>
-            <Return Comment="99V PhN">99</Return>
+            <Trip Comment="171V PhPh">99</Trip>
+            <Return Comment="171V PhPh">99</Return>
           </Under_Loading_Voltage_Shutdown>
           <DC_Alternative_Alarms>
             <Short_Circuit>
@@ -3105,7 +3105,7 @@
             <Run_on_Low_Battery>False</Run_on_Low_Battery>
           </Misc_16>
           <Misc_32>
-            <Nominal_Voltage Comment="110V PhN">110</Nominal_Voltage>
+            <Nominal_Voltage Comment="190V PhPh">110</Nominal_Voltage>
             <Nominal_Frequency Comment="50.0 Hz">50.0</Nominal_Frequency>
             <Kilowatt_Rating Comment="345kW">345</Kilowatt_Rating>
             <DC_Battery_Min_Float_Charge_Timer Comment="0s">0</DC_Battery_Min_Float_Charge_Timer>
@@ -3190,8 +3190,8 @@
             <Arming Comment="From Safety On">3</Arming>
             <Type Comment="Analogue Less Than">2</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="94V PhN">94</Trip>
-            <Return Comment="99V PhN">99</Return>
+            <Trip Comment="162V PhPh">94</Trip>
+            <Return Comment="171V PhPh">99</Return>
           </Gen_Low_Volts_Warning>
           <Gen_Low_Volts_Shutdown>
             <Function Comment="User Configured">0</Function>
@@ -3199,8 +3199,8 @@
             <Arming Comment="From Safety On">3</Arming>
             <Type Comment="Analogue Less Than">2</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="88V PhN">88</Trip>
-            <Return Comment="88V PhN">88</Return>
+            <Trip Comment="152V PhPh">88</Trip>
+            <Return Comment="152V PhPh">88</Return>
           </Gen_Low_Volts_Shutdown>
           <Gen_High_Volts_Warning>
             <Function Comment="User Configured">0</Function>
@@ -3208,8 +3208,8 @@
             <Arming Comment="From Safety On">3</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="127V PhN">127</Trip>
-            <Return Comment="121V PhN">121</Return>
+            <Trip Comment="219V PhPh">127</Trip>
+            <Return Comment="209V PhPh">121</Return>
           </Gen_High_Volts_Warning>
           <Gen_High_Volts_Shutdown>
             <Function Comment="User Configured">0</Function>
@@ -3217,8 +3217,8 @@
             <Arming Comment="Always">1</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="132V PhN">132</Trip>
-            <Return Comment="132V PhN">132</Return>
+            <Trip Comment="228V PhPh">132</Trip>
+            <Return Comment="228V PhPh">132</Return>
           </Gen_High_Volts_Shutdown>
           <Loading_Frequency>
             <Function Comment="Generator Loading Frequency OK">28</Function>
@@ -3235,8 +3235,8 @@
             <Arming Comment="Loading Alarms Activation">7</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0">0</Timer>
-            <Trip Comment="99V PhN">99</Trip>
-            <Return Comment="99V PhN">99</Return>
+            <Trip Comment="171V PhPh">99</Trip>
+            <Return Comment="171V PhPh">99</Return>
           </Loading_Voltage>
           <Mains_Low_Frequency>
             <Function Comment="Mains Fail">32</Function>
@@ -3262,8 +3262,8 @@
             <Arming Comment="Always">1</Arming>
             <Type Comment="Analogue Less Than">2</Type>
             <Timer Comment="0">0</Timer>
-            <Trip Comment="184V PhN">184</Trip>
-            <Return Comment="207V PhN">207</Return>
+            <Trip Comment="318V PhPh">184</Trip>
+            <Return Comment="358V PhPh">207</Return>
           </Mains_Low_Voltage>
           <Mains_High_Voltage>
             <Function Comment="Mains Fail">32</Function>
@@ -3271,8 +3271,8 @@
             <Arming Comment="Always">1</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0">0</Timer>
-            <Trip Comment="276V PhN">276</Trip>
-            <Return Comment="253V PhN">253</Return>
+            <Trip Comment="478V PhPh">276</Trip>
+            <Return Comment="438V PhPh">253</Return>
           </Mains_High_Voltage>
           <Overspeed_Overshoot_Warning>
             <Function Comment="User Configured">0</Function>
@@ -3379,8 +3379,8 @@
             <Arming Comment="Loading Alarms Activation">7</Arming>
             <Type Comment="Analogue Less Than">2</Type>
             <Timer Comment="0">0</Timer>
-            <Trip Comment="99V PhN">99</Trip>
-            <Return Comment="99V PhN">99</Return>
+            <Trip Comment="171V PhPh">99</Trip>
+            <Return Comment="171V PhPh">99</Return>
           </Under_Loading_Voltage_Shutdown>
           <DC_Alternative_Alarms>
             <Short_Circuit>
@@ -4246,12 +4246,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>10545</CRC>
+      <CRC>51142</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.69.1.0">04-Apr-16 11:20:52</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">08-Apr-16 17:03:04</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -4287,7 +4287,7 @@
           <Address9>False</Address9>
         </E2548Modules>
         <E2131Modules>
-          <Address0>False</Address0>
+          <Address0>True</Address0>
           <Address1>False</Address1>
           <Address2>False</Address2>
           <Address3>False</Address3>
@@ -7185,6 +7185,8 @@
                   </Function_Arming_etc>
                   <Low_Shutdown>
                     <Params_Oil>
+                      <Trip Comment="0.00Bar, 0.00 PSI, 0 kPa">0.00</Trip>
+                      <Return Comment="0.00Bar, 0.00 PSI, 0 kPa">0.00</Return>
                     </Params_Oil>
                     <Params_Fuel>
                     </Params_Fuel>
@@ -7204,6 +7206,8 @@
                   </Function_Arming_etc>
                   <Low_Warning>
                     <Params_Oil>
+                      <Trip Comment="0.01Bar, 0.15 PSI, 1 kPa">0.01</Trip>
+                      <Return Comment="0.02Bar, 0.29 PSI, 2 kPa">0.02</Return>
                     </Params_Oil>
                     <Params_Fuel>
                     </Params_Fuel>
@@ -7223,6 +7227,8 @@
                   </Function_Arming_etc>
                   <High_Warning>
                     <Params_Oil>
+                      <Trip Comment="0.04Bar, 0.58 PSI, 4 kPa">0.04</Trip>
+                      <Return Comment="0.03Bar, 0.44 PSI, 3 kPa">0.03</Return>
                     </Params_Oil>
                     <Params_Fuel>
                     </Params_Fuel>
@@ -7242,6 +7248,8 @@
                   </Function_Arming_etc>
                   <High_Shutdown>
                     <Params_Oil>
+                      <Trip Comment="0.05Bar, 0.73 PSI, 5 kPa">0.05</Trip>
+                      <Return Comment="0.05Bar, 0.73 PSI, 5 kPa">0.05</Return>
                     </Params_Oil>
                     <Params_Fuel>
                     </Params_Fuel>
@@ -7252,18 +7260,25 @@
                   </High_Shutdown>
                 </High_Shutdown>
               </Alarms>
-              <Sensor_Category Comment="None">0</Sensor_Category>
-              <Measured_Quantity Comment="Resistive">2</Measured_Quantity>
+              <Sensor_Category Comment="Pressure Sensor">1</Sensor_Category>
+              <Measured_Quantity Comment="Current">1</Measured_Quantity>
               <Sensor_Type>
+                <MCFlexibleSenderSelection_Oil Comment="255">255</MCFlexibleSenderSelection_Oil>
               </Sensor_Type>
               <Wide_Range>False</Wide_Range>
               <Multifunction_Sender_Curve_Block>
+                <SCFlexibleSender_Oil>
+                  <CurveType>255 - 4-20mA 240PSI fuel sensor</CurveType>
+                  <Values Value0="0" Value1="0" Value2="0" Value3="0" Value4="0" Value5="0" Value6="0" Value7="0" Value8="0" Value9="8" Value10="16" Value11="24" Value12="32" Value13="40" Value14="48" Value15="56" Value16="64" Value17="72" Value18="80" Value19="88" Value20="96" Value21="104" Value22="112" Value23="120" Value24="128" Value25="136" Value26="144" Value27="152" Value28="160" Value29="168" Value30="176" Value31="184" Value32="192" Value33="200" Value34="208" Value35="216" Value36="224" Value37="232" Value38="240" Value39="240" Value40="240" />
+                  <Axis MaximumValue="250" OhmsInterval="500" HighThreshold="20000" MeasuredQuantity="1" CurveType="0" />
+                </SCFlexibleSender_Oil>
               </Multifunction_Sender_Curve_Block>
               <Strings>
-                <Title>2131 ID0 Flexible Sensor A</Title>
+                <Title>0-1 PSI fuel scaled to 240 psi</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
+                  <CurveName_Oil>4-20mA 240PSI fuel sensor</CurveName_Oil>
                 </Transducer_Curve_Name>
               </Strings>
             </Analogue_A>
@@ -13731,23 +13746,23 @@
           <Analogue_Outputs>
             <Output_A>
               <OutputType Comment="0-10 V">0</OutputType>
-              <Source Comment="Not Used">0</Source>
+              <Source Comment="Plant Battery Voltage">139</Source>
               <Output_Curve>
                 <CurveType>0 - Not used</CurveType>
               </Output_Curve>
               <Strings>
-                <Title_string>2152 ID0 Flexible Output A</Title_string>
+                <Title_string>Woodward Remote SetSpd Sig</Title_string>
                 <User_defined_curve_name>Not used</User_defined_curve_name>
               </Strings>
             </Output_A>
             <Output_B>
               <Output_type Comment="0-10 V">0</Output_type>
-              <Analogue_source Comment="Not Used">0</Analogue_source>
+              <Analogue_source Comment="Plant Battery Voltage">139</Analogue_source>
               <Output_curve>
                 <CurveType>0 - Not used</CurveType>
               </Output_curve>
               <Strings>
-                <Title_string>2152 ID0 Flexible Output B</Title_string>
+                <Title_string>Hello World</Title_string>
                 <User_defined_curve_name>Not used</User_defined_curve_name>
               </Strings>
             </Output_B>
@@ -14036,7 +14051,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>35373</CRC>
+        <CRC>6546</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
