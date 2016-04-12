@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="1" ModuleMinorVersion="3">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">08-Apr-16 17:03:04</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">11-Apr-16 17:09:01</Saved_on>
       <MajorVersion>1</MajorVersion>
       <MinorVersion>3</MinorVersion>
     </Header>
@@ -3614,10 +3614,10 @@
       <VendorName>
       </VendorName>
       <IP_Address>
-        <Octet4 Comment="0 ">0</Octet4>
+        <Octet4 Comment="210 ">210</Octet4>
         <Octet3 Comment="0 ">0</Octet3>
-        <Octet2 Comment="0 ">0</Octet2>
-        <Octet1 Comment="0 ">0</Octet1>
+        <Octet2 Comment="50 ">50</Octet2>
+        <Octet1 Comment="10 ">10</Octet1>
       </IP_Address>
       <Subnet_Mask>
         <Octet4 Comment="0 ">0</Octet4>
@@ -3626,10 +3626,10 @@
         <Octet1 Comment="255 ">255</Octet1>
       </Subnet_Mask>
       <Gateway_Address>
-        <Octet4 Comment="0 ">0</Octet4>
+        <Octet4 Comment="1 ">1</Octet4>
         <Octet3 Comment="0 ">0</Octet3>
-        <Octet2 Comment="0 ">0</Octet2>
-        <Octet1 Comment="0 ">0</Octet1>
+        <Octet2 Comment="50 ">50</Octet2>
+        <Octet1 Comment="10 ">10</Octet1>
       </Gateway_Address>
       <DNS_Address>
         <Octet4 Comment="0 ">0</Octet4>
@@ -3644,7 +3644,7 @@
         <Octet1 Comment="0 ">0</Octet1>
       </Preferred_Connection_Address>
       <DHCPEnable>False</DHCPEnable>
-      <ModbusPort Comment="502">502</ModbusPort>
+      <ModbusPort Comment="1003">1003</ModbusPort>
     </TCPIP>
     <ConfigurableGencommP166>
       <Items1-16>
@@ -4246,12 +4246,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>51142</CRC>
+      <CRC>49275</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">08-Apr-16 17:03:04</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">11-Apr-16 17:09:01</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14051,7 +14051,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>6546</CRC>
+        <CRC>63644</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
