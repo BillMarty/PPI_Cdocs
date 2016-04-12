@@ -1,10 +1,10 @@
 <ConfigurationFile_Extended Features="PCOnlyUpdate">
-  <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="1" ModuleMinorVersion="3">
+  <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">11-Apr-16 17:09:01</Saved_on>
-      <MajorVersion>1</MajorVersion>
-      <MinorVersion>3</MinorVersion>
+      <Saved_on ConfigSuite_Version="3.70.1.0">12-Apr-16 13:37:17</Saved_on>
+      <MajorVersion>2</MajorVersion>
+      <MinorVersion>1</MinorVersion>
     </Header>
     <PC_Header>
       <UpdateVersion>0</UpdateVersion>
@@ -962,6 +962,24 @@
         <Trip Comment="95 °C,  203 °F">95</Trip>
         <Return Comment="95 °C,  203 °F">95</Return>
       </BHT_Shutdown>
+      <AVR_Max_Trim>
+        <Function Comment="User Configured">0</Function>
+        <Action Comment="None">0</Action>
+        <Arming Comment="Always">1</Arming>
+        <Type Comment="Analogue Greater Than">3</Type>
+        <Timer Comment="0s">0</Timer>
+        <Trip Comment="0">0</Trip>
+        <Return Comment="0">0</Return>
+      </AVR_Max_Trim>
+      <Charge_Current_Limit>
+        <Function Comment="User Configured">0</Function>
+        <Action Comment="None">0</Action>
+        <Arming Comment="Never">0</Arming>
+        <Type Comment="Analogue Greater Than">3</Type>
+        <Timer Comment="0">0</Timer>
+        <Trip Comment="500 A">500</Trip>
+        <Return Comment="0">0</Return>
+      </Charge_Current_Limit>
     </Alarms>
     <Digital_Outputs>
       <Common_Outputs>
@@ -1141,6 +1159,7 @@
     </Virtual_Outputs>
     <PLC>
       <Logic_Blocks>
+        <Label Text="Engine Start/Stop based on SOC flags from Arduino" />
         <Ladder>
           <Conditions>
             <And>
@@ -1173,6 +1192,7 @@
             <Action Type="Trigger" Operator="0" ValueType="0" Value_1="10" />
           </Actions>
         </Ladder>
+        <Label Text="Engine warm up and cool down signal to Woodward throttle controller" />
         <Ladder>
           <Conditions>
             <Or>
@@ -1182,6 +1202,95 @@
           </Conditions>
           <Actions>
             <Action Type="Drive" Operator="0" ValueType="0" Value_1="14" Value_2="1" />
+          </Actions>
+        </Ladder>
+        <Label Text="RPM control look up table" />
+        <Ladder>
+          <Conditions>
+            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_3="267" Value_4="268" />
+          </Conditions>
+          <Actions>
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="16" Value_2="3" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="267" Value_4="271" />
+          </Conditions>
+          <Actions>
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="18" Value_2="3" Value_3="500" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="271" Value_4="275" />
+          </Conditions>
+          <Actions>
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="20" Value_2="3" Value_3="1000" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="275" Value_4="279" />
+          </Conditions>
+          <Actions>
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="22" Value_2="3" Value_3="1500" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="279" Value_4="283" />
+          </Conditions>
+          <Actions>
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="24" Value_2="3" Value_3="2000" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="283" Value_4="286" />
+          </Conditions>
+          <Actions>
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="26" Value_2="3" Value_3="2500" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="286" Value_4="290" />
+          </Conditions>
+          <Actions>
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="28" Value_2="3" Value_3="3000" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="290" Value_4="294" />
+          </Conditions>
+          <Actions>
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="30" Value_2="3" Value_3="3500" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="294" Value_4="298" />
+          </Conditions>
+          <Actions>
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="32" Value_2="3" Value_3="4000" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="298" Value_4="302" />
+          </Conditions>
+          <Actions>
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="34" Value_2="3" Value_3="4500" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="3" Value_3="302" Value_4="303" />
+          </Conditions>
+          <Actions>
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="36" Value_2="3" Value_3="5000" />
           </Actions>
         </Ladder>
       </Logic_Blocks>
@@ -1540,6 +1649,19 @@
       <Flexible_Sender_3>
       </Flexible_Sender_3>
     </Sensor_Curves>
+    <AVR_Output>
+      <Mode Comment="Internal Analogue">5</Mode>
+      <Reversed>False</Reversed>
+    </AVR_Output>
+    <AVR_Control>
+      <Control_Scheme Comment="Fixed">0</Control_Scheme>
+      <Running_Voltage Comment="1.00 V">1.00</Running_Voltage>
+      <Default_Voltage Comment="1.00 V">1.00</Default_Voltage>
+      <Return_to_Default>True</Return_to_Default>
+      <Min_Voltage Comment="0.00 V">0.00</Min_Voltage>
+      <Max_Voltage Comment="10.00 V">10.00</Max_Voltage>
+      <Ramp_Up Comment="0.10 V/s">0.10</Ramp_Up>
+    </AVR_Control>
     <Scheduler>
       <Event_1>
         <Event_Start_Time Comment="0">0</Event_Start_Time>
@@ -1851,6 +1973,8 @@
             <Battery_Full_Charge_Level Comment="90 %">90</Battery_Full_Charge_Level>
             <Battery_Charge_Voltage Comment="500 V DC">50.0</Battery_Charge_Voltage>
             <Battery_Peukerts_Const Comment="100 ">1.00</Battery_Peukerts_Const>
+            <Float_Charge_Enable>True</Float_Charge_Enable>
+            <Charger_Efficiency Comment="100 %">100</Charger_Efficiency>
           </Battery_Misc_16_Alt>
           <Run_Generator_on_Low_Battery>False</Run_Generator_on_Low_Battery>
         </Misc_16_Bit>
@@ -2267,6 +2391,8 @@
               <Battery_Full_Charge_Level Comment="90 %">90</Battery_Full_Charge_Level>
               <Battery_Charge_Voltage Comment="500 V DC">50.0</Battery_Charge_Voltage>
               <Battery_Peukerts_Const Comment="100 ">1.00</Battery_Peukerts_Const>
+              <Float_Charge_Enable>True</Float_Charge_Enable>
+              <Charger_Efficiency Comment="100 %">100</Charger_Efficiency>
             </DC_Battery>
             <Run_on_Low_Battery>False</Run_on_Low_Battery>
           </Misc_16>
@@ -2684,6 +2810,8 @@
               <Battery_Full_Charge_Level Comment="90 %">90</Battery_Full_Charge_Level>
               <Battery_Charge_Voltage Comment="500 V DC">50.0</Battery_Charge_Voltage>
               <Battery_Peukerts_Const Comment="100 ">1.00</Battery_Peukerts_Const>
+              <Float_Charge_Enable>True</Float_Charge_Enable>
+              <Charger_Efficiency Comment="100 %">100</Charger_Efficiency>
             </DC_Battery>
             <Run_on_Low_Battery>False</Run_on_Low_Battery>
           </Misc_16>
@@ -3101,6 +3229,8 @@
               <Battery_Full_Charge_Level Comment="90 %">90</Battery_Full_Charge_Level>
               <Battery_Charge_Voltage Comment="500 V DC">50.0</Battery_Charge_Voltage>
               <Battery_Peukerts_Const Comment="100 ">1.00</Battery_Peukerts_Const>
+              <Float_Charge_Enable>True</Float_Charge_Enable>
+              <Charger_Efficiency Comment="100 %">100</Charger_Efficiency>
             </DC_Battery>
             <Run_on_Low_Battery>False</Run_on_Low_Battery>
           </Misc_16>
@@ -4246,12 +4376,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>49275</CRC>
+      <CRC>18427</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">11-Apr-16 17:09:01</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">12-Apr-16 13:37:17</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -13746,7 +13876,7 @@
           <Analogue_Outputs>
             <Output_A>
               <OutputType Comment="0-10 V">0</OutputType>
-              <Source Comment="Plant Battery Voltage">139</Source>
+              <Source Comment="Engine Battery Voltage">36</Source>
               <Output_Curve>
                 <CurveType>0 - Not used</CurveType>
               </Output_Curve>
@@ -13757,7 +13887,7 @@
             </Output_A>
             <Output_B>
               <Output_type Comment="0-10 V">0</Output_type>
-              <Analogue_source Comment="Plant Battery Voltage">139</Analogue_source>
+              <Analogue_source Comment="Engine Battery Voltage">36</Analogue_source>
               <Output_curve>
                 <CurveType>0 - Not used</CurveType>
               </Output_curve>
@@ -14051,7 +14181,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>63644</CRC>
+        <CRC>24693</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
