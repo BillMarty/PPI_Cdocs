@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">13-Apr-16 18:29:07</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">14-Apr-16 14:30:20</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -996,7 +996,7 @@
           <Polarity Comment="Energise">0</Polarity>
         </Aux_OP_1>
         <Aux_OP_2>
-          <Control_Source Comment="Common Alarm">84</Control_Source>
+          <Control_Source Comment="PLC Output Flag 3">12290</Control_Source>
           <Polarity Comment="Energise">0</Polarity>
         </Aux_OP_2>
         <Aux_OP_3>
@@ -1016,7 +1016,7 @@
           <Polarity Comment="Energise">0</Polarity>
         </Aux_OP_6>
         <Gen_Relay>
-          <Control_Source Comment="PLC Output Flag 3">12290</Control_Source>
+          <Control_Source Comment="Not Used">0</Control_Source>
           <Polarity Comment="Energise">0</Polarity>
         </Gen_Relay>
         <Mains_Relay>
@@ -4424,12 +4424,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>42974</CRC>
+      <CRC>21941</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">13-Apr-16 18:29:07</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">14-Apr-16 14:30:20</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -4465,14 +4465,14 @@
           <Address9>False</Address9>
         </E2548Modules>
         <E2131Modules>
-          <Address0>False</Address0>
+          <Address0>True</Address0>
           <Address1>False</Address1>
           <Address2>False</Address2>
           <Address3>False</Address3>
         </E2131Modules>
         <E2133Modules>
           <Address0>False</Address0>
-          <Address1>False</Address1>
+          <Address1>True</Address1>
           <Address2>False</Address2>
           <Address3>False</Address3>
         </E2133Modules>
@@ -12143,6 +12143,8 @@
                     </Function_Arming_etc>
                     <Low_Shutdown>
                       <Params_Temp_Resistive>
+                        <Trip Comment="103 °C,  217 °F">103</Trip>
+                        <Return Comment="103 °C,  217 °F">103</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12158,6 +12160,8 @@
                     </Function_Arming_etc>
                     <Low_Warning>
                       <Params_Fuel_Resistive>
+                        <Trip Comment="117 °C,  243 °F">117</Trip>
+                        <Return Comment="124 °C,  255 °F">124</Return>
                       </Params_Fuel_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12173,6 +12177,8 @@
                     </Function_Arming_etc>
                     <High_Warning>
                       <Params_Temp_Resistive>
+                        <Trip Comment="150 °C,  302 °F">150</Trip>
+                        <Return Comment="140 °C,  284 °F">140</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12188,6 +12194,8 @@
                     </Function_Arming_etc>
                     <High_Shutdown>
                       <Params_Temp_Resistive>
+                        <Trip Comment="160 °C,  320 °F">160</Trip>
+                        <Return Comment="160 °C,  320 °F">160</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12195,6 +12203,7 @@
                   </High_Shutdown>
                 </Alarms>
                 <Sensor_Type>
+                  <MCFlexibleSenderSelection_Temp_Resistive Comment="0">0</MCFlexibleSenderSelection_Temp_Resistive>
                 </Sensor_Type>
                 <Wide_Range>False</Wide_Range>
                 <Strings>
@@ -12215,6 +12224,8 @@
                     </Function_Arming_etc>
                     <Low_Shutdown>
                       <Params_Temp_Resistive>
+                        <Trip Comment="103 °C,  217 °F">103</Trip>
+                        <Return Comment="103 °C,  217 °F">103</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12230,6 +12241,8 @@
                     </Function_Arming_etc>
                     <Low_Warning>
                       <Params_Fuel_Resistive>
+                        <Trip Comment="117 °C,  243 °F">117</Trip>
+                        <Return Comment="124 °C,  255 °F">124</Return>
                       </Params_Fuel_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12245,6 +12258,8 @@
                     </Function_Arming_etc>
                     <High_Warning>
                       <Params_Temp_Resistive>
+                        <Trip Comment="150 °C,  302 °F">150</Trip>
+                        <Return Comment="140 °C,  284 °F">140</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12260,6 +12275,8 @@
                     </Function_Arming_etc>
                     <High_Shutdown>
                       <Params_Temp_Resistive>
+                        <Trip Comment="160 °C,  320 °F">160</Trip>
+                        <Return Comment="160 °C,  320 °F">160</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12267,6 +12284,7 @@
                   </High_Shutdown>
                 </Alarms>
                 <Sensor_Type>
+                  <MCFlexibleSenderSelection_Temp_Resistive Comment="0">0</MCFlexibleSenderSelection_Temp_Resistive>
                 </Sensor_Type>
                 <Wide_Range>False</Wide_Range>
                 <Strings>
@@ -12287,6 +12305,8 @@
                     </Function_Arming_etc>
                     <Low_Shutdown>
                       <Params_Temp_Resistive>
+                        <Trip Comment="103 °C,  217 °F">103</Trip>
+                        <Return Comment="103 °C,  217 °F">103</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12302,6 +12322,8 @@
                     </Function_Arming_etc>
                     <Low_Warning>
                       <Params_Fuel_Resistive>
+                        <Trip Comment="117 °C,  243 °F">117</Trip>
+                        <Return Comment="124 °C,  255 °F">124</Return>
                       </Params_Fuel_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12317,6 +12339,8 @@
                     </Function_Arming_etc>
                     <High_Warning>
                       <Params_Temp_Resistive>
+                        <Trip Comment="150 °C,  302 °F">150</Trip>
+                        <Return Comment="140 °C,  284 °F">140</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12332,6 +12356,8 @@
                     </Function_Arming_etc>
                     <High_Shutdown>
                       <Params_Temp_Resistive>
+                        <Trip Comment="160 °C,  320 °F">160</Trip>
+                        <Return Comment="160 °C,  320 °F">160</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12339,6 +12365,7 @@
                   </High_Shutdown>
                 </Alarms>
                 <Sensor_Type>
+                  <MCFlexibleSenderSelection_Temp_Resistive Comment="0">0</MCFlexibleSenderSelection_Temp_Resistive>
                 </Sensor_Type>
                 <Wide_Range>False</Wide_Range>
                 <Strings>
@@ -12359,6 +12386,8 @@
                     </Function_Arming_etc>
                     <Low_Shutdown>
                       <Params_Temp_Resistive>
+                        <Trip Comment="103 °C,  217 °F">103</Trip>
+                        <Return Comment="103 °C,  217 °F">103</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12374,6 +12403,8 @@
                     </Function_Arming_etc>
                     <Low_Warning>
                       <Params_Fuel_Resistive>
+                        <Trip Comment="117 °C,  243 °F">117</Trip>
+                        <Return Comment="124 °C,  255 °F">124</Return>
                       </Params_Fuel_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12389,6 +12420,8 @@
                     </Function_Arming_etc>
                     <High_Warning>
                       <Params_Temp_Resistive>
+                        <Trip Comment="150 °C,  302 °F">150</Trip>
+                        <Return Comment="140 °C,  284 °F">140</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12404,6 +12437,8 @@
                     </Function_Arming_etc>
                     <High_Shutdown>
                       <Params_Temp_Resistive>
+                        <Trip Comment="160 °C,  320 °F">160</Trip>
+                        <Return Comment="160 °C,  320 °F">160</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12411,6 +12446,7 @@
                   </High_Shutdown>
                 </Alarms>
                 <Sensor_Type>
+                  <MCFlexibleSenderSelection_Temp_Resistive Comment="0">0</MCFlexibleSenderSelection_Temp_Resistive>
                 </Sensor_Type>
                 <Wide_Range>False</Wide_Range>
                 <Strings>
@@ -12431,6 +12467,8 @@
                     </Function_Arming_etc>
                     <Low_Shutdown>
                       <Params_Temp_Resistive>
+                        <Trip Comment="103 °C,  217 °F">103</Trip>
+                        <Return Comment="103 °C,  217 °F">103</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12446,6 +12484,8 @@
                     </Function_Arming_etc>
                     <Low_Warning>
                       <Params_Fuel_Resistive>
+                        <Trip Comment="117 °C,  243 °F">117</Trip>
+                        <Return Comment="124 °C,  255 °F">124</Return>
                       </Params_Fuel_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12461,6 +12501,8 @@
                     </Function_Arming_etc>
                     <High_Warning>
                       <Params_Temp_Resistive>
+                        <Trip Comment="150 °C,  302 °F">150</Trip>
+                        <Return Comment="140 °C,  284 °F">140</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12476,6 +12518,8 @@
                     </Function_Arming_etc>
                     <High_Shutdown>
                       <Params_Temp_Resistive>
+                        <Trip Comment="160 °C,  320 °F">160</Trip>
+                        <Return Comment="160 °C,  320 °F">160</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12483,6 +12527,7 @@
                   </High_Shutdown>
                 </Alarms>
                 <Sensor_Type>
+                  <MCFlexibleSenderSelection_Temp_Resistive Comment="0">0</MCFlexibleSenderSelection_Temp_Resistive>
                 </Sensor_Type>
                 <Wide_Range>False</Wide_Range>
                 <Strings>
@@ -12503,6 +12548,8 @@
                     </Function_Arming_etc>
                     <Low_Shutdown>
                       <Params_Temp_Resistive>
+                        <Trip Comment="103 °C,  217 °F">103</Trip>
+                        <Return Comment="103 °C,  217 °F">103</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12518,6 +12565,8 @@
                     </Function_Arming_etc>
                     <Low_Warning>
                       <Params_Fuel_Resistive>
+                        <Trip Comment="117 °C,  243 °F">117</Trip>
+                        <Return Comment="124 °C,  255 °F">124</Return>
                       </Params_Fuel_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12533,6 +12582,8 @@
                     </Function_Arming_etc>
                     <High_Warning>
                       <Params_Temp_Resistive>
+                        <Trip Comment="150 °C,  302 °F">150</Trip>
+                        <Return Comment="140 °C,  284 °F">140</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12548,6 +12599,8 @@
                     </Function_Arming_etc>
                     <High_Shutdown>
                       <Params_Temp_Resistive>
+                        <Trip Comment="160 °C,  320 °F">160</Trip>
+                        <Return Comment="160 °C,  320 °F">160</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12555,6 +12608,7 @@
                   </High_Shutdown>
                 </Alarms>
                 <Sensor_Type>
+                  <MCFlexibleSenderSelection_Temp_Resistive Comment="0">0</MCFlexibleSenderSelection_Temp_Resistive>
                 </Sensor_Type>
                 <Wide_Range>False</Wide_Range>
                 <Strings>
@@ -12575,6 +12629,8 @@
                     </Function_Arming_etc>
                     <Low_Shutdown>
                       <Params_Temp_Resistive>
+                        <Trip Comment="103 °C,  217 °F">103</Trip>
+                        <Return Comment="103 °C,  217 °F">103</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12590,6 +12646,8 @@
                     </Function_Arming_etc>
                     <Low_Warning>
                       <Params_Fuel_Resistive>
+                        <Trip Comment="117 °C,  243 °F">117</Trip>
+                        <Return Comment="124 °C,  255 °F">124</Return>
                       </Params_Fuel_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12605,6 +12663,8 @@
                     </Function_Arming_etc>
                     <High_Warning>
                       <Params_Temp_Resistive>
+                        <Trip Comment="150 °C,  302 °F">150</Trip>
+                        <Return Comment="140 °C,  284 °F">140</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12620,6 +12680,8 @@
                     </Function_Arming_etc>
                     <High_Shutdown>
                       <Params_Temp_Resistive>
+                        <Trip Comment="160 °C,  320 °F">160</Trip>
+                        <Return Comment="160 °C,  320 °F">160</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12627,6 +12689,7 @@
                   </High_Shutdown>
                 </Alarms>
                 <Sensor_Type>
+                  <MCFlexibleSenderSelection_Temp_Resistive Comment="0">0</MCFlexibleSenderSelection_Temp_Resistive>
                 </Sensor_Type>
                 <Wide_Range>False</Wide_Range>
                 <Strings>
@@ -12647,6 +12710,8 @@
                     </Function_Arming_etc>
                     <Low_Shutdown>
                       <Params_Temp_Resistive>
+                        <Trip Comment="103 °C,  217 °F">103</Trip>
+                        <Return Comment="103 °C,  217 °F">103</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12662,6 +12727,8 @@
                     </Function_Arming_etc>
                     <Low_Warning>
                       <Params_Fuel_Resistive>
+                        <Trip Comment="117 °C,  243 °F">117</Trip>
+                        <Return Comment="124 °C,  255 °F">124</Return>
                       </Params_Fuel_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12677,6 +12744,8 @@
                     </Function_Arming_etc>
                     <High_Warning>
                       <Params_Temp_Resistive>
+                        <Trip Comment="150 °C,  302 °F">150</Trip>
+                        <Return Comment="140 °C,  284 °F">140</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12692,6 +12761,8 @@
                     </Function_Arming_etc>
                     <High_Shutdown>
                       <Params_Temp_Resistive>
+                        <Trip Comment="160 °C,  320 °F">160</Trip>
+                        <Return Comment="160 °C,  320 °F">160</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12699,6 +12770,7 @@
                   </High_Shutdown>
                 </Alarms>
                 <Sensor_Type>
+                  <MCFlexibleSenderSelection_Temp_Resistive Comment="0">0</MCFlexibleSenderSelection_Temp_Resistive>
                 </Sensor_Type>
                 <Wide_Range>False</Wide_Range>
                 <Strings>
@@ -14214,7 +14286,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>9765</CRC>
+        <CRC>57426</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
