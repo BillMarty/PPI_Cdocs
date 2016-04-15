@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">14-Apr-16 14:30:20</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">15-Apr-16 08:32:23</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -776,7 +776,7 @@
       <Temperature_Sender_Open_Circuit>
         <Function Comment="User Configured">0</Function>
         <Action Comment="Shutdown">1</Action>
-        <Arming Comment="Never">0</Arming>
+        <Arming Comment="Always">1</Arming>
         <Type Comment="Close to Activate">0</Type>
         <Timer Comment="0">0</Timer>
         <Trip Comment="0">0</Trip>
@@ -1621,7 +1621,7 @@
           <Inhibit_Retransfer_to_Mains>False</Inhibit_Retransfer_to_Mains>
           <Protection_Disable>False</Protection_Disable>
           <RTL_Language_Support>False</RTL_Language_Support>
-          <Coolant_Temperature_Input_Used Comment="Flexible sensor">1</Coolant_Temperature_Input_Used>
+          <Coolant_Temperature_Input_Used Comment="Temperature sensor">0</Coolant_Temperature_Input_Used>
           <Fuel_Level_Input_Used Comment="Flexible sensor">1</Fuel_Level_Input_Used>
           <Fuel_Units Comment="Litres">0</Fuel_Units>
           <Dial_Out_On_Fuel_Monitoring>False</Dial_Out_On_Fuel_Monitoring>
@@ -1668,7 +1668,7 @@
         <Droop_Percent Comment="4.0 %">4.0</Droop_Percent>
         <Oil_Sensor Comment="VDO 10 Bar">4</Oil_Sensor>
         <New Comment="398V PhPh">230</New>
-        <Coolant_Sensor Comment="Not used">0</Coolant_Sensor>
+        <Coolant_Sensor Comment="VDO 120 °C">3</Coolant_Sensor>
         <Fuel_Sensor Comment="Not used">0</Fuel_Sensor>
         <Fuel_Tank_Capacity Comment="1000">1000</Fuel_Tank_Capacity>
         <Fuel_Level_Change_Indicating_Filling Comment="1 %">1</Fuel_Level_Change_Indicating_Filling>
@@ -1682,7 +1682,7 @@
         <CurveType>4 - VDO 10 Bar</CurveType>
       </Oil_Pressure>
       <Temperature>
-        <CurveType>0 - Not used</CurveType>
+        <CurveType>3 - VDO 120 °C</CurveType>
       </Temperature>
       <Fuel>
         <CurveType>0 - Not used</CurveType>
@@ -1862,7 +1862,7 @@
       <Maintenance_Alarm_2>Maintenance Alarm 2</Maintenance_Alarm_2>
       <Maintenance_Alarm_3>Maintenance Alarm 3</Maintenance_Alarm_3>
       <Oil_Sensor_Curve_Name>VDO 10 Bar</Oil_Sensor_Curve_Name>
-      <Temperature_Sensor_Curve_Name>Not used</Temperature_Sensor_Curve_Name>
+      <Temperature_Sensor_Curve_Name>VDO 120 °C</Temperature_Sensor_Curve_Name>
       <Fuel_Sensor_Curve_Name>Not used</Fuel_Sensor_Curve_Name>
       <Battery_Strings>
         <Temp_Sensor_Curve_Name>VDO 120 °C</Temp_Sensor_Curve_Name>
@@ -1932,7 +1932,7 @@
         </Settings_32_bit_-_RS232>
         <Settings_16_bit_-_RS485>
           <Slave_ID Comment="10">10</Slave_ID>
-          <Baud_Rate Comment="19200">9</Baud_Rate>
+          <Baud_Rate Comment="57600">12</Baud_Rate>
           <Language_Code Comment="0">0</Language_Code>
         </Settings_16_bit_-_RS485>
         <Settings_32_bit_-_RS485>
@@ -3686,27 +3686,27 @@
       <Log_Item_1>
         <Rate Comment="1 minute">600</Rate>
         <PacketID Comment="1 minute">600</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="Engine Speed">66566</Item>
       </Log_Item_1>
       <Log_Item_2>
-        <Rate Comment="1 second">10</Rate>
-        <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Rate Comment="1 minute">600</Rate>
+        <PacketID Comment="1 minute">600</PacketID>
+        <Item Comment="2131 Expansion Module 0 Input A (Low) Processed Status">109345</Item>
       </Log_Item_2>
       <Log_Item_3>
-        <Rate Comment="1 second">10</Rate>
-        <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Rate Comment="1 minute">600</Rate>
+        <PacketID Comment="1 minute">600</PacketID>
+        <Item Comment="DC Voltage">66759</Item>
       </Log_Item_3>
       <Log_Item_4>
-        <Rate Comment="1 second">10</Rate>
-        <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Rate Comment="1 minute">600</Rate>
+        <PacketID Comment="1 minute">600</PacketID>
+        <Item Comment="DC Total kW">1242</Item>
       </Log_Item_4>
       <Log_Item_5>
-        <Rate Comment="1 second">10</Rate>
-        <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Rate Comment="1 minute">600</Rate>
+        <PacketID Comment="1 minute">600</PacketID>
+        <Item Comment="DC Total kW">1242</Item>
       </Log_Item_5>
       <Log_Item_6>
         <Rate Comment="1 second">10</Rate>
@@ -4411,7 +4411,7 @@
     <Data_Logging_Configuration>
       <Options>
         <Log_when_Running>False</Log_when_Running>
-        <Log_to_USB>True</Log_to_USB>
+        <Log_to_USB>False</Log_to_USB>
         <Keep_Oldest_Data>True</Keep_Oldest_Data>
       </Options>
     </Data_Logging_Configuration>
@@ -4424,12 +4424,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>21941</CRC>
+      <CRC>42269</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">14-Apr-16 14:30:20</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">15-Apr-16 08:32:23</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -7365,6 +7365,8 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
+                      <Trip Comment="25 %">25</Trip>
+                      <Return Comment="25 %">25</Return>
                     </Params_Fuel>
                     <Params_Temp>
                     </Params_Temp>
@@ -7384,6 +7386,8 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
+                      <Trip Comment="30 %">30</Trip>
+                      <Return Comment="40 %">40</Return>
                     </Params_Fuel>
                     <Params_Temp>
                     </Params_Temp>
@@ -7403,6 +7407,8 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
+                      <Trip Comment="60 %">60</Trip>
+                      <Return Comment="50 %">50</Return>
                     </Params_Fuel>
                     <Params_Temp>
                     </Params_Temp>
@@ -7422,6 +7428,8 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
+                      <Trip Comment="75 %">75</Trip>
+                      <Return Comment="75 %">75</Return>
                     </Params_Fuel>
                     <Params_Temp>
                     </Params_Temp>
@@ -7430,18 +7438,25 @@
                   </High_Shutdown>
                 </High_Shutdown>
               </Alarms>
-              <Sensor_Category Comment="None">0</Sensor_Category>
-              <Measured_Quantity Comment="Resistive">2</Measured_Quantity>
+              <Sensor_Category Comment="Percentage Sensor">3</Sensor_Category>
+              <Measured_Quantity Comment="Voltage">0</Measured_Quantity>
               <Sensor_Type>
+                <MCFlexibleSenderSelection_Fuel Comment="255">255</MCFlexibleSenderSelection_Fuel>
               </Sensor_Type>
               <Wide_Range>False</Wide_Range>
               <Multifunction_Sender_Curve_Block>
+                <SCFlexibleSender_Fuel>
+                  <CurveType>255 - User defined</CurveType>
+                  <Values Value0="0" Value1="0" Value2="0" Value3="0" Value4="0" Value5="0" Value6="0" Value7="0" Value8="0" Value9="3" Value10="6" Value11="9" Value12="12" Value13="16" Value14="19" Value15="22" Value16="25" Value17="28" Value18="31" Value19="34" Value20="38" Value21="41" Value22="44" Value23="47" Value24="50" Value25="53" Value26="56" Value27="59" Value28="62" Value29="66" Value30="69" Value31="72" Value32="75" Value33="78" Value34="81" Value35="84" Value36="88" Value37="91" Value38="94" Value39="97" Value40="100" />
+                  <Axis MaximumValue="255" OhmsInterval="250" HighThreshold="10000" MeasuredQuantity="0" CurveType="2" />
+                </SCFlexibleSender_Fuel>
               </Multifunction_Sender_Curve_Block>
               <Strings>
-                <Title>0-1 PSI fuel scaled to 240 psi</Title>
+                <Title>SOC</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
+                  <CurveName_Fuel>User defined</CurveName_Fuel>
                 </Transducer_Curve_Name>
               </Strings>
             </Analogue_A>
@@ -7459,6 +7474,8 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
+                      <Trip Comment="25 %">25</Trip>
+                      <Return Comment="25 %">25</Return>
                     </Params_Fuel>
                     <Params_Temp>
                     </Params_Temp>
@@ -7478,6 +7495,8 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
+                      <Trip Comment="30 %">30</Trip>
+                      <Return Comment="40 %">40</Return>
                     </Params_Fuel>
                     <Params_Temp>
                     </Params_Temp>
@@ -7497,6 +7516,8 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
+                      <Trip Comment="60 %">60</Trip>
+                      <Return Comment="50 %">50</Return>
                     </Params_Fuel>
                     <Params_Temp>
                     </Params_Temp>
@@ -7516,6 +7537,8 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
+                      <Trip Comment="75 %">75</Trip>
+                      <Return Comment="75 %">75</Return>
                     </Params_Fuel>
                     <Params_Temp>
                     </Params_Temp>
@@ -7524,18 +7547,25 @@
                   </High_Shutdown>
                 </High_Shutdown>
               </Alarms>
-              <Sensor_Category Comment="None">0</Sensor_Category>
-              <Measured_Quantity Comment="Resistive">2</Measured_Quantity>
+              <Sensor_Category Comment="Percentage Sensor">3</Sensor_Category>
+              <Measured_Quantity Comment="Voltage">0</Measured_Quantity>
               <Sensor_Type>
+                <MCFlexibleSenderSelection_Fuel Comment="255">255</MCFlexibleSenderSelection_Fuel>
               </Sensor_Type>
               <Wide_Range>False</Wide_Range>
               <Multifunction_Sender_Curve_Block>
+                <SCFlexibleSender_Fuel>
+                  <CurveType>255 - User defined</CurveType>
+                  <Values Value0="0" Value1="2" Value2="5" Value3="8" Value4="10" Value5="12" Value6="15" Value7="18" Value8="20" Value9="22" Value10="25" Value11="28" Value12="30" Value13="32" Value14="35" Value15="38" Value16="40" Value17="42" Value18="45" Value19="48" Value20="50" Value21="52" Value22="55" Value23="58" Value24="60" Value25="62" Value26="65" Value27="68" Value28="70" Value29="72" Value30="75" Value31="78" Value32="80" Value33="82" Value34="85" Value35="88" Value36="90" Value37="92" Value38="95" Value39="98" Value40="100" />
+                  <Axis MaximumValue="255" OhmsInterval="250" HighThreshold="10000" MeasuredQuantity="0" CurveType="2" />
+                </SCFlexibleSender_Fuel>
               </Multifunction_Sender_Curve_Block>
               <Strings>
-                <Title>2131 ID0 Flexible Sensor B</Title>
+                <Title>Battery Current</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
+                  <CurveName_Fuel>User defined</CurveName_Fuel>
                 </Transducer_Curve_Name>
               </Strings>
             </Analogue_B>
@@ -7553,6 +7583,8 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
+                      <Trip Comment="25 %">25</Trip>
+                      <Return Comment="25 %">25</Return>
                     </Params_Fuel>
                     <Params_Temp>
                     </Params_Temp>
@@ -7572,6 +7604,8 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
+                      <Trip Comment="30 %">30</Trip>
+                      <Return Comment="40 %">40</Return>
                     </Params_Fuel>
                     <Params_Temp>
                     </Params_Temp>
@@ -7591,6 +7625,8 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
+                      <Trip Comment="60 %">60</Trip>
+                      <Return Comment="50 %">50</Return>
                     </Params_Fuel>
                     <Params_Temp>
                     </Params_Temp>
@@ -7610,6 +7646,8 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
+                      <Trip Comment="75 %">75</Trip>
+                      <Return Comment="75 %">75</Return>
                     </Params_Fuel>
                     <Params_Temp>
                     </Params_Temp>
@@ -7618,18 +7656,25 @@
                   </High_Shutdown>
                 </High_Shutdown>
               </Alarms>
-              <Sensor_Category Comment="None">0</Sensor_Category>
-              <MeasuredQuantity Comment="Resistive">2</MeasuredQuantity>
+              <Sensor_Category Comment="Percentage Sensor">3</Sensor_Category>
+              <MeasuredQuantity Comment="Voltage">0</MeasuredQuantity>
               <Sensor_Type>
+                <MCFlexibleSenderSelection_Fuel Comment="255">255</MCFlexibleSenderSelection_Fuel>
               </Sensor_Type>
               <Wide_Range>False</Wide_Range>
               <Multifunction_Sender_Curve_Block>
+                <SCFlexibleSender_Fuel>
+                  <CurveType>255 - User defined</CurveType>
+                  <Values Value0="100" Value1="98" Value2="95" Value3="92" Value4="90" Value5="88" Value6="85" Value7="82" Value8="80" Value9="78" Value10="75" Value11="72" Value12="70" Value13="68" Value14="65" Value15="62" Value16="60" Value17="58" Value18="55" Value19="52" Value20="50" Value21="48" Value22="45" Value23="42" Value24="40" Value25="38" Value26="35" Value27="32" Value28="30" Value29="28" Value30="25" Value31="22" Value32="20" Value33="18" Value34="15" Value35="12" Value36="10" Value37="8" Value38="5" Value39="2" Value40="0" />
+                  <Axis MaximumValue="255" OhmsInterval="250" HighThreshold="10000" MeasuredQuantity="0" CurveType="2" />
+                </SCFlexibleSender_Fuel>
               </Multifunction_Sender_Curve_Block>
               <Strings>
-                <Title>2131 ID0 Flexible Sensor C</Title>
+                <Title>Neg 48 Sense</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
+                  <CurveName_Fuel>User defined</CurveName_Fuel>
                 </Transducer_Curve_Name>
               </Strings>
             </Analogue_C>
@@ -7645,6 +7690,8 @@
                   </Function_Arming_etc>
                   <Low_Shutdown>
                     <Params_Oil>
+                      <Trip Comment="1.03Bar, 14.94 PSI, 103 kPa">1.03</Trip>
+                      <Return Comment="1.03Bar, 14.94 PSI, 103 kPa">1.03</Return>
                     </Params_Oil>
                     <Params_Fuel>
                     </Params_Fuel>
@@ -7664,6 +7711,8 @@
                   </Function_Arming_etc>
                   <Low_Warning>
                     <Params_Oil>
+                      <Trip Comment="1.17Bar, 16.97 PSI, 117 kPa">1.17</Trip>
+                      <Return Comment="1.24Bar, 17.98 PSI, 124 kPa">1.24</Return>
                     </Params_Oil>
                     <Params_Fuel>
                     </Params_Fuel>
@@ -7683,6 +7732,8 @@
                   </Function_Arming_etc>
                   <High_Warning>
                     <Params_Oil>
+                      <Trip Comment="1.50Bar, 21.75 PSI, 150 kPa">1.50</Trip>
+                      <Return Comment="1.40Bar, 20.30 PSI, 140 kPa">1.40</Return>
                     </Params_Oil>
                     <Params_Fuel>
                     </Params_Fuel>
@@ -7702,6 +7753,8 @@
                   </Function_Arming_etc>
                   <High_Shutdown>
                     <Params_Oil>
+                      <Trip Comment="1.60Bar, 23.21 PSI, 160 kPa">1.60</Trip>
+                      <Return Comment="1.60Bar, 23.21 PSI, 160 kPa">1.60</Return>
                     </Params_Oil>
                     <Params_Fuel>
                     </Params_Fuel>
@@ -7712,18 +7765,25 @@
                   </High_Shutdown>
                 </High_Shutdown>
               </Alarms>
-              <Sensor_Category Comment="None">0</Sensor_Category>
-              <MeasuredQuantity Comment="Resistive">2</MeasuredQuantity>
+              <Sensor_Category Comment="Pressure Sensor">1</Sensor_Category>
+              <MeasuredQuantity Comment="Current">1</MeasuredQuantity>
               <Sensor_Type>
+                <MCFlexibleSenderSelection_Oil Comment="255">255</MCFlexibleSenderSelection_Oil>
               </Sensor_Type>
               <Wide_Range>False</Wide_Range>
               <Multifunction_Sender_Curve_Block>
+                <SCFlexibleSender_Oil>
+                  <CurveType>255 - User defined</CurveType>
+                  <Values Value0="0" Value1="0" Value2="0" Value3="0" Value4="0" Value5="0" Value6="0" Value7="0" Value8="0" Value9="3" Value10="6" Value11="9" Value12="12" Value13="16" Value14="19" Value15="22" Value16="25" Value17="28" Value18="31" Value19="34" Value20="38" Value21="41" Value22="44" Value23="47" Value24="50" Value25="53" Value26="56" Value27="59" Value28="62" Value29="66" Value30="69" Value31="72" Value32="75" Value33="78" Value34="81" Value35="84" Value36="88" Value37="91" Value38="94" Value39="97" Value40="100" />
+                  <Axis MaximumValue="250" OhmsInterval="500" HighThreshold="20000" MeasuredQuantity="1" CurveType="0" />
+                </SCFlexibleSender_Oil>
               </Multifunction_Sender_Curve_Block>
               <Strings>
-                <Title>2131 ID0 Flexible Sensor D</Title>
+                <Title>4-20mA Pressure Sensor: Fuel</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
+                  <CurveName_Oil>User defined</CurveName_Oil>
                 </Transducer_Curve_Name>
               </Strings>
             </Analogue_D>
@@ -11607,7 +11667,7 @@
               </Sensor_Type>
               <Wide_Range>False</Wide_Range>
               <Strings>
-                <Title>2133 ID0 Flexible Sensor A</Title>
+                <Title>EGT</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
               </Strings>
@@ -11679,7 +11739,7 @@
               </Sensor_Type>
               <Wide_Range>False</Wide_Range>
               <Strings>
-                <Title>2133 ID0 Flexible Sensor B</Title>
+                <Title>Alternator Windings</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
               </Strings>
@@ -11751,7 +11811,7 @@
               </Sensor_Type>
               <Wide_Range>False</Wide_Range>
               <Strings>
-                <Title>2133 ID0 Flexible Sensor C</Title>
+                <Title>Intake Air</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
               </Strings>
@@ -11823,7 +11883,7 @@
               </Sensor_Type>
               <Wide_Range>False</Wide_Range>
               <Strings>
-                <Title>2133 ID0 Flexible Sensor D</Title>
+                <Title>Battery Air</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
               </Strings>
@@ -11895,7 +11955,7 @@
               </Sensor_Type>
               <Wide_Range>False</Wide_Range>
               <Strings>
-                <Title>2133 ID0 Flexible Sensor E</Title>
+                <Title>Engine Air</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
               </Strings>
@@ -11967,7 +12027,7 @@
               </Sensor_Type>
               <Wide_Range>False</Wide_Range>
               <Strings>
-                <Title>2133 ID0 Flexible Sensor F</Title>
+                <Title>Exhaust Air</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
               </Strings>
@@ -12203,11 +12263,11 @@
                   </High_Shutdown>
                 </Alarms>
                 <Sensor_Type>
-                  <MCFlexibleSenderSelection_Temp_Resistive Comment="0">0</MCFlexibleSenderSelection_Temp_Resistive>
+                  <MCFlexibleSenderSelection_Temp_Resistive Comment="2">2</MCFlexibleSenderSelection_Temp_Resistive>
                 </Sensor_Type>
                 <Wide_Range>False</Wide_Range>
                 <Strings>
-                  <Title>2133 ID1 Flexible Sensor A</Title>
+                  <Title>EGT</Title>
                   <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                   <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 </Strings>
@@ -12284,11 +12344,11 @@
                   </High_Shutdown>
                 </Alarms>
                 <Sensor_Type>
-                  <MCFlexibleSenderSelection_Temp_Resistive Comment="0">0</MCFlexibleSenderSelection_Temp_Resistive>
+                  <MCFlexibleSenderSelection_Temp_Resistive Comment="1">1</MCFlexibleSenderSelection_Temp_Resistive>
                 </Sensor_Type>
                 <Wide_Range>False</Wide_Range>
                 <Strings>
-                  <Title>2133 ID1 Flexible Sensor B</Title>
+                  <Title>Alternator Windings</Title>
                   <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                   <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 </Strings>
@@ -12365,11 +12425,11 @@
                   </High_Shutdown>
                 </Alarms>
                 <Sensor_Type>
-                  <MCFlexibleSenderSelection_Temp_Resistive Comment="0">0</MCFlexibleSenderSelection_Temp_Resistive>
+                  <MCFlexibleSenderSelection_Temp_Resistive Comment="10">10</MCFlexibleSenderSelection_Temp_Resistive>
                 </Sensor_Type>
                 <Wide_Range>False</Wide_Range>
                 <Strings>
-                  <Title>2133 ID1 Flexible Sensor C</Title>
+                  <Title>Intake Air</Title>
                   <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                   <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 </Strings>
@@ -12446,11 +12506,11 @@
                   </High_Shutdown>
                 </Alarms>
                 <Sensor_Type>
-                  <MCFlexibleSenderSelection_Temp_Resistive Comment="0">0</MCFlexibleSenderSelection_Temp_Resistive>
+                  <MCFlexibleSenderSelection_Temp_Resistive Comment="10">10</MCFlexibleSenderSelection_Temp_Resistive>
                 </Sensor_Type>
                 <Wide_Range>False</Wide_Range>
                 <Strings>
-                  <Title>2133 ID1 Flexible Sensor D</Title>
+                  <Title>Battery Air</Title>
                   <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                   <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 </Strings>
@@ -12527,11 +12587,11 @@
                   </High_Shutdown>
                 </Alarms>
                 <Sensor_Type>
-                  <MCFlexibleSenderSelection_Temp_Resistive Comment="0">0</MCFlexibleSenderSelection_Temp_Resistive>
+                  <MCFlexibleSenderSelection_Temp_Resistive Comment="10">10</MCFlexibleSenderSelection_Temp_Resistive>
                 </Sensor_Type>
                 <Wide_Range>False</Wide_Range>
                 <Strings>
-                  <Title>2133 ID1 Flexible Sensor E</Title>
+                  <Title>Engine Air</Title>
                   <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                   <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 </Strings>
@@ -12608,11 +12668,11 @@
                   </High_Shutdown>
                 </Alarms>
                 <Sensor_Type>
-                  <MCFlexibleSenderSelection_Temp_Resistive Comment="0">0</MCFlexibleSenderSelection_Temp_Resistive>
+                  <MCFlexibleSenderSelection_Temp_Resistive Comment="10">10</MCFlexibleSenderSelection_Temp_Resistive>
                 </Sensor_Type>
                 <Wide_Range>False</Wide_Range>
                 <Strings>
-                  <Title>2133 ID1 Flexible Sensor F</Title>
+                  <Title>Exhaust Air</Title>
                   <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                   <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 </Strings>
@@ -14286,7 +14346,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>57426</CRC>
+        <CRC>62046</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
