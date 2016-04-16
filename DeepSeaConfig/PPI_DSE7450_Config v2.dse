@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">16-Apr-16 09:07:33</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">16-Apr-16 15:42:34</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -77,7 +77,7 @@
         <Digital_Input_8>
           <Function Comment="User Configured">0</Function>
           <Action Comment="Indication">6</Action>
-          <Arming Comment="From Safety On">3</Arming>
+          <Arming Comment="Always">1</Arming>
           <Polarity Comment="Open to Activate">1</Polarity>
           <Timer Comment="0s">0</Timer>
           <Param1 Comment="0">0</Param1>
@@ -1806,11 +1806,9 @@
           </Digital_Input_6>
           <Digital_Input_7>
           </Digital_Input_7>
-          <Digital_Input_8>Input H - Fault</Digital_Input_8>
-          <Digital_Input_9>
-          </Digital_Input_9>
-          <Digital_Input_10>
-          </Digital_Input_10>
+          <Digital_Input_8>BMS Contactor State</Digital_Input_8>
+          <Digital_Input_9>Battery Full</Digital_Input_9>
+          <Digital_Input_10>Battery Empty</Digital_Input_10>
         </Digital_Inputs>
         <Flexible_Sender_Digital_Input>
         </Flexible_Sender_Digital_Input>
@@ -4435,12 +4433,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>44622</CRC>
+      <CRC>7938</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">16-Apr-16 09:07:33</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">16-Apr-16 15:42:34</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14357,7 +14355,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>25917</CRC>
+        <CRC>43785</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
