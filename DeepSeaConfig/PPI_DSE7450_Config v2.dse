@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">15-Apr-16 08:32:23</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">16-Apr-16 09:07:33</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -76,9 +76,9 @@
         </Digital_Input_7>
         <Digital_Input_8>
           <Function Comment="User Configured">0</Function>
-          <Action Comment="Warning">5</Action>
-          <Arming Comment="Always">1</Arming>
-          <Polarity Comment="Close to Activate">0</Polarity>
+          <Action Comment="Indication">6</Action>
+          <Arming Comment="From Safety On">3</Arming>
+          <Polarity Comment="Open to Activate">1</Polarity>
           <Timer Comment="0s">0</Timer>
           <Param1 Comment="0">0</Param1>
           <Param2 Comment="0">0</Param2>
@@ -1341,6 +1341,19 @@
             <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="62" Value_2="3" Value_3="2500" />
           </Actions>
         </Ladder>
+        <Label Text="BMS Fault Detection" />
+        <Ladder>
+          <Conditions>
+            <And>
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="38" />
+            </And>
+          </Conditions>
+          <Actions>
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="67" Value_2="1" />
+          </Actions>
+        </Ladder>
       </Logic_Blocks>
       <Strings />
       <Alarm_Blocks>
@@ -1357,8 +1370,8 @@
           <Function Comment="User Configured">0</Function>
           <Action Comment="Shutdown">1</Action>
           <Arming Comment="Always">1</Arming>
-          <Polarity Comment="Open to Activate">1</Polarity>
-          <Timer Comment="0s">0</Timer>
+          <Polarity Comment="Close to Activate">0</Polarity>
+          <Timer Comment="5s">5</Timer>
           <Param1 Comment="0">0</Param1>
           <Param2 Comment="0">0</Param2>
         </Alarm2>
@@ -1793,8 +1806,7 @@
           </Digital_Input_6>
           <Digital_Input_7>
           </Digital_Input_7>
-          <Digital_Input_8>
-          </Digital_Input_8>
+          <Digital_Input_8>Input H - Fault</Digital_Input_8>
           <Digital_Input_9>
           </Digital_Input_9>
           <Digital_Input_10>
@@ -1873,8 +1885,7 @@
       <PLC>
         <Alarm1>
         </Alarm1>
-        <Alarm2>
-        </Alarm2>
+        <Alarm2>BMS Fault Detected</Alarm2>
         <Alarm3>
         </Alarm3>
         <Alarm4>
@@ -4424,12 +4435,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>42269</CRC>
+      <CRC>44622</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">15-Apr-16 08:32:23</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">16-Apr-16 09:07:33</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -7446,17 +7457,17 @@
               <Wide_Range>False</Wide_Range>
               <Multifunction_Sender_Curve_Block>
                 <SCFlexibleSender_Fuel>
-                  <CurveType>255 - User defined</CurveType>
-                  <Values Value0="0" Value1="0" Value2="0" Value3="0" Value4="0" Value5="0" Value6="0" Value7="0" Value8="0" Value9="3" Value10="6" Value11="9" Value12="12" Value13="16" Value14="19" Value15="22" Value16="25" Value17="28" Value18="31" Value19="34" Value20="38" Value21="41" Value22="44" Value23="47" Value24="50" Value25="53" Value26="56" Value27="59" Value28="62" Value29="66" Value30="69" Value31="72" Value32="75" Value33="78" Value34="81" Value35="84" Value36="88" Value37="91" Value38="94" Value39="97" Value40="100" />
+                  <CurveType>255 - Analog SOC, 10V = 100%</CurveType>
+                  <Values Value0="0" Value1="2" Value2="5" Value3="8" Value4="10" Value5="12" Value6="15" Value7="18" Value8="20" Value9="22" Value10="25" Value11="28" Value12="30" Value13="32" Value14="35" Value15="38" Value16="40" Value17="42" Value18="45" Value19="48" Value20="50" Value21="52" Value22="55" Value23="58" Value24="60" Value25="62" Value26="65" Value27="68" Value28="70" Value29="72" Value30="75" Value31="78" Value32="80" Value33="82" Value34="85" Value35="88" Value36="90" Value37="92" Value38="95" Value39="98" Value40="100" />
                   <Axis MaximumValue="255" OhmsInterval="250" HighThreshold="10000" MeasuredQuantity="0" CurveType="2" />
                 </SCFlexibleSender_Fuel>
               </Multifunction_Sender_Curve_Block>
               <Strings>
-                <Title>SOC</Title>
+                <Title>Analog SOC</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
-                  <CurveName_Fuel>User defined</CurveName_Fuel>
+                  <CurveName_Fuel>Analog SOC, 10V = 100%</CurveName_Fuel>
                 </Transducer_Curve_Name>
               </Strings>
             </Analogue_A>
@@ -7555,17 +7566,17 @@
               <Wide_Range>False</Wide_Range>
               <Multifunction_Sender_Curve_Block>
                 <SCFlexibleSender_Fuel>
-                  <CurveType>255 - User defined</CurveType>
-                  <Values Value0="0" Value1="2" Value2="5" Value3="8" Value4="10" Value5="12" Value6="15" Value7="18" Value8="20" Value9="22" Value10="25" Value11="28" Value12="30" Value13="32" Value14="35" Value15="38" Value16="40" Value17="42" Value18="45" Value19="48" Value20="50" Value21="52" Value22="55" Value23="58" Value24="60" Value25="62" Value26="65" Value27="68" Value28="70" Value29="72" Value30="75" Value31="78" Value32="80" Value33="82" Value34="85" Value35="88" Value36="90" Value37="92" Value38="95" Value39="98" Value40="100" />
+                  <CurveType>255 - Analog Batt Current, 10V = 250%</CurveType>
+                  <Values Value0="0" Value1="6" Value2="12" Value3="19" Value4="25" Value5="31" Value6="38" Value7="44" Value8="50" Value9="56" Value10="62" Value11="69" Value12="75" Value13="81" Value14="88" Value15="94" Value16="100" Value17="106" Value18="112" Value19="119" Value20="125" Value21="131" Value22="138" Value23="144" Value24="150" Value25="156" Value26="162" Value27="169" Value28="175" Value29="181" Value30="188" Value31="194" Value32="200" Value33="206" Value34="212" Value35="219" Value36="225" Value37="231" Value38="238" Value39="244" Value40="250" />
                   <Axis MaximumValue="255" OhmsInterval="250" HighThreshold="10000" MeasuredQuantity="0" CurveType="2" />
                 </SCFlexibleSender_Fuel>
               </Multifunction_Sender_Curve_Block>
               <Strings>
-                <Title>Battery Current</Title>
+                <Title>Analog Battery Current</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
-                  <CurveName_Fuel>User defined</CurveName_Fuel>
+                  <CurveName_Fuel>Analog Batt Current, 10V = 250%</CurveName_Fuel>
                 </Transducer_Curve_Name>
               </Strings>
             </Analogue_B>
@@ -7773,8 +7784,8 @@
               <Wide_Range>False</Wide_Range>
               <Multifunction_Sender_Curve_Block>
                 <SCFlexibleSender_Oil>
-                  <CurveType>255 - User defined</CurveType>
-                  <Values Value0="0" Value1="0" Value2="0" Value3="0" Value4="0" Value5="0" Value6="0" Value7="0" Value8="0" Value9="3" Value10="6" Value11="9" Value12="12" Value13="16" Value14="19" Value15="22" Value16="25" Value17="28" Value18="31" Value19="34" Value20="38" Value21="41" Value22="44" Value23="47" Value24="50" Value25="53" Value26="56" Value27="59" Value28="62" Value29="66" Value30="69" Value31="72" Value32="75" Value33="78" Value34="81" Value35="84" Value36="88" Value37="91" Value38="94" Value39="97" Value40="100" />
+                  <CurveType>255 - Diesel calibration, PSI = Liters</CurveType>
+                  <Values Value0="0" Value1="0" Value2="0" Value3="0" Value4="0" Value5="0" Value6="0" Value7="0" Value8="0" Value9="9" Value10="18" Value11="28" Value12="37" Value13="46" Value14="55" Value15="64" Value16="74" Value17="83" Value18="92" Value19="101" Value20="110" Value21="119" Value22="129" Value23="138" Value24="147" Value25="156" Value26="165" Value27="175" Value28="184" Value29="193" Value30="202" Value31="211" Value32="221" Value33="230" Value34="239" Value35="239" Value36="239" Value37="239" Value38="239" Value39="239" Value40="239" />
                   <Axis MaximumValue="250" OhmsInterval="500" HighThreshold="20000" MeasuredQuantity="1" CurveType="0" />
                 </SCFlexibleSender_Oil>
               </Multifunction_Sender_Curve_Block>
@@ -7783,7 +7794,7 @@
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
-                  <CurveName_Oil>User defined</CurveName_Oil>
+                  <CurveName_Oil>Diesel calibration, PSI = Liters</CurveName_Oil>
                 </Transducer_Curve_Name>
               </Strings>
             </Analogue_D>
@@ -14346,7 +14357,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>62046</CRC>
+        <CRC>25917</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
