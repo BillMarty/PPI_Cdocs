@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">16-Apr-16 15:42:34</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">18-Apr-16 08:30:37</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -1928,7 +1928,7 @@
           <Slave_ID Comment="10">10</Slave_ID>
           <Baud_Rate Comment="19200">9</Baud_Rate>
           <Language_Code Comment="2057">2057</Language_Code>
-          <Modem_Mode Comment="No Modem">0</Modem_Mode>
+          <Modem_Mode Comment="Incoming Modem Calls">1</Modem_Mode>
           <Retries Comment="4">4</Retries>
           <SMS_Enable>False</SMS_Enable>
         </Settings_16_bit_-_RS232>
@@ -3693,99 +3693,99 @@
     </Alternative_Configs>
     <Data_Logging>
       <Log_Item_1>
-        <Rate Comment="1 minute">600</Rate>
-        <PacketID Comment="1 minute">600</PacketID>
+        <Rate Comment="1 second">10</Rate>
+        <PacketID Comment="1 second">10</PacketID>
         <Item Comment="Engine Speed">66566</Item>
       </Log_Item_1>
       <Log_Item_2>
-        <Rate Comment="1 minute">600</Rate>
-        <PacketID Comment="1 minute">600</PacketID>
+        <Rate Comment="1 second">10</Rate>
+        <PacketID Comment="1 second">10</PacketID>
         <Item Comment="2131 Expansion Module 0 Input A (Low) Processed Status">109345</Item>
       </Log_Item_2>
       <Log_Item_3>
-        <Rate Comment="1 minute">600</Rate>
-        <PacketID Comment="1 minute">600</PacketID>
-        <Item Comment="DC Voltage">66759</Item>
+        <Rate Comment="1 second">10</Rate>
+        <PacketID Comment="1 second">10</PacketID>
+        <Item Comment="2131 Expansion Module 0 Input B (Low) Processed Status">109347</Item>
       </Log_Item_3>
       <Log_Item_4>
-        <Rate Comment="1 minute">600</Rate>
-        <PacketID Comment="1 minute">600</PacketID>
-        <Item Comment="DC Total kW">1242</Item>
+        <Rate Comment="1 second">10</Rate>
+        <PacketID Comment="1 second">10</PacketID>
+        <Item Comment="2131 Expansion Module 0 Input D (Low) Processed Status">109351</Item>
       </Log_Item_4>
       <Log_Item_5>
-        <Rate Comment="1 minute">600</Rate>
-        <PacketID Comment="1 minute">600</PacketID>
-        <Item Comment="DC Total kW">1242</Item>
+        <Rate Comment="1 second">10</Rate>
+        <PacketID Comment="1 second">10</PacketID>
+        <Item Comment="2133 Expansion Module 1 Input A (Low) Processed Status">109515</Item>
       </Log_Item_5>
       <Log_Item_6>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="2133 Expansion Module 1 Input C (Low) Processed Status">109517</Item>
       </Log_Item_6>
       <Log_Item_7>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="2133 Expansion Module 1 Input D (Low) Processed Status">109518</Item>
       </Log_Item_7>
       <Log_Item_8>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="2133 Expansion Module 1 Input E (Low) Processed Status">109519</Item>
       </Log_Item_8>
       <Log_Item_9>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="2133 Expansion Module 1 Input F (Low) Processed Status">109520</Item>
       </Log_Item_9>
       <Log_Item_10>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="Coolant / Engine Temperature">66561</Item>
       </Log_Item_10>
       <Log_Item_11>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="Oil Pressure">66560</Item>
       </Log_Item_11>
       <Log_Item_12>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="Total Start Attempts">1808</Item>
       </Log_Item_12>
       <Log_Item_13>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="Engine Run Time">1798</Item>
       </Log_Item_13>
       <Log_Item_14>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="Engine Battery Volts">66565</Item>
       </Log_Item_14>
       <Log_Item_15>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="DC Total Current">1232</Item>
       </Log_Item_15>
       <Log_Item_16>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="DC Total kW">1242</Item>
       </Log_Item_16>
       <Log_Item_17>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="DC Voltage">66759</Item>
       </Log_Item_17>
       <Log_Item_18>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="Digital Input H">-2147483610</Item>
       </Log_Item_18>
       <Log_Item_19>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="System In Auto Mode">-2147483630</Item>
       </Log_Item_19>
       <Log_Item_20>
         <Rate Comment="1 second">10</Rate>
@@ -4433,12 +4433,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>7938</CRC>
+      <CRC>43627</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">16-Apr-16 15:42:34</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">18-Apr-16 08:30:37</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14355,7 +14355,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>43785</CRC>
+        <CRC>1652</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
