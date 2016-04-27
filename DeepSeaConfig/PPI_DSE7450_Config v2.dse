@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">18-Apr-16 08:30:37</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">27-Apr-16 13:11:26</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -1163,195 +1163,195 @@
         <Ladder>
           <Conditions />
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_2="2" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_2="2" Description="Set flag 3" />
           </Actions>
         </Ladder>
         <Label Text="Engine Start/Stop based on SOC flags from Arduino" />
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="40" />
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12288" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="40" Description="Test flag 'Digital Input J'" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12288" Description="Test flag 'PLC Output Flag 1'" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="5" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="5" Description="Set flag 1" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="39" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="39" Description="Test flag 'Digital Input I'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" Description="Test flag 'PLC Output Flag 1'" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="10" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="10" Description="Reset flag 1" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
-            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
+            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" Description="Test flag 'PLC Output Flag 1'" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="12" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="12" Description="Trigger PLC function 1" />
           </Actions>
         </Ladder>
         <Label Text="Engine warm up and cool down signal to Woodward throttle controller" />
         <Ladder>
           <Conditions>
             <Or>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="15" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="15" Description="Test flag 'Smoke Limiting'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12" Description="Test flag 'Cooling Down'" />
             </Or>
           </Conditions>
           <Actions>
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="16" Value_2="1" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="16" Value_2="1" Description="Drive flag 2" />
           </Actions>
         </Ladder>
         <Label Text="RPM control look up table" />
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
-              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_3="267" Value_4="268" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_3="267" Value_4="268" Description="'DC Battery Voltage' is less than 26.7V DC" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="20" Value_2="3" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="20" Value_2="3" Description="Set gencomm 'Internal AVR Interface Offset' to 0.00V" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
-              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="267" Value_4="271" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="267" Value_4="271" Description="'DC Battery Voltage' is between 26.7V DC and 27.1V DC" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="24" Value_2="3" Value_3="500" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="24" Value_2="3" Value_3="500" Description="Set gencomm 'Internal AVR Interface Offset' to 0.50V" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
-              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="271" Value_4="275" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="271" Value_4="275" Description="'DC Battery Voltage' is between 27.1V DC and 27.5V DC" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="28" Value_2="3" Value_3="1000" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="28" Value_2="3" Value_3="1000" Description="Set gencomm 'Internal AVR Interface Offset' to 1.00V" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
-              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="275" Value_4="279" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="275" Value_4="279" Description="'DC Battery Voltage' is between 27.5V DC and 27.9V DC" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="32" Value_2="3" Value_3="1500" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="32" Value_2="3" Value_3="1500" Description="Set gencomm 'Internal AVR Interface Offset' to 1.50V" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
-              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="279" Value_4="283" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="279" Value_4="283" Description="'DC Battery Voltage' is between 27.9V DC and 28.3V DC" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="36" Value_2="3" Value_3="2000" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="36" Value_2="3" Value_3="2000" Description="Set gencomm 'Internal AVR Interface Offset' to 2.00V" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
-              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="283" Value_4="286" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="283" Value_4="286" Description="'DC Battery Voltage' is between 28.3V DC and 28.6V DC" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="40" Value_2="3" Value_3="2500" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="40" Value_2="3" Value_3="2500" Description="Set gencomm 'Internal AVR Interface Offset' to 2.50V" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
-              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="286" Value_4="290" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="286" Value_4="290" Description="'DC Battery Voltage' is between 28.6V DC and 29.0V DC" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="44" Value_2="3" Value_3="3000" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="44" Value_2="3" Value_3="3000" Description="Set gencomm 'Internal AVR Interface Offset' to 3.00V" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
-              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="290" Value_4="294" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="290" Value_4="294" Description="'DC Battery Voltage' is between 29.0V DC and 29.4V DC" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="48" Value_2="3" Value_3="3500" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="48" Value_2="3" Value_3="3500" Description="Set gencomm 'Internal AVR Interface Offset' to 3.50V" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
-              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="294" Value_4="298" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="294" Value_4="298" Description="'DC Battery Voltage' is between 29.4V DC and 29.8V DC" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="52" Value_2="3" Value_3="4000" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="52" Value_2="3" Value_3="4000" Description="Set gencomm 'Internal AVR Interface Offset' to 4.00V" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
-              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="298" Value_4="302" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="298" Value_4="302" Description="'DC Battery Voltage' is between 29.8V DC and 30.2V DC" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="56" Value_2="3" Value_3="4500" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="56" Value_2="3" Value_3="4500" Description="Set gencomm 'Internal AVR Interface Offset' to 4.50V" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
-              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="3" Value_3="302" Value_4="303" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="3" Value_3="302" Value_4="303" Description="'DC Battery Voltage' is at least 30.2V DC" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="60" Value_2="3" Value_3="5000" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="60" Value_2="3" Value_3="5000" Description="Set gencomm 'Internal AVR Interface Offset' to 5.00V" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
-            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="19" />
+            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="19" Description="Test flag 'System In Manual Mode'" />
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="62" Value_2="3" Value_3="2500" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="62" Value_2="3" Value_3="2500" Description="Set gencomm 'Internal AVR Interface Offset' to 2.50V" />
           </Actions>
         </Ladder>
         <Label Text="BMS Fault Detection" />
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="38" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" Description="Test flag 'PLC Output Flag 1'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="38" Description="Test flag 'Digital Input H'" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="67" Value_2="1" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="67" Value_2="1" Description="Trigger PLC function 2" />
           </Actions>
         </Ladder>
       </Logic_Blocks>
@@ -4433,12 +4433,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>43627</CRC>
+      <CRC>5679</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">18-Apr-16 08:30:37</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">27-Apr-16 13:11:26</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14355,7 +14355,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>1652</CRC>
+        <CRC>45857</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
