@@ -1,7 +1,15 @@
+// BMSscanRevB
+// 4-13-2016  - Changed 30% SOC to be 1-30%, 0% SOC does not trip output
+//            Sketch = 3140 bytes
+//            Globals = 333 bytes
+//            using Arduino 1.6.8 on Win7
+//  
 #define LED  13
 #define cnts 100
 #define CAP30 3   // I/O pin for 30% SOC output
 #define CAP80 2   // I/O pin for 80% SOC output
+#define CAPHI 65  // Turn off SOC
+#define CAPLOW 25 // Turn on SOC
 
 // ***** To Do:   SOC=0 is special case at power up, ignore for 30% SOC signal *****
 char linebuf[135];
@@ -14,6 +22,7 @@ void blink(int pin,int cnt)
   pinMode(pin,OUTPUT);
   digitalWrite(pin,HIGH);
   delay(cnts);
+  
   digitalWrite(pin,LOW);
   delay(cnts);
 }
@@ -56,7 +65,7 @@ void setup() {
   }
   blink(LED,cnts);
   blink(LED,cnts);
-  Serial.print("setup()");
+  Serial.print("BMSscanRev2565");
 }
 
 void loop() {
@@ -79,7 +88,7 @@ void loop() {
 
       // update digital Open Drain outputs
       pinMode(CAP80,OUTPUT);
-      if( soc >= 80)
+      if( soc >= CAPHI)
       {
  
         digitalWrite(CAP80,HIGH);
@@ -88,7 +97,7 @@ void loop() {
         digitalWrite(CAP80,LOW);
 
       pinMode(CAP30,OUTPUT);
-      if (soc <= 30)
+      if ((soc <= CAPLOW) && (soc > 0))
         digitalWrite(CAP30,HIGH);
       else
         digitalWrite(CAP30,LOW);
