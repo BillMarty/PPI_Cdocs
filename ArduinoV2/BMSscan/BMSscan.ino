@@ -9,7 +9,7 @@
 #define CAP30 3   // I/O pin for 30% SOC output
 #define CAP80 2   // I/O pin for 80% SOC output
 #define CAPHI 65  // Turn off SOC
-#define CAPLOW 25 // Turn on SOC
+#define CAPLOW 30 // Turn on SOC
 
 // ***** To Do:   SOC=0 is special case at power up, ignore for 30% SOC signal *****
 char linebuf[135];
@@ -65,7 +65,7 @@ void setup() {
   }
   blink(LED,cnts);
   blink(LED,cnts);
-  Serial.print("BMSscanRev2565");
+  Serial.print("BMSscanRev3065");
 }
 
 void loop() {
