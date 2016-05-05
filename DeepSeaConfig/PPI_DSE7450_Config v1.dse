@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">12-Apr-16 13:37:17</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">05-May-16 14:13:45</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -76,9 +76,9 @@
         </Digital_Input_7>
         <Digital_Input_8>
           <Function Comment="User Configured">0</Function>
-          <Action Comment="Warning">5</Action>
+          <Action Comment="Indication">6</Action>
           <Arming Comment="Always">1</Arming>
-          <Polarity Comment="Close to Activate">0</Polarity>
+          <Polarity Comment="Open to Activate">1</Polarity>
           <Timer Comment="0s">0</Timer>
           <Param1 Comment="0">0</Param1>
           <Param2 Comment="0">0</Param2>
@@ -134,11 +134,11 @@
       <Low_Oil_Pressure_Warning>
         <Function Comment="User Configured">0</Function>
         <Action Comment="Warning">5</Action>
-        <Arming Comment="Engine Protection Activation">4</Arming>
+        <Arming Comment="Never">0</Arming>
         <Type Comment="Analogue Less Than">2</Type>
         <Timer Comment="0">0</Timer>
-        <Trip Comment="1.24Bar, 17.98 PSI, 124 kPa">1.24</Trip>
-        <Return Comment="1.38Bar, 20.01 PSI, 138 kPa">1.38</Return>
+        <Trip Comment="1.00Bar, 14.50 PSI, 100 kPa">1.00</Trip>
+        <Return Comment="1.30Bar, 18.85 PSI, 130 kPa">1.30</Return>
       </Low_Oil_Pressure_Warning>
       <Low_Oil_Pressure_Shutdown>
         <Function Comment="User Configured">0</Function>
@@ -146,13 +146,13 @@
         <Arming Comment="Never">0</Arming>
         <Type Comment="Analogue Less Than">2</Type>
         <Timer Comment="0">0</Timer>
-        <Trip Comment="1.03Bar, 14.94 PSI, 103 kPa">1.03</Trip>
-        <Return Comment="1.03Bar, 14.94 PSI, 103 kPa">1.03</Return>
+        <Trip Comment="0.93Bar, 13.49 PSI, 93 kPa">0.93</Trip>
+        <Return Comment="0.93Bar, 13.49 PSI, 93 kPa">0.93</Return>
       </Low_Oil_Pressure_Shutdown>
       <High_Coolant_Temperature_Warning>
         <Function Comment="User Configured">0</Function>
         <Action Comment="Warning">5</Action>
-        <Arming Comment="From Safety On">3</Arming>
+        <Arming Comment="Never">0</Arming>
         <Type Comment="Analogue Greater Than">3</Type>
         <Timer Comment="0">0</Timer>
         <Trip Comment="90 °C,  194 °F">90</Trip>
@@ -228,7 +228,7 @@
       </Mains_Fail_to_Close>
       <Oil_Sensor_Open_Circuit>
         <Function Comment="User Configured">0</Function>
-        <Action Comment="Warning">5</Action>
+        <Action Comment="None">0</Action>
         <Arming Comment="Always">1</Arming>
         <Type Comment="Close to Activate">0</Type>
         <Timer Comment="2.5s">2.5</Timer>
@@ -996,7 +996,7 @@
           <Polarity Comment="Energise">0</Polarity>
         </Aux_OP_1>
         <Aux_OP_2>
-          <Control_Source Comment="Common Alarm">84</Control_Source>
+          <Control_Source Comment="PLC Output Flag 3">12290</Control_Source>
           <Polarity Comment="Energise">0</Polarity>
         </Aux_OP_2>
         <Aux_OP_3>
@@ -1016,7 +1016,7 @@
           <Polarity Comment="Energise">0</Polarity>
         </Aux_OP_6>
         <Gen_Relay>
-          <Control_Source Comment="Close Gen Output">22</Control_Source>
+          <Control_Source Comment="Not Used">0</Control_Source>
           <Polarity Comment="Energise">0</Polarity>
         </Gen_Relay>
         <Mains_Relay>
@@ -1159,6 +1159,38 @@
     </Virtual_Outputs>
     <PLC>
       <Logic_Blocks>
+        <Label Text="Turn on BMS" />
+        <Ladder>
+          <Conditions>
+            <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" />
+          </Conditions>
+          <Actions>
+            <Action Type="Set" Operator="0" ValueType="0" Value_2="2" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <And>
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="38" />
+            </And>
+          </Conditions>
+          <Actions>
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="4" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <And>
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" />
+              <Condition Type="Timer" Polarity="FalseOrOpen" />
+            </And>
+          </Conditions>
+          <Actions>
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="8" Value_2="3" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="8" Value_2="2" />
+          </Actions>
+        </Ladder>
         <Label Text="Engine Start/Stop based on SOC flags from Arduino" />
         <Ladder>
           <Conditions>
@@ -1169,7 +1201,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="3" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="14" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1181,7 +1213,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="8" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="19" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1189,7 +1221,7 @@
             <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="10" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="21" />
           </Actions>
         </Ladder>
         <Label Text="Engine warm up and cool down signal to Woodward throttle controller" />
@@ -1201,100 +1233,157 @@
             </Or>
           </Conditions>
           <Actions>
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="14" Value_2="1" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="25" Value_2="1" />
           </Actions>
         </Ladder>
         <Label Text="RPM control look up table" />
         <Ladder>
           <Conditions>
-            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_3="267" Value_4="268" />
+            <And>
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_3="267" Value_4="268" />
+            </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="16" Value_2="3" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="29" Value_2="3" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
-            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="267" Value_4="271" />
+            <And>
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="267" Value_4="271" />
+            </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="18" Value_2="3" Value_3="500" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="33" Value_2="3" Value_3="500" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
-            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="271" Value_4="275" />
+            <And>
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="271" Value_4="275" />
+            </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="20" Value_2="3" Value_3="1000" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="37" Value_2="3" Value_3="1000" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
-            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="275" Value_4="279" />
+            <And>
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="275" Value_4="279" />
+            </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="22" Value_2="3" Value_3="1500" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="41" Value_2="3" Value_3="1500" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
-            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="279" Value_4="283" />
+            <And>
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="279" Value_4="283" />
+            </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="24" Value_2="3" Value_3="2000" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="45" Value_2="3" Value_3="2000" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
-            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="283" Value_4="286" />
+            <And>
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="283" Value_4="286" />
+            </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="26" Value_2="3" Value_3="2500" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="49" Value_2="3" Value_3="2500" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
-            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="286" Value_4="290" />
+            <And>
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="286" Value_4="290" />
+            </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="28" Value_2="3" Value_3="3000" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="53" Value_2="3" Value_3="3000" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
-            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="290" Value_4="294" />
+            <And>
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="290" Value_4="294" />
+            </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="30" Value_2="3" Value_3="3500" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="57" Value_2="3" Value_3="3500" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
-            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="294" Value_4="298" />
+            <And>
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="294" Value_4="298" />
+            </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="32" Value_2="3" Value_3="4000" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="61" Value_2="3" Value_3="4000" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
-            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="298" Value_4="302" />
+            <And>
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="5" Value_3="298" Value_4="302" />
+            </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="34" Value_2="3" Value_3="4500" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="65" Value_2="3" Value_3="4500" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
-            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="3" Value_3="302" Value_4="303" />
+            <And>
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="285" Value_2="3" Value_3="302" Value_4="303" />
+            </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="36" Value_2="3" Value_3="5000" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="69" Value_2="3" Value_3="5000" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="19" />
+          </Conditions>
+          <Actions>
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="71" Value_2="3" Value_3="2500" />
+          </Actions>
+        </Ladder>
+        <Label Text="BMS Fault Detection" />
+        <Ladder>
+          <Conditions>
+            <And>
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="38" />
+            </And>
+          </Conditions>
+          <Actions>
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="76" Value_2="1" />
           </Actions>
         </Ladder>
       </Logic_Blocks>
-      <Strings />
+      <Strings>
+        <Timer Index="0" Label="BMS Bootstrap delay" />
+        <Timer Index="1" Label="Power up initialization delay" />
+      </Strings>
       <Alarm_Blocks>
         <Alarm1>
           <Function Comment="Remote Start On Load">1</Function>
@@ -1309,8 +1398,8 @@
           <Function Comment="User Configured">0</Function>
           <Action Comment="Shutdown">1</Action>
           <Arming Comment="Always">1</Arming>
-          <Polarity Comment="Open to Activate">1</Polarity>
-          <Timer Comment="0s">0</Timer>
+          <Polarity Comment="Close to Activate">0</Polarity>
+          <Timer Comment="5s">5</Timer>
           <Param1 Comment="0">0</Param1>
           <Param2 Comment="0">0</Param2>
         </Alarm2>
@@ -1478,7 +1567,7 @@
         </Alarm20>
       </Alarm_Blocks>
       <Counter_Limits Comment="1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,">1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,</Counter_Limits>
-      <Timer_Limits Comment="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,">0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,</Timer_Limits>
+      <Timer_Limits Comment="50,60,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,">50,60,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,</Timer_Limits>
     </PLC>
     <Timers>
       <Pre-heat Comment="3s">3</Pre-heat>
@@ -1618,7 +1707,7 @@
         <Mains_VT_Primary Comment="111 V PhPh">111</Mains_VT_Primary>
         <Mains_VT_Secondary Comment="110 V PhPh">110</Mains_VT_Secondary>
         <Droop_Percent Comment="4.0 %">4.0</Droop_Percent>
-        <Oil_Sensor Comment="Not used">0</Oil_Sensor>
+        <Oil_Sensor Comment="VDO 10 Bar">4</Oil_Sensor>
         <New Comment="398V PhPh">230</New>
         <Coolant_Sensor Comment="VDO 120 °C">3</Coolant_Sensor>
         <Fuel_Sensor Comment="Not used">0</Fuel_Sensor>
@@ -1631,7 +1720,7 @@
     </Fixed_Misc_Items>
     <Sensor_Curves>
       <Oil_Pressure>
-        <CurveType>0 - Not used</CurveType>
+        <CurveType>4 - VDO 10 Bar</CurveType>
       </Oil_Pressure>
       <Temperature>
         <CurveType>3 - VDO 120 °C</CurveType>
@@ -1745,12 +1834,9 @@
           </Digital_Input_6>
           <Digital_Input_7>
           </Digital_Input_7>
-          <Digital_Input_8>
-          </Digital_Input_8>
-          <Digital_Input_9>
-          </Digital_Input_9>
-          <Digital_Input_10>
-          </Digital_Input_10>
+          <Digital_Input_8>BMS Contactor State</Digital_Input_8>
+          <Digital_Input_9>Battery Full</Digital_Input_9>
+          <Digital_Input_10>Battery Empty</Digital_Input_10>
         </Digital_Inputs>
         <Flexible_Sender_Digital_Input>
         </Flexible_Sender_Digital_Input>
@@ -1813,7 +1899,7 @@
       <Maintenance_Alarm_1>Maintenance Alarm 1</Maintenance_Alarm_1>
       <Maintenance_Alarm_2>Maintenance Alarm 2</Maintenance_Alarm_2>
       <Maintenance_Alarm_3>Maintenance Alarm 3</Maintenance_Alarm_3>
-      <Oil_Sensor_Curve_Name>Not used</Oil_Sensor_Curve_Name>
+      <Oil_Sensor_Curve_Name>VDO 10 Bar</Oil_Sensor_Curve_Name>
       <Temperature_Sensor_Curve_Name>VDO 120 °C</Temperature_Sensor_Curve_Name>
       <Fuel_Sensor_Curve_Name>Not used</Fuel_Sensor_Curve_Name>
       <Battery_Strings>
@@ -1825,8 +1911,7 @@
       <PLC>
         <Alarm1>
         </Alarm1>
-        <Alarm2>
-        </Alarm2>
+        <Alarm2>BMS Fault Detected</Alarm2>
         <Alarm3>
         </Alarm3>
         <Alarm4>
@@ -1871,7 +1956,7 @@
           <Slave_ID Comment="10">10</Slave_ID>
           <Baud_Rate Comment="19200">9</Baud_Rate>
           <Language_Code Comment="2057">2057</Language_Code>
-          <Modem_Mode Comment="No Modem">0</Modem_Mode>
+          <Modem_Mode Comment="Incoming Modem Calls">1</Modem_Mode>
           <Retries Comment="4">4</Retries>
           <SMS_Enable>False</SMS_Enable>
         </Settings_16_bit_-_RS232>
@@ -1884,7 +1969,7 @@
         </Settings_32_bit_-_RS232>
         <Settings_16_bit_-_RS485>
           <Slave_ID Comment="10">10</Slave_ID>
-          <Baud_Rate Comment="19200">9</Baud_Rate>
+          <Baud_Rate Comment="57600">12</Baud_Rate>
           <Language_Code Comment="0">0</Language_Code>
         </Settings_16_bit_-_RS485>
         <Settings_32_bit_-_RS485>
@@ -3636,99 +3721,99 @@
     </Alternative_Configs>
     <Data_Logging>
       <Log_Item_1>
-        <Rate Comment="1 minute">600</Rate>
-        <PacketID Comment="1 minute">600</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Rate Comment="1 second">10</Rate>
+        <PacketID Comment="1 second">10</PacketID>
+        <Item Comment="Engine Speed">66566</Item>
       </Log_Item_1>
       <Log_Item_2>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="2131 Expansion Module 0 Input A (Low) Processed Status">109345</Item>
       </Log_Item_2>
       <Log_Item_3>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="2131 Expansion Module 0 Input B (Low) Processed Status">109347</Item>
       </Log_Item_3>
       <Log_Item_4>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="2131 Expansion Module 0 Input D (Low) Processed Status">109351</Item>
       </Log_Item_4>
       <Log_Item_5>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="2133 Expansion Module 1 Input A (Low) Processed Status">109515</Item>
       </Log_Item_5>
       <Log_Item_6>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="2133 Expansion Module 1 Input C (Low) Processed Status">109517</Item>
       </Log_Item_6>
       <Log_Item_7>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="2133 Expansion Module 1 Input D (Low) Processed Status">109518</Item>
       </Log_Item_7>
       <Log_Item_8>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="2133 Expansion Module 1 Input E (Low) Processed Status">109519</Item>
       </Log_Item_8>
       <Log_Item_9>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="2133 Expansion Module 1 Input F (Low) Processed Status">109520</Item>
       </Log_Item_9>
       <Log_Item_10>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="Coolant / Engine Temperature">66561</Item>
       </Log_Item_10>
       <Log_Item_11>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="Oil Pressure">66560</Item>
       </Log_Item_11>
       <Log_Item_12>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="Total Start Attempts">1808</Item>
       </Log_Item_12>
       <Log_Item_13>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="Engine Run Time">1798</Item>
       </Log_Item_13>
       <Log_Item_14>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="Engine Battery Volts">66565</Item>
       </Log_Item_14>
       <Log_Item_15>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="DC Total Current">1232</Item>
       </Log_Item_15>
       <Log_Item_16>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="DC Total kW">1242</Item>
       </Log_Item_16>
       <Log_Item_17>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="DC Voltage">66759</Item>
       </Log_Item_17>
       <Log_Item_18>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="Digital Input H">-2147483610</Item>
       </Log_Item_18>
       <Log_Item_19>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="System In Auto Mode">-2147483630</Item>
       </Log_Item_19>
       <Log_Item_20>
         <Rate Comment="1 second">10</Rate>
@@ -4363,7 +4448,7 @@
     <Data_Logging_Configuration>
       <Options>
         <Log_when_Running>False</Log_when_Running>
-        <Log_to_USB>True</Log_to_USB>
+        <Log_to_USB>False</Log_to_USB>
         <Keep_Oldest_Data>True</Keep_Oldest_Data>
       </Options>
     </Data_Logging_Configuration>
@@ -4376,12 +4461,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>18427</CRC>
+      <CRC>894</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">12-Apr-16 13:37:17</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">05-May-16 14:13:45</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -4417,7 +4502,7 @@
           <Address9>False</Address9>
         </E2548Modules>
         <E2131Modules>
-          <Address0>True</Address0>
+          <Address0>False</Address0>
           <Address1>False</Address1>
           <Address2>False</Address2>
           <Address3>False</Address3>
@@ -7315,8 +7400,6 @@
                   </Function_Arming_etc>
                   <Low_Shutdown>
                     <Params_Oil>
-                      <Trip Comment="0.00Bar, 0.00 PSI, 0 kPa">0.00</Trip>
-                      <Return Comment="0.00Bar, 0.00 PSI, 0 kPa">0.00</Return>
                     </Params_Oil>
                     <Params_Fuel>
                     </Params_Fuel>
@@ -7336,8 +7419,6 @@
                   </Function_Arming_etc>
                   <Low_Warning>
                     <Params_Oil>
-                      <Trip Comment="0.01Bar, 0.15 PSI, 1 kPa">0.01</Trip>
-                      <Return Comment="0.02Bar, 0.29 PSI, 2 kPa">0.02</Return>
                     </Params_Oil>
                     <Params_Fuel>
                     </Params_Fuel>
@@ -7357,8 +7438,6 @@
                   </Function_Arming_etc>
                   <High_Warning>
                     <Params_Oil>
-                      <Trip Comment="0.04Bar, 0.58 PSI, 4 kPa">0.04</Trip>
-                      <Return Comment="0.03Bar, 0.44 PSI, 3 kPa">0.03</Return>
                     </Params_Oil>
                     <Params_Fuel>
                     </Params_Fuel>
@@ -7378,8 +7457,6 @@
                   </Function_Arming_etc>
                   <High_Shutdown>
                     <Params_Oil>
-                      <Trip Comment="0.05Bar, 0.73 PSI, 5 kPa">0.05</Trip>
-                      <Return Comment="0.05Bar, 0.73 PSI, 5 kPa">0.05</Return>
                     </Params_Oil>
                     <Params_Fuel>
                     </Params_Fuel>
@@ -7390,25 +7467,18 @@
                   </High_Shutdown>
                 </High_Shutdown>
               </Alarms>
-              <Sensor_Category Comment="Pressure Sensor">1</Sensor_Category>
-              <Measured_Quantity Comment="Current">1</Measured_Quantity>
+              <Sensor_Category Comment="None">0</Sensor_Category>
+              <Measured_Quantity Comment="Resistive">2</Measured_Quantity>
               <Sensor_Type>
-                <MCFlexibleSenderSelection_Oil Comment="255">255</MCFlexibleSenderSelection_Oil>
               </Sensor_Type>
               <Wide_Range>False</Wide_Range>
               <Multifunction_Sender_Curve_Block>
-                <SCFlexibleSender_Oil>
-                  <CurveType>255 - 4-20mA 240PSI fuel sensor</CurveType>
-                  <Values Value0="0" Value1="0" Value2="0" Value3="0" Value4="0" Value5="0" Value6="0" Value7="0" Value8="0" Value9="8" Value10="16" Value11="24" Value12="32" Value13="40" Value14="48" Value15="56" Value16="64" Value17="72" Value18="80" Value19="88" Value20="96" Value21="104" Value22="112" Value23="120" Value24="128" Value25="136" Value26="144" Value27="152" Value28="160" Value29="168" Value30="176" Value31="184" Value32="192" Value33="200" Value34="208" Value35="216" Value36="224" Value37="232" Value38="240" Value39="240" Value40="240" />
-                  <Axis MaximumValue="250" OhmsInterval="500" HighThreshold="20000" MeasuredQuantity="1" CurveType="0" />
-                </SCFlexibleSender_Oil>
               </Multifunction_Sender_Curve_Block>
               <Strings>
-                <Title>0-1 PSI fuel scaled to 240 psi</Title>
+                <Title>Analog SOC</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
-                  <CurveName_Oil>4-20mA 240PSI fuel sensor</CurveName_Oil>
                 </Transducer_Curve_Name>
               </Strings>
             </Analogue_A>
@@ -7499,7 +7569,7 @@
               <Multifunction_Sender_Curve_Block>
               </Multifunction_Sender_Curve_Block>
               <Strings>
-                <Title>2131 ID0 Flexible Sensor B</Title>
+                <Title>Analog Battery Current</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
@@ -7593,7 +7663,7 @@
               <Multifunction_Sender_Curve_Block>
               </Multifunction_Sender_Curve_Block>
               <Strings>
-                <Title>2131 ID0 Flexible Sensor C</Title>
+                <Title>Neg 48 Sense</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
@@ -7687,7 +7757,7 @@
               <Multifunction_Sender_Curve_Block>
               </Multifunction_Sender_Curve_Block>
               <Strings>
-                <Title>2131 ID0 Flexible Sensor D</Title>
+                <Title>4-20mA Pressure Sensor: Fuel</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
@@ -11574,7 +11644,7 @@
               </Sensor_Type>
               <Wide_Range>False</Wide_Range>
               <Strings>
-                <Title>2133 ID0 Flexible Sensor A</Title>
+                <Title>EGT</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
               </Strings>
@@ -11646,7 +11716,7 @@
               </Sensor_Type>
               <Wide_Range>False</Wide_Range>
               <Strings>
-                <Title>2133 ID0 Flexible Sensor B</Title>
+                <Title>Alternator Windings</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
               </Strings>
@@ -11718,7 +11788,7 @@
               </Sensor_Type>
               <Wide_Range>False</Wide_Range>
               <Strings>
-                <Title>2133 ID0 Flexible Sensor C</Title>
+                <Title>Intake Air</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
               </Strings>
@@ -11790,7 +11860,7 @@
               </Sensor_Type>
               <Wide_Range>False</Wide_Range>
               <Strings>
-                <Title>2133 ID0 Flexible Sensor D</Title>
+                <Title>Battery Air</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
               </Strings>
@@ -11862,7 +11932,7 @@
               </Sensor_Type>
               <Wide_Range>False</Wide_Range>
               <Strings>
-                <Title>2133 ID0 Flexible Sensor E</Title>
+                <Title>Engine Air</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
               </Strings>
@@ -11934,7 +12004,7 @@
               </Sensor_Type>
               <Wide_Range>False</Wide_Range>
               <Strings>
-                <Title>2133 ID0 Flexible Sensor F</Title>
+                <Title>Exhaust Air</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
               </Strings>
@@ -12165,7 +12235,7 @@
                 </Sensor_Type>
                 <Wide_Range>False</Wide_Range>
                 <Strings>
-                  <Title>2133 ID1 Flexible Sensor A</Title>
+                  <Title>EGT</Title>
                   <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                   <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 </Strings>
@@ -12237,7 +12307,7 @@
                 </Sensor_Type>
                 <Wide_Range>False</Wide_Range>
                 <Strings>
-                  <Title>2133 ID1 Flexible Sensor B</Title>
+                  <Title>Alternator Windings</Title>
                   <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                   <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 </Strings>
@@ -12309,7 +12379,7 @@
                 </Sensor_Type>
                 <Wide_Range>False</Wide_Range>
                 <Strings>
-                  <Title>2133 ID1 Flexible Sensor C</Title>
+                  <Title>Intake Air</Title>
                   <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                   <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 </Strings>
@@ -12381,7 +12451,7 @@
                 </Sensor_Type>
                 <Wide_Range>False</Wide_Range>
                 <Strings>
-                  <Title>2133 ID1 Flexible Sensor D</Title>
+                  <Title>Battery Air</Title>
                   <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                   <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 </Strings>
@@ -12453,7 +12523,7 @@
                 </Sensor_Type>
                 <Wide_Range>False</Wide_Range>
                 <Strings>
-                  <Title>2133 ID1 Flexible Sensor E</Title>
+                  <Title>Engine Air</Title>
                   <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                   <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 </Strings>
@@ -12525,7 +12595,7 @@
                 </Sensor_Type>
                 <Wide_Range>False</Wide_Range>
                 <Strings>
-                  <Title>2133 ID1 Flexible Sensor F</Title>
+                  <Title>Exhaust Air</Title>
                   <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                   <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 </Strings>
@@ -14181,7 +14251,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>24693</CRC>
+        <CRC>42602</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
