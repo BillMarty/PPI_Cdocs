@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">05-May-16 14:13:45</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">09-May-16 11:08:53</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -1593,7 +1593,7 @@
       <Gas_engine_delay_time Comment="2s">2</Gas_engine_delay_time>
       <Gas_engine_ignition_off_time Comment="2s">2</Gas_engine_ignition_off_time>
       <Gen_Transient_Delay Comment="0.7s">0.7</Gen_Transient_Delay>
-      <Page_Timer Comment="5m">3000</Page_Timer>
+      <Page_Timer Comment="1h">36000</Page_Timer>
       <Scroll_Timer Comment="2s">20</Scroll_Timer>
       <SleepTimer>3000</SleepTimer>
       <Engage_Attempt Comment="2.0s">2.0</Engage_Attempt>
@@ -4461,12 +4461,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>894</CRC>
+      <CRC>50328</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">05-May-16 14:13:45</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">09-May-16 11:08:53</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14251,7 +14251,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>42602</CRC>
+        <CRC>13276</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
