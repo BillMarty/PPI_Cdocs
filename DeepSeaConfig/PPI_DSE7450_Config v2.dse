@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">05-May-16 11:55:13</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">13-May-16 11:15:18</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -1166,7 +1166,7 @@
             <Action Type="Set" Operator="0" ValueType="0" Value_2="2" />
           </Actions>
         </Ladder>
-        <Label Text="Engine Start/Stop based on SOC flags from Arduino" />
+        <Label Text="Engine Start/Stop based on voltage warnings from BMS" />
         <Ladder>
           <Conditions>
             <And>
@@ -1342,6 +1342,18 @@
           </Actions>
         </Ladder>
         <Label Text="BMS Fault Detection" />
+        <Ladder>
+          <Conditions>
+            <And>
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="38" />
+            </And>
+          </Conditions>
+          <Actions>
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="67" Value_2="1" />
+          </Actions>
+        </Ladder>
       </Logic_Blocks>
       <Strings />
       <Alarm_Blocks>
@@ -4420,12 +4432,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>42998</CRC>
+      <CRC>47720</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">05-May-16 11:55:13</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">13-May-16 11:15:18</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -7621,7 +7633,7 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
-                      <Trip Comment="60 %">60</Trip>
+                      <Trip Comment="57 %">57</Trip>
                       <Return Comment="50 %">50</Return>
                     </Params_Fuel>
                     <Params_Temp>
@@ -7642,8 +7654,8 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
-                      <Trip Comment="75 %">75</Trip>
-                      <Return Comment="75 %">75</Return>
+                      <Trip Comment="58 %">58</Trip>
+                      <Return Comment="58 %">58</Return>
                     </Params_Fuel>
                     <Params_Temp>
                     </Params_Temp>
@@ -7660,7 +7672,7 @@
               <Wide_Range>False</Wide_Range>
               <Multifunction_Sender_Curve_Block>
                 <SCFlexibleSender_Fuel>
-                  <CurveType>255 - User defined</CurveType>
+                  <CurveType>255 - Neg 48 sensor curve</CurveType>
                   <Values Value0="60" Value1="58" Value2="57" Value3="56" Value4="54" Value5="52" Value6="51" Value7="50" Value8="48" Value9="46" Value10="45" Value11="44" Value12="42" Value13="40" Value14="39" Value15="38" Value16="36" Value17="34" Value18="33" Value19="32" Value20="30" Value21="28" Value22="27" Value23="26" Value24="24" Value25="22" Value26="21" Value27="20" Value28="18" Value29="16" Value30="15" Value31="14" Value32="12" Value33="10" Value34="9" Value35="8" Value36="6" Value37="4" Value38="3" Value39="2" Value40="0" />
                   <Axis MaximumValue="255" OhmsInterval="250" HighThreshold="10000" MeasuredQuantity="0" CurveType="2" />
                 </SCFlexibleSender_Fuel>
@@ -7670,7 +7682,7 @@
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
-                  <CurveName_Fuel>User defined</CurveName_Fuel>
+                  <CurveName_Fuel>Neg 48 sensor curve</CurveName_Fuel>
                 </Transducer_Curve_Name>
               </Strings>
             </Analogue_C>
@@ -14357,7 +14369,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>18416</CRC>
+        <CRC>44243</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
