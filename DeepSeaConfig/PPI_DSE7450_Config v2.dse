@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">13-May-16 12:10:29</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">16-May-16 16:37:01</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -191,8 +191,8 @@
         <Arming Comment="Always">1</Arming>
         <Type Comment="Analogue Greater Than">3</Type>
         <Timer Comment="1m">600</Timer>
-        <Trip Comment="30.0 V DC">30.0</Trip>
-        <Return Comment="29.5 V DC">29.5</Return>
+        <Trip Comment="23.0 V DC">23.0</Trip>
+        <Return Comment="20.0 V DC">20.0</Return>
       </Plant_Battery_Over_Voltage_Warning>
       <Charge_Alternator_Failure>
         <Arming Comment="From Safety On">3</Arming>
@@ -1379,9 +1379,32 @@
             <Action Type="Trigger" Operator="0" ValueType="0" Value_1="76" Value_2="1" />
           </Actions>
         </Ladder>
+        <Label Text="Trunk current zero fault (coupler, alternator, and rectifier failures)" />
+        <Ladder>
+          <Conditions>
+            <And>
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="84" Value_2="4" Value_3="2200" Value_4="2201" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="283" Value_3="1" Value_4="2" />
+            </And>
+          </Conditions>
+          <Actions>
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="82" Value_2="1" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="1" />
+          </Conditions>
+          <Actions>
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="84" Value_2="2" />
+          </Actions>
+        </Ladder>
       </Logic_Blocks>
       <Strings>
         <Timer Index="0" Label="BMS Bootstrap delay" />
+        <Timer Index="1" Label="Zero Trunk Current delay" />
       </Strings>
       <Alarm_Blocks>
         <Alarm1>
@@ -1566,7 +1589,7 @@
         </Alarm20>
       </Alarm_Blocks>
       <Counter_Limits Comment="1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,">1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,</Counter_Limits>
-      <Timer_Limits Comment="50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,">50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,</Timer_Limits>
+      <Timer_Limits Comment="50,600,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,">50,600,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,</Timer_Limits>
     </PLC>
     <Timers>
       <Pre-heat Comment="3s">3</Pre-heat>
@@ -1592,7 +1615,7 @@
       <Gas_engine_delay_time Comment="2s">2</Gas_engine_delay_time>
       <Gas_engine_ignition_off_time Comment="2s">2</Gas_engine_ignition_off_time>
       <Gen_Transient_Delay Comment="0.7s">0.7</Gen_Transient_Delay>
-      <Page_Timer Comment="5m">3000</Page_Timer>
+      <Page_Timer Comment="1h">36000</Page_Timer>
       <Scroll_Timer Comment="2s">20</Scroll_Timer>
       <SleepTimer>3000</SleepTimer>
       <Engage_Attempt Comment="2.0s">2.0</Engage_Attempt>
@@ -1634,7 +1657,7 @@
           <Gen_VT_Fitted>False</Gen_VT_Fitted>
           <Mains_VT_Fitted>False</Mains_VT_Fitted>
           <Audible_Alarm>True</Audible_Alarm>
-          <Start_Attempts Comment="1">1</Start_Attempts>
+          <Start_Attempts Comment="2">2</Start_Attempts>
           <Sleep_Enable>False</Sleep_Enable>
           <CAN_Params>
             <Engine_Type Comment="1">1</Engine_Type>
@@ -1652,11 +1675,11 @@
           <Maintenance_on_date_2>False</Maintenance_on_date_2>
           <Maintenance_on_date_3>False</Maintenance_on_date_3>
           <Event_Log_Display_Mode Comment="Date and time">0</Event_Log_Display_Mode>
-          <Event_Log_Disable_Flags Comment="0">0</Event_Log_Disable_Flags>
+          <Event_Log_Disable_Flags Comment="262">262</Event_Log_Disable_Flags>
           <Manual_Fuel_Pump_Control>False</Manual_Fuel_Pump_Control>
           <Disable_Coolant_Cooler_Output_When_Set_Not_Available>False</Disable_Coolant_Cooler_Output_When_Set_Not_Available>
           <Start_Button_Hold_to_Crank>False</Start_Button_Hold_to_Crank>
-          <Multiple_Starter_Engage_Attempts>False</Multiple_Starter_Engage_Attempts>
+          <Multiple_Starter_Engage_Attempts>True</Multiple_Starter_Engage_Attempts>
           <Number_of_Engage_Attempts Comment="2">2</Number_of_Engage_Attempts>
           <Inhibit_Retransfer_to_Mains>False</Inhibit_Retransfer_to_Mains>
           <Protection_Disable>False</Protection_Disable>
@@ -1856,7 +1879,7 @@
       </Misc>
       <Comms>
         <Site_ID>PPI</Site_ID>
-        <Gen_Set_ID>HyGen V1 testbed</Gen_Set_ID>
+        <Gen_Set_ID>HyGen V2</Gen_Set_ID>
       </Comms>
       <Insert_Card>
         <LED_Text>
@@ -1911,8 +1934,7 @@
         <Alarm1>
         </Alarm1>
         <Alarm2>BMS Fault Detected</Alarm2>
-        <Alarm3>
-        </Alarm3>
+        <Alarm3>Zero Trunk Current Fault</Alarm3>
         <Alarm4>Testing with Josh</Alarm4>
         <Alarm5>
         </Alarm5>
@@ -2056,10 +2078,10 @@
             <Battery_Full_Charge_Level Comment="90 %">90</Battery_Full_Charge_Level>
             <Battery_Charge_Voltage Comment="500 V DC">50.0</Battery_Charge_Voltage>
             <Battery_Peukerts_Const Comment="100 ">1.00</Battery_Peukerts_Const>
-            <Float_Charge_Enable>True</Float_Charge_Enable>
+            <Float_Charge_Enable>False</Float_Charge_Enable>
             <Charger_Efficiency Comment="100 %">100</Charger_Efficiency>
           </Battery_Misc_16_Alt>
-          <Run_Generator_on_Low_Battery>False</Run_Generator_on_Low_Battery>
+          <Run_Generator_on_Low_Battery>True</Run_Generator_on_Low_Battery>
         </Misc_16_Bit>
         <Misc_32_Bit>
           <Nominal_Voltage Comment="195V PhPh">113</Nominal_Voltage>
@@ -2089,11 +2111,11 @@
           <Overspeed_Warning>
             <Function Comment="User Configured">0</Function>
             <Action Comment="Warning">5</Action>
-            <Arming Comment="Never">0</Arming>
+            <Arming Comment="From Safety On">3</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="1650 RPM">1650</Trip>
-            <Return Comment="1620 RPM">1620</Return>
+            <Trip Comment="3000 RPM">3000</Trip>
+            <Return Comment="2950 RPM">2950</Return>
           </Overspeed_Warning>
           <Overspeed_Shutdown>
             <Function Comment="User Configured">0</Function>
@@ -2101,8 +2123,8 @@
             <Arming Comment="From Safety On">3</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="3000 RPM">3000</Trip>
-            <Return Comment="3000 RPM">3000</Return>
+            <Trip Comment="3100 RPM">3100</Trip>
+            <Return Comment="3100 RPM">3100</Return>
           </Overspeed_Shutdown>
           <Under_Frequency_Warning>
             <Function Comment="User Configured">0</Function>
@@ -2233,11 +2255,11 @@
           <Overspeed_Overshoot_Warning>
             <Function Comment="User Configured">0</Function>
             <Action Comment="Warning">5</Action>
-            <Arming Comment="Never">0</Arming>
+            <Arming Comment="Overshoot Activation">5</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="1650 RPM">1650</Trip>
-            <Return Comment="1620 RPM">1620</Return>
+            <Trip Comment="3000 RPM">3000</Trip>
+            <Return Comment="2950 RPM">2950</Return>
           </Overspeed_Overshoot_Warning>
           <Overspeed_Overshoot_Shutdown>
             <Function Comment="User Configured">0</Function>
@@ -2245,17 +2267,17 @@
             <Arming Comment="Overshoot Activation">5</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="3000 RPM">3000</Trip>
-            <Return Comment="3000 RPM">3000</Return>
+            <Trip Comment="3100 RPM">3100</Trip>
+            <Return Comment="3100 RPM">3100</Return>
           </Overspeed_Overshoot_Shutdown>
           <Overspeed_Delayed_Warning>
             <Function Comment="User Configured">0</Function>
             <Action Comment="Warning">5</Action>
-            <Arming Comment="Never">0</Arming>
+            <Arming Comment="Overshoot Activation">5</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0s">0</Timer>
-            <Trip Comment="1650 RPM">1650</Trip>
-            <Return Comment="1620 RPM">1620</Return>
+            <Trip Comment="3000 RPM">3000</Trip>
+            <Return Comment="2950 RPM">2950</Return>
           </Overspeed_Delayed_Warning>
           <Overspeed_Delayed_Shutdown>
             <Function Comment="User Configured">0</Function>
@@ -2263,8 +2285,8 @@
             <Arming Comment="Overshoot Activation">5</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0s">0</Timer>
-            <Trip Comment="3000 RPM">3000</Trip>
-            <Return Comment="3000 RPM">3000</Return>
+            <Trip Comment="3100 RPM">3100</Trip>
+            <Return Comment="3100 RPM">3100</Return>
           </Overspeed_Delayed_Shutdown>
           <Generator_Over_Frequency_Overshoot_Warning>
             <Function Comment="User Configured">0</Function>
@@ -2396,7 +2418,7 @@
             <Low_Charge_Shutdown>
               <Function Comment="User Configured">0</Function>
               <Action Comment="Shutdown">1</Action>
-              <Arming Comment="Always">1</Arming>
+              <Arming Comment="Never">0</Arming>
               <Type Comment="Analogue Less Than">2</Type>
               <Timer Comment="0.0s">0.0</Timer>
               <Trip Comment="0 %">0</Trip>
@@ -2413,12 +2435,12 @@
             </Charge_OC_Shutdown>
             <Load_OC_Shutdown>
               <Function Comment="User Configured">0</Function>
-              <Action Comment="Shutdown">1</Action>
-              <Arming Comment="Never">0</Arming>
+              <Action Comment="Warning">5</Action>
+              <Arming Comment="Always">1</Arming>
               <Type Comment="Analogue Greater Than">3</Type>
-              <Timer Comment="0.0s">0.0</Timer>
-              <Trip Comment="400 A">400</Trip>
-              <Return Comment="400 A">400</Return>
+              <Timer Comment="5.0s">5.0</Timer>
+              <Trip Comment="27 A">27</Trip>
+              <Return Comment="27 A">27</Return>
             </Load_OC_Shutdown>
             <DC_OC_Warning>
               <Function Comment="User Configured">0</Function>
@@ -3791,12 +3813,12 @@
       <Log_Item_15>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="DC Total Current">1232</Item>
+        <Item Comment="DC Charger Current">1509</Item>
       </Log_Item_15>
       <Log_Item_16>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="DC Total kW">1242</Item>
+        <Item Comment="DC Overcurrent IDMT">-2147483316</Item>
       </Log_Item_16>
       <Log_Item_17>
         <Rate Comment="1 second">10</Rate>
@@ -3816,7 +3838,7 @@
       <Log_Item_20>
         <Rate Comment="1 second">10</Rate>
         <PacketID Comment="1 second">10</PacketID>
-        <Item Comment="&lt;Not Used&gt;">-1</Item>
+        <Item Comment="2133 Expansion Module 1 Input G (Low) Processed Status">109521</Item>
       </Log_Item_20>
     </Data_Logging>
     <TCPIP>
@@ -4459,12 +4481,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>44821</CRC>
+      <CRC>17460</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">13-May-16 12:10:29</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">16-May-16 16:37:01</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -7718,15 +7740,15 @@
                 <Low_Shutdown>
                   <Function_Arming_etc>
                     <Function Comment="User Configured">0</Function>
-                    <Action Comment="None">0</Action>
+                    <Action Comment="Shutdown">1</Action>
                     <Arming Comment="Always">1</Arming>
                     <Type Comment="Analogue Less Than">2</Type>
                     <Timer Comment="0">0</Timer>
                   </Function_Arming_etc>
                   <Low_Shutdown>
                     <Params_Oil>
-                      <Trip Comment="1.03Bar, 14.94 PSI, 103 kPa">1.03</Trip>
-                      <Return Comment="1.03Bar, 14.94 PSI, 103 kPa">1.03</Return>
+                      <Trip Comment="0.00Bar, 0.00 PSI, 0 kPa">0.00</Trip>
+                      <Return Comment="0.00Bar, 0.00 PSI, 0 kPa">0.00</Return>
                     </Params_Oil>
                     <Params_Fuel>
                     </Params_Fuel>
@@ -7739,15 +7761,15 @@
                 <Low_Warning>
                   <Function_Arming_etc>
                     <Function Comment="User Configured">0</Function>
-                    <Action Comment="None">0</Action>
+                    <Action Comment="Warning">5</Action>
                     <Arming Comment="Always">1</Arming>
                     <Type Comment="Analogue Less Than">2</Type>
                     <Timer Comment="0">0</Timer>
                   </Function_Arming_etc>
                   <Low_Warning>
                     <Params_Oil>
-                      <Trip Comment="1.17Bar, 16.97 PSI, 117 kPa">1.17</Trip>
-                      <Return Comment="1.24Bar, 17.98 PSI, 124 kPa">1.24</Return>
+                      <Trip Comment="1.72Bar, 24.95 PSI, 172 kPa">1.72</Trip>
+                      <Return Comment="3.44Bar, 49.89 PSI, 344 kPa">3.44</Return>
                     </Params_Oil>
                     <Params_Fuel>
                     </Params_Fuel>
@@ -7767,8 +7789,8 @@
                   </Function_Arming_etc>
                   <High_Warning>
                     <Params_Oil>
-                      <Trip Comment="1.50Bar, 21.75 PSI, 150 kPa">1.50</Trip>
-                      <Return Comment="1.40Bar, 20.30 PSI, 140 kPa">1.40</Return>
+                      <Trip Comment="3.46Bar, 50.18 PSI, 346 kPa">3.46</Trip>
+                      <Return Comment="3.45Bar, 50.04 PSI, 345 kPa">3.45</Return>
                     </Params_Oil>
                     <Params_Fuel>
                     </Params_Fuel>
@@ -7788,8 +7810,8 @@
                   </Function_Arming_etc>
                   <High_Shutdown>
                     <Params_Oil>
-                      <Trip Comment="1.60Bar, 23.21 PSI, 160 kPa">1.60</Trip>
-                      <Return Comment="1.60Bar, 23.21 PSI, 160 kPa">1.60</Return>
+                      <Trip Comment="3.47Bar, 50.33 PSI, 347 kPa">3.47</Trip>
+                      <Return Comment="3.47Bar, 50.33 PSI, 347 kPa">3.47</Return>
                     </Params_Oil>
                     <Params_Fuel>
                     </Params_Fuel>
@@ -7815,7 +7837,7 @@
               </Multifunction_Sender_Curve_Block>
               <Strings>
                 <Title>4-20mA Pressure Sensor: Fuel</Title>
-                <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
+                <Low_Alarm_String>Fuel pressure sensor low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
                   <CurveName_Oil>Diesel calibration, PSI = Liters</CurveName_Oil>
@@ -12799,11 +12821,11 @@
                   </High_Shutdown>
                 </Alarms>
                 <Sensor_Type>
-                  <MCFlexibleSenderSelection_Temp_Resistive Comment="0">0</MCFlexibleSenderSelection_Temp_Resistive>
+                  <MCFlexibleSenderSelection_Temp_Resistive Comment="2">2</MCFlexibleSenderSelection_Temp_Resistive>
                 </Sensor_Type>
                 <Wide_Range>False</Wide_Range>
                 <Strings>
-                  <Title>2133 ID1 Flexible Sensor G</Title>
+                  <Title>Bell Housing Temp</Title>
                   <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                   <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 </Strings>
@@ -14396,7 +14418,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>23106</CRC>
+        <CRC>37064</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
