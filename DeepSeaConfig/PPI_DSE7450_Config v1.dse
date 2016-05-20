@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">16-May-16 15:39:59</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">19-May-16 17:54:36</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -1161,9 +1161,34 @@
       <Logic_Blocks>
         <Label Text="Turn on BMS" />
         <Ladder>
-          <Conditions />
+          <Conditions>
+            <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" />
+          </Conditions>
           <Actions>
             <Action Type="Set" Operator="0" ValueType="0" Value_2="2" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <And>
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="38" />
+            </And>
+          </Conditions>
+          <Actions>
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="4" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <And>
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" />
+              <Condition Type="Timer" Polarity="FalseOrOpen" />
+            </And>
+          </Conditions>
+          <Actions>
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="8" Value_2="3" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="8" Value_2="2" />
           </Actions>
         </Ladder>
         <Label Text="Engine Start/Stop based on SOC flags from Arduino" />
@@ -1176,7 +1201,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="5" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="14" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1188,7 +1213,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="10" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="19" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1196,7 +1221,7 @@
             <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="12" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="21" />
           </Actions>
         </Ladder>
         <Label Text="Engine warm up and cool down signal to Woodward throttle controller" />
@@ -1208,7 +1233,7 @@
             </Or>
           </Conditions>
           <Actions>
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="16" Value_2="1" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="25" Value_2="1" />
           </Actions>
         </Ladder>
         <Label Text="RPM control look up table" />
@@ -1220,7 +1245,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="20" Value_2="3" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="29" Value_2="3" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1231,7 +1256,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="24" Value_2="3" Value_3="500" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="33" Value_2="3" Value_3="500" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1242,7 +1267,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="28" Value_2="3" Value_3="1000" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="37" Value_2="3" Value_3="1000" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1253,7 +1278,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="32" Value_2="3" Value_3="1500" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="41" Value_2="3" Value_3="1500" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1264,7 +1289,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="36" Value_2="3" Value_3="2000" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="45" Value_2="3" Value_3="2000" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1275,7 +1300,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="40" Value_2="3" Value_3="2500" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="49" Value_2="3" Value_3="2500" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1286,7 +1311,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="44" Value_2="3" Value_3="3000" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="53" Value_2="3" Value_3="3000" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1297,7 +1322,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="48" Value_2="3" Value_3="3500" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="57" Value_2="3" Value_3="3500" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1308,7 +1333,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="52" Value_2="3" Value_3="4000" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="61" Value_2="3" Value_3="4000" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1319,7 +1344,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="56" Value_2="3" Value_3="4500" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="65" Value_2="3" Value_3="4500" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1330,7 +1355,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="60" Value_2="3" Value_3="5000" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="69" Value_2="3" Value_3="5000" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1338,12 +1363,26 @@
             <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="19" />
           </Conditions>
           <Actions>
-            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="62" Value_2="3" Value_3="2500" />
+            <Action Type="Gencomm" Operator="0" ValueType="0" Value_1="71" Value_2="3" Value_3="2500" />
           </Actions>
         </Ladder>
         <Label Text="BMS Fault Detection" />
+        <Ladder>
+          <Conditions>
+            <And>
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="38" />
+            </And>
+          </Conditions>
+          <Actions>
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="76" Value_2="1" />
+          </Actions>
+        </Ladder>
       </Logic_Blocks>
-      <Strings />
+      <Strings>
+        <Timer Index="0" Label="BMS Bootstrap delay" />
+      </Strings>
       <Alarm_Blocks>
         <Alarm1>
           <Function Comment="Remote Start On Load">1</Function>
@@ -1359,7 +1398,7 @@
           <Action Comment="Shutdown">1</Action>
           <Arming Comment="Always">1</Arming>
           <Polarity Comment="Close to Activate">0</Polarity>
-          <Timer Comment="5s">5</Timer>
+          <Timer Comment="0s">0</Timer>
           <Param1 Comment="0">0</Param1>
           <Param2 Comment="0">0</Param2>
         </Alarm2>
@@ -1527,7 +1566,7 @@
         </Alarm20>
       </Alarm_Blocks>
       <Counter_Limits Comment="1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,">1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,</Counter_Limits>
-      <Timer_Limits Comment="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,">0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,</Timer_Limits>
+      <Timer_Limits Comment="10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,">10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,</Timer_Limits>
     </PLC>
     <Timers>
       <Pre-heat Comment="3s">3</Pre-heat>
@@ -4420,12 +4459,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>65131</CRC>
+      <CRC>33433</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">16-May-16 15:39:59</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">19-May-16 17:54:36</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14357,7 +14396,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>4804</CRC>
+        <CRC>61968</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
