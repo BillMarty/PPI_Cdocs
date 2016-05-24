@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">16-May-16 16:37:01</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">24-May-16 13:50:53</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -4481,12 +4481,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>17460</CRC>
+      <CRC>2005</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">16-May-16 16:37:01</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">24-May-16 13:50:53</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -7747,8 +7747,8 @@
                   </Function_Arming_etc>
                   <Low_Shutdown>
                     <Params_Oil>
-                      <Trip Comment="0.00Bar, 0.00 PSI, 0 kPa">0.00</Trip>
-                      <Return Comment="0.00Bar, 0.00 PSI, 0 kPa">0.00</Return>
+                      <Trip Comment="0.10Bar, 1.45 PSI, 10 kPa">0.10</Trip>
+                      <Return Comment="0.10Bar, 1.45 PSI, 10 kPa">0.10</Return>
                     </Params_Oil>
                     <Params_Fuel>
                     </Params_Fuel>
@@ -14418,7 +14418,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>37064</CRC>
+        <CRC>59168</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
