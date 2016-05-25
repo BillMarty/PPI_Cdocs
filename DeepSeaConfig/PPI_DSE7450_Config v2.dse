@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">24-May-16 13:50:53</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">25-May-16 11:33:14</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -182,8 +182,8 @@
         <Arming Comment="Always">1</Arming>
         <Type Comment="Analogue Less Than">2</Type>
         <Timer Comment="1m">600</Timer>
-        <Trip Comment="10.0 V DC">10.0</Trip>
-        <Return Comment="10.5 V DC">10.5</Return>
+        <Trip Comment="12.0 V DC">12.0</Trip>
+        <Return Comment="12.5 V DC">12.5</Return>
       </Plant_Battery_Under_Voltage_Warning>
       <Plant_Battery_Over_Voltage_Warning>
         <Function Comment="User Configured">0</Function>
@@ -195,9 +195,9 @@
         <Return Comment="20.0 V DC">20.0</Return>
       </Plant_Battery_Over_Voltage_Warning>
       <Charge_Alternator_Failure>
-        <Arming Comment="From Safety On">3</Arming>
+        <Arming Comment="Never">0</Arming>
         <Timer Comment="5s">50</Timer>
-        <Trip Comment="6.0 V DC">6.0</Trip>
+        <Trip Comment="11.6 V DC">11.6</Trip>
       </Charge_Alternator_Failure>
       <Fail_to_Stop>
         <Function>0</Function>
@@ -652,7 +652,7 @@
       <Charge_Alternator_Failure_Shutdown>
         <Action Comment="Shutdown">1</Action>
         <Timer Comment="5s">50</Timer>
-        <Trip Comment="4.0 V DC">4.0</Trip>
+        <Trip Comment="11.5 V DC">11.5</Trip>
       </Charge_Alternator_Failure_Shutdown>
       <Fuel_Usage>
         <RunningAlarm>
@@ -4481,12 +4481,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>2005</CRC>
+      <CRC>15973</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">24-May-16 13:50:53</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">25-May-16 11:33:14</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -7741,14 +7741,14 @@
                   <Function_Arming_etc>
                     <Function Comment="User Configured">0</Function>
                     <Action Comment="Shutdown">1</Action>
-                    <Arming Comment="Always">1</Arming>
+                    <Arming Comment="From Safety On">3</Arming>
                     <Type Comment="Analogue Less Than">2</Type>
                     <Timer Comment="0">0</Timer>
                   </Function_Arming_etc>
                   <Low_Shutdown>
                     <Params_Oil>
-                      <Trip Comment="0.10Bar, 1.45 PSI, 10 kPa">0.10</Trip>
-                      <Return Comment="0.10Bar, 1.45 PSI, 10 kPa">0.10</Return>
+                      <Trip Comment="1.00Bar, 14.50 PSI, 100 kPa">1.00</Trip>
+                      <Return Comment="1.00Bar, 14.50 PSI, 100 kPa">1.00</Return>
                     </Params_Oil>
                     <Params_Fuel>
                     </Params_Fuel>
@@ -7762,7 +7762,7 @@
                   <Function_Arming_etc>
                     <Function Comment="User Configured">0</Function>
                     <Action Comment="Warning">5</Action>
-                    <Arming Comment="Always">1</Arming>
+                    <Arming Comment="From Safety On">3</Arming>
                     <Type Comment="Analogue Less Than">2</Type>
                     <Timer Comment="0">0</Timer>
                   </Function_Arming_etc>
@@ -7783,7 +7783,7 @@
                   <Function_Arming_etc>
                     <Function Comment="User Configured">0</Function>
                     <Action Comment="None">0</Action>
-                    <Arming Comment="Always">1</Arming>
+                    <Arming Comment="From Safety On">3</Arming>
                     <Type Comment="Analogue Greater Than">3</Type>
                     <Timer Comment="0">0</Timer>
                   </Function_Arming_etc>
@@ -7804,7 +7804,7 @@
                   <Function_Arming_etc>
                     <Function Comment="User Configured">0</Function>
                     <Action Comment="None">0</Action>
-                    <Arming Comment="Always">1</Arming>
+                    <Arming Comment="From Safety On">3</Arming>
                     <Type Comment="Analogue Greater Than">3</Type>
                     <Timer Comment="0">0</Timer>
                   </Function_Arming_etc>
@@ -14418,7 +14418,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>59168</CRC>
+        <CRC>47907</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
