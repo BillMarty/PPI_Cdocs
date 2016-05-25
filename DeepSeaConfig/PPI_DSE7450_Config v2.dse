@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">25-May-16 11:33:14</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">25-May-16 14:55:28</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -1000,7 +1000,7 @@
           <Polarity Comment="Energise">0</Polarity>
         </Aux_OP_2>
         <Aux_OP_3>
-          <Control_Source Comment="Audible Alarm">88</Control_Source>
+          <Control_Source Comment="PLC Output Flag 2">12289</Control_Source>
           <Polarity Comment="Energise">0</Polarity>
         </Aux_OP_3>
         <Aux_OP_4>
@@ -4481,12 +4481,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>15973</CRC>
+      <CRC>54745</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">25-May-16 11:33:14</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">25-May-16 14:55:28</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -7740,7 +7740,7 @@
                 <Low_Shutdown>
                   <Function_Arming_etc>
                     <Function Comment="User Configured">0</Function>
-                    <Action Comment="Shutdown">1</Action>
+                    <Action Comment="None">0</Action>
                     <Arming Comment="From Safety On">3</Arming>
                     <Type Comment="Analogue Less Than">2</Type>
                     <Timer Comment="0">0</Timer>
@@ -14418,7 +14418,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>47907</CRC>
+        <CRC>53541</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
