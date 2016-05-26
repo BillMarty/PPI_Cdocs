@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">25-May-16 16:30:57</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">26-May-16 15:46:54</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -1162,136 +1162,151 @@
         <Label Text="Bootstrap the BMS power" />
         <Ladder>
           <Conditions>
-            <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" Description="Test flag 'PLC Output Flag 4'" />
+            <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" />
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_2="2" Description="Set flag 3" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_2="2" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" Description="Test flag 'PLC Output Flag 4'" />
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="38" Description="Test flag 'Digital Input H'" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="38" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="4" Description="Timer delay 'BMS Bootstrap delay' (5.0s)" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="4" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" Description="Test flag 'PLC Output Flag 4'" />
-              <Condition Type="Timer" Polarity="FalseOrOpen" Description="Test timer 'BMS Bootstrap delay' has reached 5.0s" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" />
+              <Condition Type="Timer" Polarity="FalseOrOpen" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="8" Value_2="3" Description="Set flag 4" />
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="8" Value_2="2" Description="Reset flag 3" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="8" Value_2="3" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="8" Value_2="2" />
+          </Actions>
+        </Ladder>
+        <Label Text="Prevent Auto mode or engine start during BMS bootstrap." />
+        <Ladder>
+          <Conditions>
+            <And>
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" />
+              <Or>
+                <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+                <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="19" />
+              </Or>
+            </And>
+          </Conditions>
+          <Actions>
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="15" Value_2="3" />
           </Actions>
         </Ladder>
         <Label Text="Engine Start/Stop based on voltage warnings from BMS" />
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="40" Description="Test flag 'Digital Input J'" />
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12288" Description="Test flag 'PLC Output Flag 1'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="40" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12288" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="14" Description="Set flag 1" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="20" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="39" Description="Test flag 'Digital Input I'" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" Description="Test flag 'PLC Output Flag 1'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="39" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="19" Description="Reset flag 1" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="25" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
-            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" Description="Test flag 'PLC Output Flag 1'" />
+            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="21" Description="Trigger PLC function 1" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="27" />
           </Actions>
         </Ladder>
         <Label Text="Engine warm up and cool down signal to Woodward throttle controller" />
         <Ladder>
           <Conditions>
             <Or>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="15" Description="Test flag 'Smoke Limiting'" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12" Description="Test flag 'Cooling Down'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="15" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12" />
             </Or>
           </Conditions>
           <Actions>
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="25" Value_2="1" Description="Drive flag 2" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="31" Value_2="1" />
           </Actions>
         </Ladder>
         <Label Text="Turn on the Omega controller when engine running at speed (not warm up/cool down)." />
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" Description="Test flag 'PLC Output Flag 1'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="29" Value_2="2" Description="Timer delay 'Omega controller delay' (5.0s)" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="35" Value_2="2" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="2" Description="Test timer 'Omega controller delay' has reached 5.0s" />
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12289" Description="Test flag 'PLC Output Flag 2'" />
+              <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="2" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12289" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="33" Value_2="4" Description="Drive flag 5" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="39" Value_2="4" />
           </Actions>
         </Ladder>
         <Label Text="BMS Fault Detection" />
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" Description="Test flag 'PLC Output Flag 1'" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="38" Description="Test flag 'Digital Input H'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="38" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="38" Value_2="1" Description="Trigger PLC function 2" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="44" Value_2="1" />
           </Actions>
         </Ladder>
         <Label Text="Trunk current zero fault (coupler, alternator, and rectifier failures)" />
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" Description="Test flag 'PLC Output Flag 1'" />
-              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="84" Value_2="4" Value_3="2200" Value_4="2201" Description="'Engine Speed' is more than 2200RPM" />
-              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="283" Value_3="1" Value_4="2" Description="'DC Charger Current' is less than 0.1A" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="84" Value_2="4" Value_3="2200" Value_4="2201" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="283" Value_3="1" Value_4="2" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="44" Value_2="1" Description="Timer delay 'Zero Trunk Current delay' (1m)" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="50" Value_2="1" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
-            <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="1" Description="Test timer 'Zero Trunk Current delay' has reached 1m" />
+            <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="1" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="46" Value_2="2" Description="Trigger PLC function 3" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="52" Value_2="2" />
           </Actions>
         </Ladder>
       </Logic_Blocks>
@@ -4375,12 +4390,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>13717</CRC>
+      <CRC>33628</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">25-May-16 16:30:57</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">26-May-16 15:46:54</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14312,7 +14327,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>31406</CRC>
+        <CRC>11296</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
