@@ -23,11 +23,11 @@ MLoff=5
 logDisp=""
 
 # init serial port for reading scale
-ser = serial.Serial(
-    port='com2',
-    baudrate=9600
-)
-ser.timeout = 1
+#ser = serial.Serial(
+#    port='com2',
+#    baudrate=9600
+#)
+#ser.timeout = 1
 
 #get and scan the measurement description file
 MdfDef="V1.csv"
@@ -87,7 +87,7 @@ try:
     # get and display some Modbus data
     while True:
         if c.is_open():
-            ser.write(b'~*P*~') # send poll command to scale          
+            #ser.write(b'~*P*~') # send poll command to scale          
             logDisp=""
             for meas in MeasList:
                 reg1 = c.read_holding_registers(meas[MLaddr],meas[MLlen])
@@ -104,7 +104,7 @@ try:
             c.open()
             
         time.sleep(1)
-        scale = ser.readlines()
+        scale = 0 #ser.readlines()
         print(scale)
         scale=str(scale)
         scale=scale.split(' ') #append the scale weight date,time,weight,eol
