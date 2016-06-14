@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">26-May-16 15:46:54</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">13-Jun-16 17:21:31</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -300,12 +300,12 @@
       </Calibration_Lost>
       <Low_Fuel_Level>
         <Function Comment="User Configured">0</Function>
-        <Action Comment="Warning">5</Action>
-        <Arming Comment="Never">0</Arming>
+        <Action Comment="Shutdown">1</Action>
+        <Arming Comment="Always">1</Arming>
         <Type Comment="Analogue Less Than">2</Type>
         <Timer Comment="0s">0</Timer>
-        <Trip Comment="10 %">10</Trip>
-        <Return Comment="10 %">10</Return>
+        <Trip Comment="5 %">5</Trip>
+        <Return Comment="5 %">5</Return>
       </Low_Fuel_Level>
       <Fuel_Pump_Control>
         <Function Comment="Fuel Pump Control">30</Function>
@@ -1535,7 +1535,7 @@
       <Start_Delay_Mains_Failure Comment="5s">50</Start_Delay_Mains_Failure>
       <Start_Delay_Telemetry Comment="5s">50</Start_Delay_Telemetry>
       <Fuel_Logging_Interval Comment="1m">600</Fuel_Logging_Interval>
-      <Fuel_Stable_Timer Comment="0.5s">5</Fuel_Stable_Timer>
+      <Fuel_Stable_Timer Comment="1.0s">10</Fuel_Stable_Timer>
       <ECU_On_Time>1200</ECU_On_Time>
       <ECU_Periodic_Wakeup Comment="1h">36000</ECU_Periodic_Wakeup>
       <Pre-start_Wait Comment="0.5s">5</Pre-start_Wait>
@@ -1594,7 +1594,7 @@
           <Protection_Disable>False</Protection_Disable>
           <RTL_Language_Support>False</RTL_Language_Support>
           <Coolant_Temperature_Input_Used Comment="Temperature sensor">0</Coolant_Temperature_Input_Used>
-          <Fuel_Level_Input_Used Comment="Flexible sensor">1</Fuel_Level_Input_Used>
+          <Fuel_Level_Input_Used Comment="Fuel level sensor">0</Fuel_Level_Input_Used>
           <Fuel_Units Comment="Litres">0</Fuel_Units>
           <Dial_Out_On_Fuel_Monitoring>False</Dial_Out_On_Fuel_Monitoring>
           <Use_Module_Engine_Hours>False</Use_Module_Engine_Hours>
@@ -1641,9 +1641,9 @@
         <Oil_Sensor Comment="VDO 10 Bar">4</Oil_Sensor>
         <New Comment="398V PhPh">230</New>
         <Coolant_Sensor Comment="VDO 120 °C">3</Coolant_Sensor>
-        <Fuel_Sensor Comment="Not used">0</Fuel_Sensor>
-        <Fuel_Tank_Capacity Comment="1000">1000</Fuel_Tank_Capacity>
-        <Fuel_Level_Change_Indicating_Filling Comment="1 %">1</Fuel_Level_Change_Indicating_Filling>
+        <Fuel_Sensor Comment="User defined">255</Fuel_Sensor>
+        <Fuel_Tank_Capacity Comment="200">200</Fuel_Tank_Capacity>
+        <Fuel_Level_Change_Indicating_Filling Comment="5 %">5</Fuel_Level_Change_Indicating_Filling>
         <Fuel_Level_Change_Indicating_Stability Comment="1 %">1</Fuel_Level_Change_Indicating_Stability>
         <DC_Battery_Temperature_Sensor Comment="VDO 120 °C">3</DC_Battery_Temperature_Sensor>
         <Fuel_Usage_Sample_Window Comment="10s">100</Fuel_Usage_Sample_Window>
@@ -1657,7 +1657,8 @@
         <CurveType>3 - VDO 120 °C</CurveType>
       </Temperature>
       <Fuel>
-        <CurveType>0 - Not used</CurveType>
+        <CurveType>255 - VDO 50ohm full, 240ohm empty</CurveType>
+        <Values Value0="101" Value1="101" Value2="101" Value3="101" Value4="93" Value5="84" Value6="76" Value7="67" Value8="59" Value9="50" Value10="42" Value11="34" Value12="25" Value13="17" Value14="8" Value15="0" Value16="0" Value17="0" Value18="0" Value19="0" Value20="0" Value21="0" Value22="0" Value23="0" Value24="0" Value25="0" Value26="0" Value27="0" Value28="0" Value29="0" Value30="0" />
       </Fuel>
       <DC_Battery_Temp>
         <CurveType>3 - VDO 120 °C</CurveType>
@@ -1832,7 +1833,7 @@
       <Maintenance_Alarm_3>Maintenance Alarm 3</Maintenance_Alarm_3>
       <Oil_Sensor_Curve_Name>VDO 10 Bar</Oil_Sensor_Curve_Name>
       <Temperature_Sensor_Curve_Name>VDO 120 °C</Temperature_Sensor_Curve_Name>
-      <Fuel_Sensor_Curve_Name>Not used</Fuel_Sensor_Curve_Name>
+      <Fuel_Sensor_Curve_Name>VDO 50ohm full, 240ohm empty</Fuel_Sensor_Curve_Name>
       <Battery_Strings>
         <Temp_Sensor_Curve_Name>VDO 120 °C</Temp_Sensor_Curve_Name>
         <Maintenance_Alarm_1_String>Battery Maintenance Alarm 1</Maintenance_Alarm_1_String>
@@ -4390,12 +4391,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>33628</CRC>
+      <CRC>56839</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">26-May-16 15:46:54</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">13-Jun-16 17:21:31</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -7650,7 +7651,7 @@
                   <Function_Arming_etc>
                     <Function Comment="User Configured">0</Function>
                     <Action Comment="None">0</Action>
-                    <Arming Comment="From Safety On">3</Arming>
+                    <Arming Comment="Always">1</Arming>
                     <Type Comment="Analogue Less Than">2</Type>
                     <Timer Comment="0">0</Timer>
                   </Function_Arming_etc>
@@ -7670,8 +7671,8 @@
                 <Low_Warning>
                   <Function_Arming_etc>
                     <Function Comment="User Configured">0</Function>
-                    <Action Comment="Warning">5</Action>
-                    <Arming Comment="From Safety On">3</Arming>
+                    <Action Comment="None">0</Action>
+                    <Arming Comment="Always">1</Arming>
                     <Type Comment="Analogue Less Than">2</Type>
                     <Timer Comment="0">0</Timer>
                   </Function_Arming_etc>
@@ -7692,7 +7693,7 @@
                   <Function_Arming_etc>
                     <Function Comment="User Configured">0</Function>
                     <Action Comment="None">0</Action>
-                    <Arming Comment="From Safety On">3</Arming>
+                    <Arming Comment="Always">1</Arming>
                     <Type Comment="Analogue Greater Than">3</Type>
                     <Timer Comment="0">0</Timer>
                   </Function_Arming_etc>
@@ -7713,7 +7714,7 @@
                   <Function_Arming_etc>
                     <Function Comment="User Configured">0</Function>
                     <Action Comment="None">0</Action>
-                    <Arming Comment="From Safety On">3</Arming>
+                    <Arming Comment="Always">1</Arming>
                     <Type Comment="Analogue Greater Than">3</Type>
                     <Timer Comment="0">0</Timer>
                   </Function_Arming_etc>
@@ -14327,7 +14328,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>11296</CRC>
+        <CRC>26277</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
