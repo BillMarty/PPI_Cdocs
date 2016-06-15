@@ -34,7 +34,7 @@ MdfDef="V1.csv"
 MDF=input("Measurement description file (%s): "%(MdfDef))
 if MDF=="":
     MDF=MdfDef
-    
+
 mdf=open(MDF)
 MList=mdf.readlines()
 MeasList=[]
@@ -63,7 +63,7 @@ inPortDef="1003"
 inPORT=input("Port # (%s)? "%(inPortDef))
 if inPORT=="":
     inPORT=inPortDef
-inPORT=int(inPORT)           
+inPORT=int(inPORT)
 try:
     c = ModbusClient(host=inHOST, port=inPORT)
 except ValueError:
@@ -79,7 +79,7 @@ comDef="No Comment"
 comment=input("Enter a Comment/Description line: ")
 if comment=="":
     comment=comDef
-    
+
 lf.write(comment+"\n")
 lf.write(labels+"\n")
 
@@ -87,7 +87,7 @@ try:
     # get and display some Modbus data
     while True:
         if c.is_open():
-            #ser.write(b'~*P*~') # send poll command to scale          
+            #ser.write(b'~*P*~') # send poll command to scale
             logDisp=""
             for meas in MeasList:
                 reg1 = c.read_holding_registers(meas[MLaddr],meas[MLlen])
@@ -102,14 +102,14 @@ try:
         else:
             print("Reopen")
             c.open()
-            
+
         time.sleep(1)
         scale = 0 #ser.readlines()
         print(scale)
         scale=str(scale)
         scale=scale.split(' ') #append the scale weight date,time,weight,eol
         if len(scale)>2:
-            logDisp = logDisp + scale[2]           
+            logDisp = logDisp + scale[2]
         if len(logDisp)>0:
             lf.write(logDisp+"\n")
         print("")
