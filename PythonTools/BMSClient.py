@@ -1,4 +1,5 @@
  import serial
+import AsyncClient
 
  class BMSClient(AsyncClient):
  	"""
@@ -26,6 +27,7 @@
  		if line[4] != 'S':  # Ensure that we have a full line
  			line = ser.readline()
 
+ 		
 		charge = int(line[19:22])
 		cur = int(line[34:39])
 		vals['charge'] = charge

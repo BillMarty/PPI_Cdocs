@@ -1,6 +1,7 @@
 from pymodbus.client.sync import ModbusTcpClient as ModbusClient
 import RepeatedTimer
 from time import sleep
+import AsyncClient
 
 MLname, MLunits, MLaddr, MLlen, MLgain, MLoff = 0, 1, 2, 3, 4, 5
 
