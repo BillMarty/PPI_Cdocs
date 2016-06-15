@@ -1,9 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 '''
-Pymodbus3 Twisted Client structure
+Python logger
 ------------------------------------------------------------------------------
 
-Make a structure into which to fit IO.
+This will be the main entry point for the program which polls IO devices and
+uploads results to the cloud (and saves them to a local log)
 '''
 ###############################
 # Import required libraries
@@ -13,7 +14,7 @@ import os.path
 import Queue
 import threading
 from twisted.internet import reactor, protocol
-from pymodbus3.client.async import ModbusClientProtocol
+import TCPModbusClient
 
 ###############################
 # Constants
@@ -21,8 +22,8 @@ from pymodbus3.client.async import ModbusClientProtocol
 help_string = "Logger logs the sensors and modbus values"
 config = False  # We're not in config mode
 config_file = "config.csv"
+MdfDef="mdf.csv"
 host, port, logfile, comment = "", 0, "", ""
-MLname, MLunits, MLaddr, MLlen, MLgain, MLoff = 0, 1, 2, 3, 4, 5
 
 ##################################
 # Switch on command line arguments
@@ -34,13 +35,18 @@ for arg in args:
 	elif arg == "-c" or arg == "--config":
 		config = True
 
+def get_input(s):
+	if sys.version_info < (3,0):
+		raw_input(s)
+	else:
+		input(s)
 
 ##############################################
 # get and scan the measurement description file
 ##############################################
-MdfDef="mdf.csv"
 if config:
-	MDF=input("Measurement description file (%s): "%(MdfDef))
+	MDF=get_input("Measurement description file (%s): "%(MdfDef))
+
 	if MDF=="":
 	    MDF=MdfDef
 else:
@@ -68,12 +74,12 @@ print(labels)
 if config or not os.path.isfile(config_file):
 	# enter IP address and port number
 	host_def="10.50.0.210"
-	host=input("Host Addr (%s)? "%(host_def))
+	host=get_input("Host Addr (%s)? "%(host_def))
 	if host=="":
 	    host=host_def
 
 	port_def="1003"
-	port=input("Port # (%s)? "%(port_def))
+	port=get_input("Port # (%s)? "%(port_def))
 	if port=="":
 	    port=port_def
 	port=int(port)
@@ -83,17 +89,17 @@ if config or not os.path.isfile(config_file):
 	#     print("Error with host or port params")
 
 	log_def="Test.csv"
-	logfile=input("CSV Logfile name (%s) "%(log_def))
+	logfile=get_input("CSV Logfile name (%s) "%(log_def))
 	if logfile=="":
 	    logfile=log_def
 
 	comDef="No Comment"
-	comment=input("Enter a Comment/Description line: ")
+	comment=get_input("Enter a Comment/Description line: ")
 	if comment=="":
 	    comment=comDef
 
 	# Ask whether to save values
-	savefile = input("Save this configuration to file? [y/n] ")
+	savefile = get_input("Save this configuration to file? [y/n] ")
 	if savefile[0] == 'y' or savefile[0] == 'Y':
 		try:
 			sf = open(config_file, mode='w')
@@ -119,24 +125,17 @@ try:
 except:
 	raise  # pass through whatever exception
 
-logQueue = Queue.Queue(10)
+#############################
+# Open each client in its own thread
+#############################
+tcpQueue = Queue(10)
+bmsQueue = Queue(10)
+deepSea = DeepSeaClient(tcpQueue, host, port, MeasList)
+bms = BMSClient(bmsQueue, port="/dev/ttyO1")
 
-def readDataFrames(Mlist):
-	"""
-	Get a data frame, including all values requested in the
-	configuration csv. Put values into logQueue.
-
-	Mlist: A list of lists, each representing a single datapoint to collect.
-	e.g.
-	# MeasList=[["Oil P","psi",1024,1,1.0,0.0],
-	#           ["Eng T","degC",1025,1,1.0,0.0],
-	#           ["E-Bat","V",1029,1,0.1,0.0],
-	#           ["Run T","min",1798,2,0.016667,0.0],
-	#           ["Starts","",1808,2,1.0,0.0],
-	#           ["SOC","%",43809,1,1.0,0.0],
-	#           ["+/-Bat","A",43811,1,0.5,50],
-	#           ["EGT","degC",43978,1,1.0,0.0],
-	#           ["Bat T","degC",43981,1,1.0,0.0]]
-	"""
-
-
+# Later this will be reading in serial
+while True:
+	tcpmod_vals = tcpQueue.get()
+	print(tcpmod_vals)
+	bms_vals = bmsQueue.get()
+	print(bms_vals)
