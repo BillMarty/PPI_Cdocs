@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">16-Jun-16 11:07:59</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">16-Jun-16 16:08:38</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -1228,6 +1228,7 @@
             </And>
           </Conditions>
           <Actions>
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="25" Value_2="5" />
             <Action Type="Reset" Operator="0" ValueType="0" Value_1="25" />
           </Actions>
         </Ladder>
@@ -1236,7 +1237,7 @@
             <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="27" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="28" />
           </Actions>
         </Ladder>
         <Label Text="Engine warm up and cool down signal to Woodward throttle controller" />
@@ -1248,7 +1249,7 @@
             </Or>
           </Conditions>
           <Actions>
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="31" Value_2="1" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="32" Value_2="1" />
           </Actions>
         </Ladder>
         <Label Text="Turn on Omega controller when engine running at speed (not warm up or cool down)." />
@@ -1260,7 +1261,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="35" Value_2="1" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="36" Value_2="1" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1271,7 +1272,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="39" Value_2="4" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="40" Value_2="4" />
           </Actions>
         </Ladder>
         <Label Text="BMS Fault Detection, whether engine is running or not." />
@@ -1283,7 +1284,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="43" Value_2="1" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="44" Value_2="1" />
           </Actions>
         </Ladder>
         <Label Text="Trunk current zero fault (coupler, alternator, and rectifier failures)." />
@@ -1297,7 +1298,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="49" Value_2="2" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="50" Value_2="2" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1305,7 +1306,7 @@
             <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="2" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="51" Value_2="2" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="52" Value_2="2" />
           </Actions>
         </Ladder>
         <Label Text="If detect coupler resonance lock, shutdown." />
@@ -1317,7 +1318,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="55" Value_2="3" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="56" Value_2="3" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1329,7 +1330,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="60" Value_2="4" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="61" Value_2="4" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1340,7 +1341,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="64" Value_2="5" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="65" Value_2="5" />
           </Actions>
         </Ladder>
       </Logic_Blocks>
@@ -1880,7 +1881,7 @@
         <Alarm2>BMS Fault Detected</Alarm2>
         <Alarm3>Zero Trunk Current Fault</Alarm3>
         <Alarm4>Testing with Josh</Alarm4>
-        <Alarm5>Coupler Resonance Lock</Alarm5>
+        <Alarm5>Start sequence aborted</Alarm5>
         <Alarm6>
         </Alarm6>
         <Alarm7>
@@ -4424,12 +4425,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>49750</CRC>
+      <CRC>63133</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">16-Jun-16 11:07:59</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">16-Jun-16 16:08:38</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14361,7 +14362,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>41987</CRC>
+        <CRC>14161</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
