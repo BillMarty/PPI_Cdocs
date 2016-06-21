@@ -1,3 +1,38 @@
+"""
+Provides configuration utilities for the logger.
+
+The configuration file will be in the form of a python literal dictionary.
+It will be structured as a nested dictionary of the following form:
+{
+	"enabled": ["deepsea", "bms"], # list of async components which are
+			# enabled. Sub configuration maps will use the strings
+			# here as their key
+
+	"datafile": "/path/to/data.log",
+
+	"logfile": "/path/to/program/log.log",
+
+	# Sub-configuration maps
+	"deepsea": { # If enabled in enabled
+		"mode": "tcp", # or "rtu"
+
+		"mlistfile": "/path/to/list/of/measurements.csv",
+
+		# TCP
+		"host": "192.168.1.212", # IP as string
+		"port": 1003, # Integer port number
+
+		# RTU
+		"dev": "/dev/ttyO1", # Linux device file for serial
+		"baudrate": 9600, # Integer baud rate
+		"id": 8, # Slave device id
+	},
+
+	"bms": {
+		"dev": "/dev/ttyO2", # Linux device file for serial
+	},
+}
+"""
 import socket
 import copy
 import ast
@@ -23,6 +58,8 @@ ddefaults = {
 
 bdefaults = {
 		'dev': "/dev/ttyO2",
+		'baudrate': 9600,
+		'sfilename': '/home/hygen/log/bmsstream.log',
 		}
 defaults = {
 		'enabled':  [],
@@ -36,7 +73,14 @@ def get_input(s, default=""):
 	"""
 	Get raw input using the correct version for the Python version.
 
-	Supports default.
+	s:
+		The prompt string to show. A space will be added to the end so
+		no trailing space is required
+
+	default:
+		A default value which will be returned if the user does not
+		enter a value. Displayed in square brackets following the
+		prompt
 	"""
 	if default == "":
 		d = " "
@@ -86,8 +130,7 @@ def read_measurement_description(filename):
 
 def get_deepsea_configuration():
 	"""
-	Returns the deepsea's configuration map, using values gotten from
-	the console.
+	Get configuration values for the DeepSea from the user console.
 	"""
 	dconfig ={}
 	ans = ""
@@ -142,20 +185,31 @@ def get_deepsea_configuration():
 			default=ddefaults['mlistfile'])
 
 	try:
-		open(ans)
+		f = open(ans)
 	except:
 		print("Problem reading measurement list. Exiting...")
 		exit(-1)
 	else:
 		dconfig['mlistfile'] = ans
-		close(ans)
+		f.close()
 
 	return dconfig
 
 
 def get_bms_configuration():
+	"""
+	Get configuration values for the Beckett BMS from the user console.
+	"""
 	bconfig = {}
 	bconfig['dev'] = get_input("Serial Device?", default=bdefaults['dev'])
+
+	ans = get_input("Baud rate?", default=str(bdefaults['baudrate']))
+	while not is_int(ans):
+		get_input("Invalid. Baud rate?", default=str(bdefaults['baudrate']))
+	bconfig['baudrate'] = int(ans)
+
+	bconfig['sfilename'] = get_input("Ascii stream file name?", default=bdefaults['sfilename'])
+
 	return bconfig
 
 

@@ -16,8 +16,8 @@ import argparse
 import daemon
 
 # My imports
-from logger_config import get_configuration
-from hygen_logger import main
+from config import get_configuration
+from main import main
 
 
 # create logger

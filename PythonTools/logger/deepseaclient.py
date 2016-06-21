@@ -1,6 +1,5 @@
-from pymodbus.client.sync import ModbusSerialClient as ModbusClient
+from pymodbus.client.sync import ModbusSerialClient, ModbusTcpClient
 import time
-from requests import ConnectionError
 from serial import SerialException
 
 from repeatedtimer import RepeatedTimer
@@ -18,13 +17,13 @@ class DeepSeaClient(AsyncClient):
 		self.queue = queue
 
 		# Do configuration setup
-		check_config(dconfig)
+		self.check_config(dconfig)
 		if dconfig['mode'] == "tcp":
 			host = dconfig['host']
 			port = dconfig['port']
 			self.client = ModbusTcpClient(host=host, port=port)
 			if not self.client.connect():
-				raise ConnectionError()
+				raise IOError("Could not connect to the DeepSea over TCP")
 		elif dconfig['mode'] == 'rtu':
 			# TODO fix speed
 			# see http://stackoverflow.com/a/21459211
@@ -37,7 +36,7 @@ class DeepSeaClient(AsyncClient):
 				raise SerialException()
 
 		# Read and save measurement list
-		self.mlist = read_measurement_description(dconfig['mlistfile'])
+		self.mlist = self.read_measurement_description(dconfig['mlistfile'])
 
 		super(DeepSeaClient, self).__init__(queue)
 
@@ -46,11 +45,11 @@ class DeepSeaClient(AsyncClient):
 		"""
 		Cleanup on exit
 		"""
-		self.rt.stop()
+		# self.rt.stop()
 		self.client.close()
 
 
-	def check_config(dconfig):
+	def check_config(self, dconfig):
 		"""
 		Check that the config is complete. Throw an exception if any
 		configuration values are missing.
@@ -75,7 +74,7 @@ class DeepSeaClient(AsyncClient):
 		return True
 
 
-	def read_measurement_description(filename):
+	def read_measurement_description(self, filename):
 		"""
 		Read a CSV containing the descriptions of modbus values.
 		Returns a list of lists, containing the values.
@@ -104,7 +103,7 @@ class DeepSeaClient(AsyncClient):
 		# Make a map to pass back
 		vals = {}
 
-		for m in self.MList:
+		for m in self.mlist:
 			try:
 				# before = time.clock()
 				rr = self.client.read_holding_registers(
@@ -140,7 +139,7 @@ class DeepSeaClient(AsyncClient):
 		Print a dataframe in the same form as those sent to the queue in a human-
 		readable fashion.
 		"""
-		for m in self.MList:
+		for m in self.mlist:
 			name = m[MLname]
 			datum = vals[name]
 			val = datum[0]
