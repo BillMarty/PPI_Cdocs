@@ -11,17 +11,21 @@ from pymodbus.client.sync import ModbusTcpClient, ModbusSerialClient
 ###############################
 default_config_file = "hygen_logger.conf"
 ddefaults = {
+		'mlistfile': "mdf.csv",
+		# TCP
 		'host': "192.168.1.212",
 		'port': 1003,
+		# RTU
 		'dev': "/dev/ttyO1",
 		'baudrate': 9600,
-		'mlistfile': "mdf.csv",
-		}
+		'id': 0x8,
+	}
 
 bdefaults = {
 		'dev': "/dev/ttyO2",
 		}
 defaults = {
+		'enabled':  [],
 		'datafile': "/home/hygen/log/datalog.log"
 		}
 
@@ -129,16 +133,22 @@ def get_deepsea_configuration():
 		else:
 			c.close()
 
+		ans = get_input("Slave device ID?", default=str(ddefaults['id']))
+		while not is_int(ans):
+			get_input("Invalid. Slave device ID?", default=str(ddefaults['id']))
+		dconfig['id'] = int(ans)
+
 	ans = get_input("Enter path to measurement list CSV:",
 			default=ddefaults['mlistfile'])
 
 	try:
-		mlist = read_measurement_description(ans)
-		dconfig['mlistfile'] = ans
-		dconfig['mlist'] = mlist
+		open(ans)
 	except:
 		print("Problem reading measurement list. Exiting...")
 		exit(-1)
+	else:
+		dconfig['mlistfile'] = ans
+		close(ans)
 
 	return dconfig
 
@@ -166,12 +176,7 @@ def write_config_file(config, path):
 
 	try:
 		with open(path, 'w') as f:
-			# Remove the measurement list from the written file
-			# we want to read that in every time.
-			config_to_write = copy.deepcopy(config)
-			if 'deepsea' in config_to_write:
-				config_to_write['deepsea'].pop('mlist', 0)
-			f.write(str(config_to_write))
+			f.write(str(config))
 			f.write('\n')
 	except:
 		raise
@@ -187,12 +192,11 @@ def get_configuration(fromConsole=False, config_file=default_config_file):
 	config = {}
 	config['enabled'] = []
 	if fromConsole:
-		if get_input("Use config file [y/n]? ")[0] == "y":
+		if get_input("Use config file [y/n]? ",
+				default='n')[0].lower() == "y":
 			config_file = get_input(
 					"Enter the path to the config file:",
 					default=default_config_file)
-			if config_file == "":
-				config_file = default_config_file
 			config = get_configuration(config_file=config_file)
 		else:
 			# Get DeepSea Configuration
@@ -207,42 +211,34 @@ def get_configuration(fromConsole=False, config_file=default_config_file):
 				config['enabled'].append('bms')
 				config['bms'] = get_bms_configuration()
 
+			# Add additional async components here
+
 			# Set up data log
 			ans = get_input("Where to store the data log file?",
 					default=defaults['datafile'])
-			if ans != "":
-				if os.path.exists(ans):
-					config['datafile'] = ans
-				elif os.access(os.path.dirname(ans), os.W_OK):
-					config['datafile'] = ans
-				else:
-					print("Error with log file")
-					exit(-1)
+			if os.path.exists(ans):
+				config['datafile'] = ans
+			elif os.access(os.path.dirname(ans), os.W_OK):
+				config['datafile'] = ans
 			else:
-				config['datafile'] = defaults['datafile']
+				print("Error with log file")
+				exit(-1)
 
 			# Enable saving to config file
 			ans = get_input("Save configuration to file [y/n]? ")
-			if ans == "y":
+			if ans[0].lower() == "y":
 				ans = get_input("Save file:", default=default_config_file)
 				if not write_config_file(config, ans):
 					print("Error writing config to disk")
+
 	else:
 		try:
 			config_file = os.path.abspath(config_file)
 			with open(config_file, 'r') as f:
 				s = f.read()
 				config = ast.literal_eval(s)
-				if 'deepsea' in config and 'mlistfile' in config['deepsea']:
-					try:
-						mlist = read_measurement_description(config['deepsea']['mlistfile'])
-						config['deepsea']['mlist'] = mlist
-					except:
-						print("Error reading Measurement description file")
-						raise
 		except:
 			print("Could not open configuration file \"%s\". Exiting..."%(config_file))
-			raise
 			exit(-1)
 
 	return config
