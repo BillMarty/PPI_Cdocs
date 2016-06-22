@@ -14,9 +14,9 @@ The program implements the following functionality:
 import sys
 import os
 import os.path
-import Queue
 import threading
 import thread
+import time
 
 ##############################
 # Import my files
@@ -34,28 +34,29 @@ def main(config):
 	except:
 		raise  # pass through whatever exception
 
-	# Open each client in its own thread
-	clients = []
-	dataQueue = Queue.Queue()
+	# Keep a list of all threads we have running
+	threads = []
 
 	if 'deepsea' in config['enabled']:
-		deepSea = deepseaclient.DeepSeaClient(dataQueue, config['deepsea'])
-		clients.append(deepSea)
+		deepSea = deepseaclient.DeepSeaClient(config['deepsea'])
+		threads.append(deepSea)
 
 	if 'bms' in config['enabled']:
-		bms = bmsclient.BMSClient(dataQueue, config['bms'])
-		clients.append(bms)
+		bms = bmsclient.BMSClient(config['bms'])
+		threads.append(bms)
 
-
-	for client in clients:
-		client.start()
+	for thread in threads:
+		thread.start()
 
 	try:
 		while True:
-			vals = dataQueue.get(True)
-			vals['client'].printDataFrame(vals)
+			deepSea.print_data()
+			bms.print_data()
+			time.sleep(1.0)
 	except KeyboardInterrupt:
 		print("Interrupt detected")
-		for c in clients:
-			del(c)
+		for thread in threads:
+			thread.cancel()
+			thread.join()
+			print("joined " + str(thread))
 		exit(2)

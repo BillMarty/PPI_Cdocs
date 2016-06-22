@@ -1,44 +1,24 @@
 import serial
 import threading
+from threading import Thread
 from asyncclient import AsyncClient
 
-lastline = ""
-
-def continuous_read(ser, f, e):
-	"""
-	Continuously read in from the serial port, updating lastline.
-
-	ser:
-		the serial port from which to read. Must be opened already.
-
-	f:
-		the file to which to echo everything from the serial port
-
-	e:
-		an event used for closing
-	"""
-	# TODO debug
-	global lastline
-	while not e.isSet():
-		line = ser.readline()
-		f.write(line)
-		lastline = line
-
-class BMSClient(AsyncClient):
+class BMSClient(Thread):
 	"""
 	This class specifies the specifics for the Becket battery management system to
 	communicate asynchronously. The readDataFrame method will read the battery
 	percentage at that moment and put it on the queue.
 	"""
-
-
-	def __init__(self, queue, bconfig):
+	def __init__(self, bconfig):
 		"""
 		Initialize the bms client from the configuration values.
 
 		Throws an exception if the configuration is missing values
 		"""
-		global lastline
+		# Initialize the parent class
+		super(BMSClient, self).__init__()
+		self.daemon = False #TODO decide
+		self.cancelled = False
 
 		# Read config values
 		BMSClient.check_config(bconfig)
@@ -47,26 +27,20 @@ class BMSClient(AsyncClient):
 		sfilename = bconfig['sfilename']
 
 		# Open serial port
-		self.ser = serial.Serial(dev, baud)
-		self.ser.open()
+		self._ser = serial.Serial(dev, baud, timeout=1.0) # 1 second timeout
+		self._ser.open()
 
 		# Open file
-		self.f = open(sfilename, 'a')
+		self._f = open(sfilename, 'a')
 
-		# Start a separate thread to read in the port
-		self.closeEvent = threading.Event()
-		self.readThread = threading.Thread(target=continuous_read,
-					args=(self.ser, self.f, self.closeEvent))
-		self.readThread.start()
-
-		super(BMSClient, self).__init__(queue)
+		# Setup global lastline variable
+		self.lastline = ""
 
 
 	def __del__(self):
-		self.closeEvent.set()
-		self.ser.close()
-		del(self.ser)
-		self.f.close()
+		self._ser.close()
+		del(self._ser)
+		self._f.close()
 
 
 	@staticmethod
@@ -83,14 +57,36 @@ class BMSClient(AsyncClient):
 		return True
 
 
-	def readDataFrame(self):
+	def run(self):
 		"""
-		Get an instantaneous snapshot of the data coming from the BMS system.
-		Intended to be called once per second.
+		Overloads Thread.run, continuously reads from the serial port.
+		Updates self.lastline.
 		"""
-		global lastline
-		vals = {}
-		line = lastline
+		# TODO debug
+		while not self.cancelled:
+			try:
+				line = self._ser.readline()
+			except:
+				print("BMS not connected")
+			else:
+				self._f.write(line)
+				self.lastline = line
+
+
+	def cancel(self):
+		"""
+		Stop executing this thread
+		"""
+		self.cancelled = True
+		print('Stopping ' + str(self) + '...')
+
+
+	def print_data(self):
+		"""
+		Print all the data as we currently have it, in human-readable
+		format
+		"""
+		line = self.lastline
 
 		# Short circuit if we haven't gotten any data yet.
 		if len(line) == 0:
@@ -101,8 +97,7 @@ class BMSClient(AsyncClient):
 
 		charge = int(line[19:22])
 		cur = int(line[34:39])
-		vals['charge'] = charge
-		vals['cur'] = cur
 
-		vals['client'] = self
-		self.queue.put(vals)
+		print("%20s %10.2f %10s"%("Charge", charge, "%%"))
+		print("%20s %10.2f %10s"%("Battery Current", charge, "A"))
+

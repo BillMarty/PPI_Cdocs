@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 """
 Perform the telemetric logging functions as a daemon.
 
@@ -37,15 +37,15 @@ fh.setFormatter(formatter)
 # add fh to logger
 logger.addHandler(fh)
 
-# Setup daemon context
-context = daemon.DaemonContext(
-	working_directory='/',
-	pidfile=lockfile.FileLock('/var/run/hygen_logger.pid'),
-	files_preserve = [
-		fh.stream,
-	],
-	umask=0o002,
-)
+# # Setup daemon context
+# context = daemon.DaemonContext(
+# 	working_directory='/',
+# 	pidfile=lockfile.FileLock('/var/run/hygen_logger.pid'),
+# 	files_preserve = [
+# 		fh.stream,
+# 	],
+# 	umask=0o002,
+# )
 
 
 # TODO handle signals (SIGINT, etc.)
@@ -58,7 +58,6 @@ context = daemon.DaemonContext(
 # 		signal.SIGTTOU: None, # Tried to write to tty from background
 # 		}
 
-# TODO do program configuration here
 # Parse arguments
 parser = argparse.ArgumentParser(description="Start the Hygen logging daemon")
 parser.add_argument('--config', action='store_const', dest='config',
@@ -72,5 +71,4 @@ else:
 
 # with context:
 main(config)
-# 	pass
 
