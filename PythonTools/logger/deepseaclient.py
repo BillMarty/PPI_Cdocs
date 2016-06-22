@@ -4,11 +4,13 @@ import traceback
 from threading import Thread
 from serial import SerialException
 
-
-MLname, MLunits, MLaddr, MLlen, MLgain, MLoff = 0, 1, 2, 3, 4, 5
-MLtime = 6
-max31=2**31
-max32=2**32
+NAME = 0
+UNITS = 1
+ADDRESS = 2
+LENGTH = 3
+GAIN = 4
+OFFSET = 5
+TIME = 6
 
 class DeepSeaClient(Thread):
     def __init__(self, dconfig):
@@ -60,8 +62,8 @@ class DeepSeaClient(Thread):
         # Read and save measurement list
         self.mlist = self.read_measurement_description(dconfig['mlistfile'])
         # A list of last updated time
-        self.last_updated = {m[MLname]: 0.0 for m in self.mlist}
-        self.values = {m[MLname]: 0.0 for m in self.mlist}
+        self.last_updated = {m[NAME]: 0.0 for m in self.mlist}
+        self.values = {m[NAME]: 0.0 for m in self.mlist}
 
 
     @staticmethod
@@ -118,7 +120,9 @@ class DeepSeaClient(Thread):
         """
         try:
             rr = self.client.read_holding_registers(
-                    meas[MLaddr], meas[MLlen],
+                    meas[ADDRESS], 
+                    LENGTH = 3[MLle
+                    , = 4
                     unit=self.unit)
             x = 0
             if rr == None:
@@ -131,7 +135,7 @@ class DeepSeaClient(Thread):
                 # Do twos complement for negative number
                 if x & 2**32: # if MSB set
                     x = ~(x - 1) # subtract 1 and do the 1s complement
-                x = float(x) * meas[MLgain] + meas[MLoff]
+                x = float(x) * meas[GAIN] + meas[OFFSET]
         except TypeError as e:  # flag error for debug purposes
             # TODO sort out what this error is
             print("reg=", rr.registers)
@@ -142,7 +146,7 @@ class DeepSeaClient(Thread):
             # TODO figure out what to do to make sure this works
             # This happens when the frame gets out of sync
             # traceback.print_exc()
-            print("error reading " + meas[MLname])
+            print("error reading " + meas[NAME])
             print("reopening client")
             self.client.close()
             self.client.connect()
@@ -166,13 +170,13 @@ class DeepSeaClient(Thread):
             for m in self.mlist:
                 # Find the ideal wake time
                 gtime = 1.0
-                if len(m) > MLtime: # if we have a time from the csv, use it
-                    gtime = m[MLtime]
-                gtime = gtime + self.last_updated[m[MLname]]
+                if len(m) > TIME: # if we have a time from the csv, use it
+                    gtime = m[TIME]
+                gtime = gtime + self.last_updated[m[NAME]]
                 # If we've passed it, get the value
                 if t >= gtime:
-                    self.values[m[MLname]] = self.getDeepSeaValue(m)
-                    self.last_updated[m[MLname]] = t
+                    self.values[m[NAME]] = self.getDeepSeaValue(m)
+                    self.last_updated[m[NAME]] = t
             time.sleep(0.01)
 
 
@@ -182,15 +186,21 @@ class DeepSeaClient(Thread):
         readable format.
         """
         for m in self.mlist:
-            name = m[MLname]
+            name = m[NAME]
             val = self.values[name]
             if val == -9999.9:
-                display = "%20s %10s %10s"%(name, "ERR", m[MLunits])
-            elif m[MLunits] == "sec":
+                display = "%20s %10s %10s"%(name, "ERR",  = 0
+                	UNITS = 1
+
+ = 2            elif  = 0
+            UNITS = 1
+            == = 2 "sec":
                 t = time.gmtime(val)
                 tstr = time.strftime("%Y-%m-%d %H:%M:%S", t)
                 display = "%20s %21s"%(name, tstr)
             else:
-                display = "%20s %10.2f %10s"%(name, val, m[MLunits])
-            print(display)
+                display = "%20s %10.2f %10s"%(name, val,  = 0
+                	UNITS = 1
+
+ = 2            print(display)
 
