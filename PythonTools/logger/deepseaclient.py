@@ -13,7 +13,7 @@ OFFSET = 5
 TIME = 6
 
 class DeepSeaClient(Thread):
-    def __init__(self, dconfig):
+    def __init__(self, dconfig, logger):
         """
         Set up a DeepSeaClient
         dconfig: the configuration values specific to deepsea
@@ -21,6 +21,7 @@ class DeepSeaClient(Thread):
         super(DeepSeaClient, self).__init__()
         self.daemon = False # TODO decide
         self.cancelled = False
+        self.logger = logger
 
         # Do configuration setup
         DeepSeaClient.check_config(dconfig)
@@ -52,7 +53,9 @@ class DeepSeaClient(Thread):
             #      http://stackoverflow.com/a/21459211 re: pymodbus
             maxRegistersPerRequest = 2
             maxBits = 28 + 8*3 + 16*maxRegistersPerRequest + 16 + 28
-            timeout = 10 * maxBits * (1. / baud) # add 3.5 bytes to be safe
+            # use 10 times the time to be safe
+            # arrived at by trial and error
+            timeout = 10 * maxBits * (1. / baud)
             self.unit = dconfig['id']
             self.client = ModbusSerialClient(method='rtu',
                     port=dev, baudrate=baud, timeout=timeout)
@@ -138,20 +141,17 @@ class DeepSeaClient(Thread):
                 x = float(x) * meas[GAIN] + meas[OFFSET]
         except TypeError as e:  # flag error for debug purposes
             # TODO sort out what this error is
-            print("reg=", rr.registers)
-            print("meas=",meas)
+            self.logger.error("TypeError: not sure what this means", exc_info=True)
             x=-9999.8
-            raise (e)
         except IndexError:
             # TODO figure out what to do to make sure this works
             # This happens when the frame gets out of sync
             # traceback.print_exc()
-            print("error reading " + meas[NAME])
-            print("reopening client")
+            self.logger.error("Communication problem: %s", "connection reset", exc_info=True)
             self.client.close()
             self.client.connect()
         except:
-            traceback.print_exc()
+            self.logger.critical("Unknown error occured", exc_info=True)
         return x
 
 

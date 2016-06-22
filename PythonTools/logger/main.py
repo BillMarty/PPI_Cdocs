@@ -24,7 +24,7 @@ import time
 import deepseaclient
 import bmsclient
 
-def main(config):
+def main(config, logger):
     """
     Enter a main loop, polling values from sources enabled in config
     """
@@ -37,11 +37,19 @@ def main(config):
     clients = []
 
     if 'deepsea' in config['enabled']:
-        deepSea = deepseaclient.DeepSeaClient(config['deepsea'])
+        try:
+            deepSea = deepseaclient.DeepSeaClient(config['deepsea'], logger)
+        except:
+            logger.error("Error opening DeepSeaClient",
+                         exc_info=True)
         clients.append(deepSea)
 
     if 'bms' in config['enabled']:
-        bms = bmsclient.BMSClient(config['bms'])
+        try:
+            bms = bmsclient.BMSClient(config['bms'])
+        except:
+            logger.error("Error opening BMSClient",
+                         exc_info=True)
         clients.append(bms)
 
     for client in clients:

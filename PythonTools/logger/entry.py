@@ -70,5 +70,5 @@ else:
     config = get_configuration()
 
 # with context:
-main(config)
+main(config, logger)
 
