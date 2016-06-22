@@ -184,12 +184,13 @@ class DeepSeaClient(Thread):
         for m in self.mlist:
             name = m[MLname]
             val = self.values[name]
-            if m[MLunits] == "sec":
+            if val == -9999.9:
+                display = "%20s %10s %10s"%(name, "ERR", m[MLunits])
+            elif m[MLunits] == "sec":
                 t = time.gmtime(val)
                 tstr = time.strftime("%Y-%m-%d %H:%M:%S", t)
                 display = "%20s %21s"%(name, tstr)
             else:
                 display = "%20s %10.2f %10s"%(name, val, m[MLunits])
             print(display)
-        print('-' * 80)
 

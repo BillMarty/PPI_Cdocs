@@ -34,28 +34,29 @@ def main(config):
         raise  # pass through whatever exception
 
     # Keep a list of all threads we have running
-    threads = []
+    clients = []
 
     if 'deepsea' in config['enabled']:
         deepSea = deepseaclient.DeepSeaClient(config['deepsea'])
-        threads.append(deepSea)
+        clients.append(deepSea)
 
     if 'bms' in config['enabled']:
         bms = bmsclient.BMSClient(config['bms'])
-        threads.append(bms)
+        clients.append(bms)
 
-    for thread in threads:
-        thread.start()
+    for client in clients:
+        client.start()
 
     try:
         while True:
-            for thread in threads:
-                thread.print_data()
-            time.sleep(0.5)
+            for client in clients:
+                client.print_data()
+            print('-' * 80)
+            time.sleep(1.0)
     except KeyboardInterrupt:
         print("Keyboard Interrupt detected. Stopping...")
-        for thread in threads:
-            thread.cancel()
-            thread.join()
-            print("joined " + str(thread))
+        for client in clients:
+            client.cancel()
+            client.join()
+            print("Joined " + str(client))
         exit(2)

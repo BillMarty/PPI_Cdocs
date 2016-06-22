@@ -95,8 +95,8 @@ class BMSClient(Thread):
         if self.last_string_status == "":
             return
 
-        charge = int(self.last_string_status[19:21])
-        cur = int(self.last_string_status[34:38])
-        print("%20s %10.2f %10s"%("Charge", charge, "%"))
+        charge = int(self.last_string_status[19:22])
+        cur = int(self.last_string_status[34:39])
+        print("%20s %10.2f %10s"%("State of Charge", charge, "%"))
         print("%20s %10.2f %10s"%("Battery Current", cur, "A"))
 

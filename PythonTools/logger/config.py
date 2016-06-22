@@ -280,7 +280,7 @@ def get_configuration(fromConsole=False, config_file=default_config_file):
 
             # Enable saving to config file
             ans = get_input("Save configuration to file [y/n]? ")
-            if ans[0].lower() == "y":
+            if len(ans) > 0 and ans[0].lower() == "y":
                 ans = get_input("Save file:", default=default_config_file)
                 if not write_config_file(config, ans):
                     print("Error writing config to disk")
