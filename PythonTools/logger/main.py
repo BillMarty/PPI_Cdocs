@@ -24,7 +24,6 @@ import time
 import deepseaclient
 import bmsclient
 
-
 def main(config):
 	"""
 	Enter a main loop, polling values from sources enabled in config
@@ -50,11 +49,11 @@ def main(config):
 
 	try:
 		while True:
-			deepSea.print_data()
-			bms.print_data()
-			time.sleep(1.0)
+			for thread in threads:
+				thread.print_data()
+			time.sleep(0.5)
 	except KeyboardInterrupt:
-		print("Interrupt detected")
+		print("Keyboard Interrupt detected. Stopping...")
 		for thread in threads:
 			thread.cancel()
 			thread.join()

@@ -1,7 +1,8 @@
 from pymodbus.client.sync import ModbusSerialClient, ModbusTcpClient
 import time
-from serial import SerialException
+import traceback
 from threading import Thread
+from serial import SerialException
 
 
 MLname, MLunits, MLaddr, MLlen, MLgain, MLoff = 0, 1, 2, 3, 4, 5
@@ -49,7 +50,7 @@ class DeepSeaClient(Thread):
 			#      http://stackoverflow.com/a/21459211 re: pymodbus
 			maxRegistersPerRequest = 2
 			maxBits = 28 + 8*3 + 16*maxRegistersPerRequest + 16 + 28
-			timeout = maxBits * (1 / baud)
+			timeout = 10 * maxBits * (1. / baud) # add 3.5 bytes to be safe
 			self.unit = dconfig['id']
 			self.client = ModbusSerialClient(method='rtu',
 					port=dev, baudrate=baud, timeout=timeout)
@@ -111,7 +112,7 @@ class DeepSeaClient(Thread):
 		return MeasList
 
 
-	def getDeepSeaValue(meas):
+	def getDeepSeaValue(self, meas):
 		"""
 		Get a data value from the deepSea
 		"""
@@ -125,20 +126,28 @@ class DeepSeaClient(Thread):
 			else:
 				registers = rr.registers
 				x = registers[0]
-				if m[MLlen]==2: # If we've got 2 bytes, shift left and add
+				if meas[MLlen]==2: # If we've got 2 bytes, shift left and add
 					x = (x << 16) + registers[1]
 				# Do twos complement for negative number
 				if x & 2**32: # if MSB set
 					x = ~(x - 1) # subtract 1 and do the 1s complement
-				x = float(x) * m[MLgain] + m[MLoff]
+				x = float(x) * meas[MLgain] + meas[MLoff]
 		except TypeError as e:  # flag error for debug purposes
 			# TODO sort out what this error is
 			print("reg=", rr.registers)
-			print("meas=",m)
+			print("meas=",meas)
 			raise (e)
 			x=-9999.8
+		except IndexError:
+			# TODO figure out what to do to make sure this works
+			# This happens when the frame gets out of sync
+			# traceback.print_exc()
+			print("error reading " + meas[MLname])
+			print("reopening client")
+			self.client.close()
+			self.client.connect()
 		except:
-			raise
+			traceback.print_exc()
 		return x
 
 
@@ -153,7 +162,7 @@ class DeepSeaClient(Thread):
 		Overloads Thread.run, runs and reads from the DeepSea.
 		"""
 		while not self.cancelled:
-			t = time.clock()
+			t = time.time()
 			for m in self.mlist:
 				# Find the ideal wake time
 				gtime = 1.0
@@ -162,7 +171,8 @@ class DeepSeaClient(Thread):
 				gtime = gtime + self.last_updated[m[MLname]]
 				# If we've passed it, get the value
 				if t >= gtime:
-					values[m[MLname]] = getDeepSeaValue(m)
+					self.values[m[MLname]] = self.getDeepSeaValue(m)
+					self.last_updated[m[MLname]] = t
 			time.sleep(0.01)
 
 
@@ -174,7 +184,12 @@ class DeepSeaClient(Thread):
 		for m in self.mlist:
 			name = m[MLname]
 			val = self.values[name]
-			display = "%20s %10.2f %10s"%(name, val, m[MLunits])
+			if m[MLunits] == "sec":
+				t = time.gmtime(val)
+				tstr = time.strftime("%Y-%m-%d %H:%M:%S", t)
+				display = "%20s %21s"%(name, tstr)
+			else:
+				display = "%20s %10.2f %10s"%(name, val, m[MLunits])
 			print(display)
 		print('-' * 80)
 

@@ -26,13 +26,13 @@ int readLine(char* buf, int maxcnt)
   #define timeout 15000
   int nchars =0;
   unsigned long tmax;
-  
+
   tmax = millis() + timeout;  // remember when we started scanning for a line
   while (tmax < millis())  // wait for wrap around? (once every 50 days)
     ;
-    
+
   while ((nchars < maxcnt) && (millis()< tmax))
-  {  
+  {
     if (Serial.available()>0)  //read a buffer, watching for NewLine
     {
       buf[nchars] = Serial.read();
@@ -44,7 +44,7 @@ int readLine(char* buf, int maxcnt)
       nchars++;
     }
   }
-  return nchars;  
+  return nchars;
 }
 
 void setup() {
@@ -63,7 +63,7 @@ void loop() {
   int chars = readLine(linebuf,sizeof(linebuf));
   //Serial.print("Fletcher-16 ");
   //Serial.println(fletcherCheck(linebuf,chars),HEX);
-  
+
   if ((chars > 0) && (chars < sizeof(linebuf)))
   {
     if (linebuf[4]=='S')
@@ -80,7 +80,7 @@ void loop() {
       pinMode(CAP80,OUTPUT);
       if( soc >= 80)
       {
- 
+
         digitalWrite(CAP80,HIGH);
       }
       else
@@ -91,7 +91,7 @@ void loop() {
         digitalWrite(CAP30,HIGH);
       else
         digitalWrite(CAP30,LOW);
-      
+
       // get +/- Battery Current
       int cur = linebuf[35]-'0';
       cur *= 10;
@@ -102,7 +102,7 @@ void loop() {
       cur += linebuf[38]-'0';
       //if (linebuf[34]=='-') cur *= -1;
       analogWrite(6,cur);
-      
+
       blink(LED,cnts);
     }
   }

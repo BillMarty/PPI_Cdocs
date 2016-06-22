@@ -3,7 +3,7 @@ import serial
 import time
 
 fname="bms2.log"
-ser = serial.Serial('COM14',9600)
+ser = serial.Serial('/dev/ttyO1',9600)
 
 for buf in open(fname):
     rec=buf[9:]

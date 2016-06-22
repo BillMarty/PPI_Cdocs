@@ -1,6 +1,6 @@
 Check out the Expansion Module MODBUS Addresses,,,,,
-name,units,addr,len,gain,offset
-Sample Time,day,1792,2,1.16E-05,25569
+name,units,addr,len,gain,offset,[period (optional)]
+Sample Time,sec,1792,2,1,0
 Eng Runtime,hr,1798,2,0.000278,0
 Engine Speed,RPM,1030,1,1,0
 300V Buss Volt,VDC,1223,1,1,0
@@ -8,8 +8,8 @@ Engine Speed,RPM,1030,1,1,0
 300V Load Amp,A,1226,2,0.1,0
 300V Battery Amp,A,1230,2,0.1,0
 SOC,%,43809,1,1,0
-48V Load Volt,V,43813,1,-1,0
-48V Load Amp,A,43817,1,1,0
+48V Load Volt,V,43813,1,-1,0,0.1
+48V Load Amp,A,43817,1,1,0,0.1
 Fuel Level,kPa,43815,1,1,0
 EGT,degC,43978,1,1,0
 Oil Press,kPa,1024,1,1,0
