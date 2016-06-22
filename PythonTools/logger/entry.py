@@ -61,13 +61,13 @@ logger.addHandler(fh)
 # Parse arguments
 parser = argparse.ArgumentParser(description="Start the Hygen logging daemon")
 parser.add_argument('--config', action='store_const', dest='config',
-		const=True, default=False, help='set configuration variables from the console')
+        const=True, default=False, help='set configuration variables from the console')
 
 args = parser.parse_args()
 if args.config:
-	config = get_configuration(fromConsole=True)
+    config = get_configuration(fromConsole=True)
 else:
-	config = get_configuration()
+    config = get_configuration()
 
 # with context:
 main(config)
