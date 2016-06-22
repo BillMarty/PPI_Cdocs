@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">01-Jun-16 16:34:36</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">21-Jun-16 17:34:59</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -1199,11 +1199,12 @@
               <Or>
                 <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
                 <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="19" Description="Test flag 'System In Manual Mode'" />
+                <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="20" Description="Test flag 'System In Test Mode'" />
               </Or>
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="15" Value_2="3" Description="Trigger PLC function 4" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="16" Value_2="3" Description="Trigger PLC function 4" />
           </Actions>
         </Ladder>
         <Label Text="Engine Start/Stop based on voltqge warnings from BMS" />
@@ -1216,7 +1217,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="20" Description="Set flag 1" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="21" Description="Set flag 1" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1228,7 +1229,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="25" Description="Reset flag 1" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="26" Description="Reset flag 1" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1236,7 +1237,7 @@
             <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" Description="Test flag 'PLC Output Flag 1'" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="27" Description="Trigger PLC function 1" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="28" Description="Trigger PLC function 1" />
           </Actions>
         </Ladder>
         <Label Text="Engine warm up and cool down signal to Woodward throttle controller" />
@@ -1248,7 +1249,7 @@
             </Or>
           </Conditions>
           <Actions>
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="31" Value_2="1" Description="Drive flag 2" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="32" Value_2="1" Description="Drive flag 2" />
           </Actions>
         </Ladder>
         <Label Text="Turn on Omega controller when engine running at speed (not warm up or cool down)." />
@@ -1260,7 +1261,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="35" Value_2="1" Description="Timer delay 'Omega Controller Delay' (5.0s)" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="36" Value_2="1" Description="Timer delay 'Omega Controller Delay' (5.0s)" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1271,15 +1272,14 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="39" Value_2="4" Description="Drive flag 5" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="40" Value_2="4" Description="Drive flag 5" />
           </Actions>
         </Ladder>
         <Label Text="BMS Fault Detection" />
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" Description="Test flag 'PLC Output Flag 1'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12291" Description="Test flag 'PLC Output Flag 4'" />
               <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="38" Description="Test flag 'Digital Input H'" />
             </And>
           </Conditions>
@@ -4390,12 +4390,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>10391</CRC>
+      <CRC>40479</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">01-Jun-16 16:34:36</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">21-Jun-16 17:34:59</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14327,7 +14327,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>38010</CRC>
+        <CRC>13520</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
