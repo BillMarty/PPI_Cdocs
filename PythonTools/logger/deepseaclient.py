@@ -120,17 +120,17 @@ class DeepSeaClient(Thread):
         """
         try:
             rr = self.client.read_holding_registers(
-                    meas[ADDRESS], 
-                    LENGTH = 3[MLle
-                    , = 4
-                    unit=self.unit)
+                    meas[ADDRESS],
+                    meas[LENGTH],
+                    unit=self.unit
+                    )
             x = 0
             if rr == None:
                 x = -9999.9  # flag for missed MODBUS data
             else:
                 registers = rr.registers
                 x = registers[0]
-                if meas[MLlen]==2: # If we've got 2 bytes, shift left and add
+                if meas[LENGTH]==2: # If we've got 2 bytes, shift left and add
                     x = (x << 16) + registers[1]
                 # Do twos complement for negative number
                 if x & 2**32: # if MSB set
@@ -189,18 +189,12 @@ class DeepSeaClient(Thread):
             name = m[NAME]
             val = self.values[name]
             if val == -9999.9:
-                display = "%20s %10s %10s"%(name, "ERR",  = 0
-                	UNITS = 1
-
- = 2            elif  = 0
-            UNITS = 1
-            == = 2 "sec":
+                display = "%20s %10s %10s"%(name, "ERR", m[UNITS])
+            elif m[UNITS] == "sec":
                 t = time.gmtime(val)
                 tstr = time.strftime("%Y-%m-%d %H:%M:%S", t)
                 display = "%20s %21s"%(name, tstr)
             else:
-                display = "%20s %10.2f %10s"%(name, val,  = 0
-                	UNITS = 1
-
- = 2            print(display)
+                display = "%20s %10.2f %10s"%(name, val, m[UNITS])
+            print(display)
 
