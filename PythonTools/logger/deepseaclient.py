@@ -198,3 +198,25 @@ class DeepSeaClient(Thread):
                 display = "%20s %10.2f %10s"%(name, val, m[UNITS])
             print(display)
 
+
+    def csv_header(self):
+        """
+        Return the CSV header line (sans new-line)
+        """
+        s = ""
+        for m in self.mlist:
+            s += m[NAME] + ","
+        return s
+
+
+    def csv_line(self):
+        """
+        Return a CSV line of the data we currently have
+        """
+        s = ""
+        for m in self.mlist:
+            name = m[NAME]
+            s += str(self.values[name])
+            s += ","
+        return s
+

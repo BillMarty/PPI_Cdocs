@@ -86,6 +86,15 @@ class BMSClient(Thread):
         print('Stopping ' + str(self) + '...')
 
 
+    def get_data(self):
+        """
+        Get the data
+        """
+        charge = int(self.last_string_status[19:22])
+        cur = int(self.last_string_status[34:39])
+        return (charge, cur)
+
+
     def print_data(self):
         """
         Print all the data as we currently have it, in human-readable
@@ -95,8 +104,25 @@ class BMSClient(Thread):
         if self.last_string_status == "":
             return
 
-        charge = int(self.last_string_status[19:22])
-        cur = int(self.last_string_status[34:39])
+        charge, cur = self.get_data()
         print("%20s %10.2f %10s"%("State of Charge", charge, "%"))
         print("%20s %10.2f %10s"%("Battery Current", cur, "A"))
 
+
+    def csv_header(self):
+        """
+        Print out the CSV header for our data
+        """
+        return "SoC (%),Current (A)"
+
+
+    def csv_line(self):
+        """
+        Print out the CSV data in the form:
+        "%f,%f"%(charge, cur)
+        """
+        # Short circuit if we haven't started reading data yet
+        if self.last_string_status == "":
+            return ""
+        charge, cur = self.get_data()
+        return "%3d,%3d"%(charge, cur)

@@ -40,27 +40,47 @@ def main(config, logger):
         try:
             deepSea = deepseaclient.DeepSeaClient(config['deepsea'], logger)
         except:
-            logger.error("Error opening DeepSeaClient",
-                         exc_info=True)
-        clients.append(deepSea)
+            exc_type, exc_value = sys.exc_info()[:2]
+            logger.error("Error opening DeepSeaClient: %s: %s"\
+                         %(str(exc_type), str(exc_value)))
+        else:
+            clients.append(deepSea)
 
     if 'bms' in config['enabled']:
         try:
             bms = bmsclient.BMSClient(config['bms'])
         except:
-            logger.error("Error opening BMSClient",
-                         exc_info=True)
-        clients.append(bms)
+            exc_type, exc_value = sys.exc_info()[:2]
+            logger.error("Error opening BMSClient: %s: %s"\
+                         %(str(exc_type), str(exc_value)))
+        else:
+            clients.append(bms)
+
+    if len(clients) == 0:
+        logger.error("No clients started successfully.")
+        logger.error("Exiting")
+        exit(-1)
 
     for client in clients:
         client.start()
 
     try:
-        while True:
+        with open(config['datafile'], mode='a') as f:
+            s = ""
             for client in clients:
-                client.print_data()
-            print('-' * 80)
-            time.sleep(1.0)
+                s += client.csv_header()
+            if len(s) > 0:
+                f.write(s + "\n")
+
+            while True:
+                s = ""
+                for client in clients:
+                    client.print_data()
+                    s += client.csv_line()
+                if len(s) > 0:
+                    f.write(s + "\n")
+                    print('-' * 80)
+                time.sleep(1.0)
     except KeyboardInterrupt:
         print("Keyboard Interrupt detected. Stopping...")
         for client in clients:

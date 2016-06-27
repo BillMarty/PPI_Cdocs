@@ -28,6 +28,10 @@ logger.setLevel(logging.DEBUG)
 fh = logging.FileHandler("/home/hygen/log/test_log.log")
 fh.setLevel(logging.DEBUG)
 
+# create stream handler to stderr and set level to debug
+sh = logging.StreamHandler() # default is sys.stderr
+sh.setLevel(logging.DEBUG)
+
 # create formatter
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
@@ -36,6 +40,9 @@ fh.setFormatter(formatter)
 
 # add fh to logger
 logger.addHandler(fh)
+# add sh to logger
+logger.addHandler(sh)
+
 
 # # Setup daemon context
 # context = daemon.DaemonContext(
