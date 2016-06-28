@@ -1,6 +1,7 @@
 from pymodbus.client.sync import ModbusSerialClient, ModbusTcpClient
 import time
 import traceback
+import logging
 from threading import Thread
 from serial import SerialException
 
@@ -13,7 +14,8 @@ OFFSET = 5
 TIME = 6
 
 class DeepSeaClient(Thread):
-    def __init__(self, dconfig, logger):
+    # TODO switch to passing in a logging handler, not the logger itself
+    def __init__(self, dconfig, log_handler):
         """
         Set up a DeepSeaClient
         dconfig: the configuration values specific to deepsea
@@ -21,7 +23,9 @@ class DeepSeaClient(Thread):
         super(DeepSeaClient, self).__init__()
         self.daemon = False # TODO decide
         self.cancelled = False
-        self.logger = logger
+        self.logger = logging.getLogger(__name__)
+        self.logger.addHandler(log_handler)
+        self.logger.setLevel(logging.DEBUG)
 
         # Do configuration setup
         DeepSeaClient.check_config(dconfig)
@@ -67,6 +71,7 @@ class DeepSeaClient(Thread):
         # A list of last updated time
         self.last_updated = {m[NAME]: 0.0 for m in self.mlist}
         self.values = {m[NAME]: 0.0 for m in self.mlist}
+        self.logger.debug("Started deepsea client")
 
 
     @staticmethod
@@ -144,12 +149,11 @@ class DeepSeaClient(Thread):
             self.logger.error("TypeError: not sure what this means", exc_info=True)
             x=-9999.8
         except IndexError:
-            # TODO figure out what to do to make sure this works
             # This happens when the frame gets out of sync
             # traceback.print_exc()
             self.logger.error("Communication problem: %s", "connection reset", exc_info=True)
-            self.client.close()
-            self.client.connect()
+            self.client.socket.reset_input_buffer()
+            x=-9999.7
         except:
             self.logger.critical("Unknown error occured", exc_info=True)
         return x

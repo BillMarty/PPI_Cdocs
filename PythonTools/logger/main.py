@@ -24,10 +24,11 @@ import time
 import deepseaclient
 import bmsclient
 
-def main(config, logger):
+def main(config, log_handler):
     """
     Enter a main loop, polling values from sources enabled in config
     """
+    logger = logging.getLogger(__name__)
     try:
         lf = open(config['datafile'], mode='w')
     except:
@@ -38,7 +39,7 @@ def main(config, logger):
 
     if 'deepsea' in config['enabled']:
         try:
-            deepSea = deepseaclient.DeepSeaClient(config['deepsea'], logger)
+            deepSea = deepseaclient.DeepSeaClient(config['deepsea'], log_handler)
         except:
             exc_type, exc_value = sys.exc_info()[:2]
             logger.error("Error opening DeepSeaClient: %s: %s"\

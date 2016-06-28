@@ -1,4 +1,5 @@
 from threading import Thread
+import time
 import Adafruit_BBIO.PWM as PWM
 
 class PWMInput(Thread):
@@ -6,6 +7,7 @@ class PWMInput(Thread):
     Send a square wave input via the PWM
     """
     def __init__(self, ww_sig):
+        super(PWMInput, self).__init__()
         self.ww_sig = ww_sig
         PWM.start(ww_sig, 50, 100000)
         self.cancelled = False
@@ -24,3 +26,4 @@ class PWMInput(Thread):
 
     def cancel(self):
         self.cancelled = True
+        print("Stopping " + str(self) + "...")

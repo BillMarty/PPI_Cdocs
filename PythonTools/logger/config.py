@@ -33,14 +33,24 @@ It will be structured as a nested dictionary of the following form:
     },
 }
 """
+###############################
+# Python imports
+###############################
 import socket
 import copy
 import ast
 import sys
 import os
 
+###############################
+# 3rd party libraries
+###############################
 from pymodbus.client.sync import ModbusTcpClient, ModbusSerialClient
 
+###############################
+# My imports
+###############################
+from util import is_int, get_input
 ###############################
 # Constants
 ###############################
