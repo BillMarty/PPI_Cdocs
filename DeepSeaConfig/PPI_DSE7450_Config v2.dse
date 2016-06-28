@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">24-Jun-16 14:39:39</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">28-Jun-16 10:46:14</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -195,9 +195,9 @@
         <Return Comment="20.0 V DC">20.0</Return>
       </Plant_Battery_Over_Voltage_Warning>
       <Charge_Alternator_Failure>
-        <Arming Comment="Never">0</Arming>
+        <Arming Comment="From Safety On">3</Arming>
         <Timer Comment="5s">50</Timer>
-        <Trip Comment="11.6 V DC">11.6</Trip>
+        <Trip Comment="10.4 V DC">10.4</Trip>
       </Charge_Alternator_Failure>
       <Fail_to_Stop>
         <Function>0</Function>
@@ -652,7 +652,7 @@
       <Charge_Alternator_Failure_Shutdown>
         <Action Comment="Shutdown">1</Action>
         <Timer Comment="5s">50</Timer>
-        <Trip Comment="11.5 V DC">11.5</Trip>
+        <Trip Comment="10.3 V DC">10.3</Trip>
       </Charge_Alternator_Failure_Shutdown>
       <Fuel_Usage>
         <RunningAlarm>
@@ -4437,12 +4437,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>57262</CRC>
+      <CRC>41012</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">24-Jun-16 14:39:39</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">28-Jun-16 10:46:14</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14374,7 +14374,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>13719</CRC>
+        <CRC>47348</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
