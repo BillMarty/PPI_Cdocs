@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">28-Jun-16 10:46:14</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">29-Jun-16 10:49:56</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -195,7 +195,7 @@
         <Return Comment="20.0 V DC">20.0</Return>
       </Plant_Battery_Over_Voltage_Warning>
       <Charge_Alternator_Failure>
-        <Arming Comment="From Safety On">3</Arming>
+        <Arming Comment="Never">0</Arming>
         <Timer Comment="5s">50</Timer>
         <Trip Comment="10.4 V DC">10.4</Trip>
       </Charge_Alternator_Failure>
@@ -1930,7 +1930,7 @@
       <Settings>
         <Settings_16_bit_-_RS232>
           <Slave_ID Comment="10">10</Slave_ID>
-          <Baud_Rate Comment="19200">9</Baud_Rate>
+          <Baud_Rate Comment="115200">13</Baud_Rate>
           <Language_Code Comment="2057">2057</Language_Code>
           <Modem_Mode Comment="No Modem">0</Modem_Mode>
           <Retries Comment="4">4</Retries>
@@ -4437,12 +4437,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>41012</CRC>
+      <CRC>51049</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">28-Jun-16 10:46:14</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">29-Jun-16 10:49:56</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -12312,8 +12312,8 @@
                     </Function_Arming_etc>
                     <Low_Shutdown>
                       <Params_Temp_Resistive>
-                        <Trip Comment="103 °C,  217 °F">103</Trip>
-                        <Return Comment="103 °C,  217 °F">103</Return>
+                        <Trip Comment="87 °C,  189 °F">87</Trip>
+                        <Return Comment="87 °C,  189 °F">87</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12329,8 +12329,8 @@
                     </Function_Arming_etc>
                     <Low_Warning>
                       <Params_Fuel_Resistive>
-                        <Trip Comment="117 °C,  243 °F">117</Trip>
-                        <Return Comment="124 °C,  255 °F">124</Return>
+                        <Trip Comment="88 °C,  190 °F">88</Trip>
+                        <Return Comment="89 °C,  192 °F">89</Return>
                       </Params_Fuel_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12339,15 +12339,15 @@
                   <High_Warning>
                     <Function_Arming_etc>
                       <Function Comment="User Configured">0</Function>
-                      <Action Comment="None">0</Action>
+                      <Action Comment="Warning">5</Action>
                       <Arming Comment="Always">1</Arming>
                       <Type Comment="Analogue Greater Than">3</Type>
                       <Timer Comment="0">0</Timer>
                     </Function_Arming_etc>
                     <High_Warning>
                       <Params_Temp_Resistive>
-                        <Trip Comment="150 °C,  302 °F">150</Trip>
-                        <Return Comment="140 °C,  284 °F">140</Return>
+                        <Trip Comment="100 °C,  212 °F">100</Trip>
+                        <Return Comment="90 °C,  194 °F">90</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12356,15 +12356,15 @@
                   <High_Shutdown>
                     <Function_Arming_etc>
                       <Function Comment="User Configured">0</Function>
-                      <Action Comment="None">0</Action>
+                      <Action Comment="Shutdown">1</Action>
                       <Arming Comment="Always">1</Arming>
                       <Type Comment="Analogue Greater Than">3</Type>
                       <Timer Comment="0">0</Timer>
                     </Function_Arming_etc>
                     <High_Shutdown>
                       <Params_Temp_Resistive>
-                        <Trip Comment="160 °C,  320 °F">160</Trip>
-                        <Return Comment="160 °C,  320 °F">160</Return>
+                        <Trip Comment="110 °C,  230 °F">110</Trip>
+                        <Return Comment="110 °C,  230 °F">110</Return>
                       </Params_Temp_Resistive>
                       <Params_Wide_Temp_Resistive>
                       </Params_Wide_Temp_Resistive>
@@ -12378,7 +12378,7 @@
                 <Strings>
                   <Title>Alternator Windings</Title>
                   <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
-                  <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
+                  <High_Alarm_String>Alternator Winding Temp High</High_Alarm_String>
                 </Strings>
               </Analogue_B>
               <Analogue_C>
@@ -14374,7 +14374,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>47348</CRC>
+        <CRC>46215</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
