@@ -17,6 +17,7 @@ import os.path
 import threading
 import thread
 import time
+import logging
 
 ##############################
 # Import my files

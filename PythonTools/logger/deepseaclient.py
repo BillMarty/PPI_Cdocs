@@ -152,7 +152,9 @@ class DeepSeaClient(Thread):
             # This happens when the frame gets out of sync
             # traceback.print_exc()
             self.logger.error("Communication problem: %s", "connection reset", exc_info=True)
-            self.client.socket.reset_input_buffer()
+            # self.client.socket.reset_input_buffer()
+            self.client.close()
+            self.client.connect()
             x=-9999.7
         except:
             self.logger.critical("Unknown error occured", exc_info=True)

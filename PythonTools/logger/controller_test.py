@@ -12,14 +12,18 @@ import logging
 dconfig = {'mode': "rtu",
            'dev': "/dev/ttyO1",
            'baudrate': 115200,
-           'id': 10,
+           'id': 10, # 8 for test deepsea, 10 for machine
            'mlistfile': "cur_rpm.csv",
            }
 
 aconfig = {
-        'measurements': {'current': "P9_39"},
+        'measurements': {'voltage': "P9_39", 'current': "P9_40"},
         'frequency': 0.1
         }
+
+rpm_sig = "P9_22"
+ww_sig = "P9_21"
+rpm_default = 0
 
 # Get a logger and logging handler
 logger = logging.getLogger(__name__)
@@ -30,14 +34,12 @@ logger.addHandler(lh)
 deepsea = DeepSeaClient(dconfig, lh)
 
 # Get stepping pwm thread
-ww_sig = "P9_21"
 input_thread = PWMInput(ww_sig)
 
 # Get analog input thread
 analog = AnalogClient(aconfig)
 
-rpm_sig = "P9_22"
-PWM.start(rpm_sig, 50, 100000)
+PWM.start(rpm_sig, rpm_default, 100000)
 
 logfile_name = get_input("Enter a name for the log file:", default="data.csv")
 with open(logfile_name, mode="w") as f:
@@ -48,12 +50,13 @@ with open(logfile_name, mode="w") as f:
     print("Started deepsea")
     analog.start()
     print("Started analog")
-    s = "%s,%s,%s,%s,%s"%("Sample Time", "300V Bus Volt",
+    s = "%s,%s,%s,%s,%s,%s\n"%("Sample Time", "300V Bus Volt (DS)", "Analog voltage",
                           "DeepSea reported Current", "Analog current",
                           "RPM")
     f.write(s)
     print(s)
     try:
+        i = 0
         while True:
             # Read in values from deepsea
             values = deepsea.values
@@ -64,20 +67,31 @@ with open(logfile_name, mode="w") as f:
 
             # read in analog values
             an_amps = analog.values['current']
+            an_volts = analog.values['voltage']
 
             # Output RPM on PWM
-            rpm_val = 50
+            rpm_val = rpm_default
             if 2100 <= rpm <= 3000:
                 rpm_val = (rpm - 2100) / 900 * 100 # Scale between 0 and 100
             PWM.set_duty_cycle(rpm_sig, rpm_val)
 
             # Log the data for this timestamp
-            s = "%d,%f,%f,%f,%f\n"%(t, volts, ds_amps, an_amps, rpm)
-            print(s)
+            s = "%d,%f,%f,%f,%f,%f\n"%(t, volts, an_volts, ds_amps, an_amps, rpm)
             f.write(s)
+
+            if i == 10:
+                i = 0
+                deepsea.print_data()
+                print("%20s %10.2f %10s"%("High Bus V raw", an_volts, "V"))
+                print("%20s %10.2f %10s"%("High Bus V scaled", an_volts * 210.28, "V"))
+                print("%20s %10.2f %10s"%("Generator cur raw", an_amps, "V"))
+                print("%20s %10.2f %10s"%("Generator cur scaled", an_amps * 156.25 - 32.8, "A"))
+                print("-"*80)
 
             # Sleep 1/10 second
             time.sleep(0.1)
+
+            i += 1
 
     except KeyboardInterrupt:
         deepsea.cancel()

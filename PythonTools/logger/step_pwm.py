@@ -9,7 +9,7 @@ class PWMInput(Thread):
     def __init__(self, ww_sig):
         super(PWMInput, self).__init__()
         self.ww_sig = ww_sig
-        PWM.start(ww_sig, 50, 100000)
+        PWM.start(self.ww_sig, 50, 100000)
         self.cancelled = False
 
 
