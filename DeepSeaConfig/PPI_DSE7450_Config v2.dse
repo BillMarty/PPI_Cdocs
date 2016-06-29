@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">29-Jun-16 10:49:56</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">29-Jun-16 11:06:14</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -627,7 +627,7 @@
           <Arming Comment="Always">1</Arming>
           <Timer Comment="0">0</Timer>
           <Type Comment="Close to Activate">0</Type>
-          <Param1_Hours Comment="250 hrs">250</Param1_Hours>
+          <Param1_Hours Comment="500 hrs">500</Param1_Hours>
           <Param2_Months Comment="1 months">1</Param2_Months>
         </Maintenance_Alarm>
         <Maintenance_Alarm_2>
@@ -4437,12 +4437,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>51049</CRC>
+      <CRC>52214</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">29-Jun-16 10:49:56</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">29-Jun-16 11:06:14</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14374,7 +14374,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>46215</CRC>
+        <CRC>52744</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
