@@ -7,12 +7,14 @@ from analogclient import AnalogClient
 import Adafruit_BBIO.PWM as PWM
 from step_pwm import PWMInput
 import time
+import datetime
 import logging
+import os
 
 dconfig = {'mode': "rtu",
            'dev': "/dev/ttyO1",
            'baudrate': 115200,
-           'id': 10, # 8 for test deepsea, 10 for machine
+           'id': 10, # 8 for test deepsea, 10 for v2 deepsea
            'mlistfile': "cur_rpm.csv",
            }
 
@@ -41,7 +43,15 @@ analog = AnalogClient(aconfig)
 
 PWM.start(rpm_sig, rpm_default, 100000)
 
-logfile_name = get_input("Enter a name for the log file:", default="data.csv")
+log_dir = "../../Data Analysis/test_logs/"
+now = datetime.datetime.now()
+today = now.strftime("%Y-%m-%d")
+i=0
+while os.path.exists(log_dir + today + "_run%d.csv"%i):
+    i += 1
+
+logfile_name = log_dir + today + "_run%d.csv" % i
+
 with open(logfile_name, mode="w") as f:
     print("Opened file")
     input_thread.start()
