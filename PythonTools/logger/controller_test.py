@@ -88,7 +88,7 @@ with open(logfile_name, mode="w") as f:
             PWM.set_duty_cycle(rpm_sig, rpm_val)
 
             # Log the data for this timestamp
-            s = deepsea.csv_line() + analog.csv_line()
+            s = deepsea.csv_line() + analog.csv_line() + '\n'
             f.write(s)
 
             if i == 10:

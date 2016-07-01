@@ -194,7 +194,7 @@ class DeepSeaClient(Thread):
         for m in self.mlist:
             name = m[NAME]
             val = self.values[name]
-            if val == -9999.9:
+            if val == None:
                 display = "%20s %10s %10s"%(name, "ERR", m[UNITS])
             elif m[UNITS] == "sec":
                 t = time.gmtime(val)
