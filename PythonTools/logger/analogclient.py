@@ -45,9 +45,10 @@ class AnalogClient(Thread):
             if t >= self.last_updated + self.frequency:
                 for k, v in self.mlist.iteritems():
                     val = 0
-                    for i in range(16):
+                    n = 32
+                    for i in range(n):
                         val += ADC.read_raw(v)
-                    self.values[k] = val / 16000. # change to voltage
+                    self.values[k] = val / (n * 1000.) # change to voltage
                 self.last_updated = t
             time.sleep(0.01)
 
