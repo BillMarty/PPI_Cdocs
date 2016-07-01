@@ -5,7 +5,6 @@ The program implements the following functionality:
     - Read data asynchronously from the DeepSea, BMS, and
         possibly other sources
     - Write the read data to a USB memory stick location.
-    - Save the original ASCII stream from the BMS
 """
 
 ###############################
@@ -25,13 +24,19 @@ import logging
 import deepseaclient
 import bmsclient
 
-def main(config, log_handler):
+def main(config, handlers):
     """
     Enter a main loop, polling values from sources enabled in config
     """
     logger = logging.getLogger(__name__)
+    for h in handlers:
+        logger.add_handler(h)
+    logger.setLevel(logging.DEBUG)
+
     try:
-        lf = open(config['datafile'], mode='w')
+        lf = open(config['datafile'], mode='a')
+        # TODO start a new file every x hours
+        # TODO compression
     except:
         raise  # pass through whatever exception
 
@@ -40,7 +45,7 @@ def main(config, log_handler):
 
     if 'deepsea' in config['enabled']:
         try:
-            deepSea = deepseaclient.DeepSeaClient(config['deepsea'], log_handler)
+            deepSea = deepseaclient.DeepSeaClient(config['deepsea'], handlers)
         except:
             exc_type, exc_value = sys.exc_info()[:2]
             logger.error("Error opening DeepSeaClient: %s: %s"\
@@ -50,7 +55,7 @@ def main(config, log_handler):
 
     if 'bms' in config['enabled']:
         try:
-            bms = bmsclient.BMSClient(config['bms'])
+            bms = bmsclient.BMSClient(config['bms'], handlers)
         except:
             exc_type, exc_value = sys.exc_info()[:2]
             logger.error("Error opening BMSClient: %s: %s"\

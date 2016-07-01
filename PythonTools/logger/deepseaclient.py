@@ -15,16 +15,17 @@ TIME = 6
 
 class DeepSeaClient(Thread):
     # TODO switch to passing in a logging handler, not the logger itself
-    def __init__(self, dconfig, log_handler):
+    def __init__(self, dconfig, handlers):
         """
         Set up a DeepSeaClient
         dconfig: the configuration values specific to deepsea
         """
         super(DeepSeaClient, self).__init__()
         self.daemon = False # TODO decide
-        self.cancelled = False
+        self._cancelled = False
         self.logger = logging.getLogger(__name__)
-        self.logger.addHandler(log_handler)
+        for h in handlers:
+            self.logger.addHandler(h)
         self.logger.setLevel(logging.DEBUG)
 
         # Do configuration setup
@@ -58,7 +59,7 @@ class DeepSeaClient(Thread):
             maxRegistersPerRequest = 2
             maxBits = 28 + 8*3 + 16*maxRegistersPerRequest + 16 + 28
             # use 10 times the time to be safe
-            # arrived at by trial and error
+            # arrived at by trial and error TODO figure out why and improve recovery
             timeout = 10 * maxBits * (1. / baud)
             self.unit = dconfig['id']
             self.client = ModbusSerialClient(method='rtu',
@@ -72,6 +73,30 @@ class DeepSeaClient(Thread):
         self.last_updated = {m[NAME]: 0.0 for m in self.mlist}
         self.values = {m[NAME]: 0.0 for m in self.mlist}
         self.logger.debug("Started deepsea client")
+
+
+    def __del__(self):
+        self.client.close()
+        del self.client
+
+
+    def run(self):
+        """
+        Overloads Thread.run, runs and reads from the DeepSea.
+        """
+        while not self._cancelled:
+            t = time.time()
+            for m in self.mlist:
+                # Find the ideal wake time
+                gtime = 1.0
+                if len(m) > TIME: # if we have a time from the csv, use it
+                    gtime = m[TIME]
+                gtime = gtime + self.last_updated[m[NAME]]
+                # If we've passed it, get the value
+                if t >= gtime:
+                    self.values[m[NAME]] = self.getDeepSeaValue(m)
+                    self.last_updated[m[NAME]] = t
+            time.sleep(0.01) # TODO base run time on minimum
 
 
     @staticmethod
@@ -110,7 +135,6 @@ class DeepSeaClient(Thread):
         with open(filename) as mdf:
             MList=mdf.readlines()
             MeasList=[]
-            labels=""
             for (n,line) in enumerate(MList[2:]):
                 fields=line.split(',')
                 m = [fields[0], fields[1], int(fields[2]), int(fields[3]),
@@ -146,13 +170,14 @@ class DeepSeaClient(Thread):
                 x = float(x) * meas[GAIN] + meas[OFFSET]
         except TypeError as e:  # flag error for debug purposes
             # TODO sort out what this error is
+            # TODO separate out exception info like main
             self.logger.error("TypeError: not sure what this means", exc_info=True)
             x = None
         except IndexError:
             # This happens when the frame gets out of sync
-            # traceback.print_exc()
+            # TODO fix so it recovers
+            # TODO separate out exception info like main
             self.logger.error("Communication problem: %s", "connection reset", exc_info=True)
-            # self.client.socket.reset_input_buffer()
             self.client.close()
             self.client.connect()
             x = None
@@ -160,30 +185,14 @@ class DeepSeaClient(Thread):
             self.logger.critical("Unknown error occured", exc_info=True)
         return x
 
+##########################
+# Methods from Main thread
+##########################
 
     def cancel(self):
         """End this thread"""
-        self.cancelled = True
-        print("Stopping " + str(self) + "...")
-
-
-    def run(self):
-        """
-        Overloads Thread.run, runs and reads from the DeepSea.
-        """
-        while not self.cancelled:
-            t = time.time()
-            for m in self.mlist:
-                # Find the ideal wake time
-                gtime = 1.0
-                if len(m) > TIME: # if we have a time from the csv, use it
-                    gtime = m[TIME]
-                gtime = gtime + self.last_updated[m[NAME]]
-                # If we've passed it, get the value
-                if t >= gtime:
-                    self.values[m[NAME]] = self.getDeepSeaValue(m)
-                    self.last_updated[m[NAME]] = t
-            time.sleep(0.01)
+        self._cancelled = True
+        self.logger.info("Stopping " + str(self) + "...")
 
 
     def print_data(self):

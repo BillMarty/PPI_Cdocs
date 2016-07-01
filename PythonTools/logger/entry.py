@@ -24,10 +24,6 @@ from main import main
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-# create file handler and set level to debug
-fh = logging.FileHandler("/home/hygen/log/test_log.log")
-fh.setLevel(logging.DEBUG)
-
 # create stream handler to stderr and set level to debug
 sh = logging.StreamHandler() # default is sys.stderr
 sh.setLevel(logging.DEBUG)
@@ -38,6 +34,7 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 # add formatter to fh
 fh.setFormatter(formatter)
 
+handlers = [fh, sh]
 # add fh to logger
 logger.addHandler(fh)
 # add sh to logger
@@ -77,5 +74,5 @@ else:
     config = get_configuration()
 
 # with context:
-main(config, logger)
+main(config, handlers)
 

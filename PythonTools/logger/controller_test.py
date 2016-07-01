@@ -20,7 +20,8 @@ dconfig = {'mode': "rtu",
 
 aconfig = {
         'measurements': {'voltage': "P9_39", 'current': "P9_40"},
-        'frequency': 0.1
+        'frequency': 0.1,
+        'averages': 8,
         }
 
 rpm_sig = "P9_22"
@@ -31,15 +32,16 @@ rpm_default = 0
 logger = logging.getLogger(__name__)
 lh = logging.NullHandler()
 logger.addHandler(lh)
+handlers = [lh]
 
 # get deepsea thread
-deepsea = DeepSeaClient(dconfig, lh)
+deepsea = DeepSeaClient(dconfig, handlers)
 
 # Get stepping pwm thread
 input_thread = PWMInput(ww_sig)
 
 # Get analog input thread
-analog = AnalogClient(aconfig)
+analog = AnalogClient(aconfig, handlers)
 
 PWM.start(rpm_sig, rpm_default, 100000)
 
@@ -54,8 +56,8 @@ logfile_name = log_dir + today + "_run%d.csv" % i
 
 with open(logfile_name, mode="w") as f:
     print("Opened file")
-    input_thread.start()
-    print("Started input thread")
+    # input_thread.start()
+    # print("Started input thread")
     deepsea.start()
     print("Started deepsea")
     analog.start()
@@ -88,7 +90,7 @@ with open(logfile_name, mode="w") as f:
             PWM.set_duty_cycle(rpm_sig, rpm_val)
 
             # Log the data for this timestamp
-            s = deepsea.csv_line() + analog.csv_line() + '\n'
+            s = deepsea.csv_line() + analog.csv_line()[:-1] + '\n'
             f.write(s)
 
             if i == 10:
