@@ -141,8 +141,8 @@ class DeepSeaClient(Thread):
                 if meas[LENGTH]==2: # If we've got 2 bytes, shift left and add
                     x = (x << 16) + registers[1]
                 # Do twos complement for negative number
-                if x & 2**32: # if MSB set
-                    x = ~(x - 1) # subtract 1 and do the 1s complement
+                if x & (1 << 31): # if MSB set
+                    x = x - (1 << 32) # subtract 1 and do the 1s complement
                 x = float(x) * meas[GAIN] + meas[OFFSET]
         except TypeError as e:  # flag error for debug purposes
             # TODO sort out what this error is

@@ -60,9 +60,9 @@ with open(logfile_name, mode="w") as f:
     print("Started deepsea")
     analog.start()
     print("Started analog")
-    s = "%s,%s,%s,%s,%s,%s\n"%("time", "ds_volt", "an_volt",
-                          "ds_cur", "an_cur",
-                          "rpm")
+    s = "%s,%s,%s,%s,%s,%s,%s,%s,%s\n"%("time", "rpm", "ds_volt",
+                          "ds_cur_300v", "ds_cur_48v", "soc", "ds_bat_cur",
+                          "an_cur_300v", "an_volt")
     f.write(s)
     print(s)
 

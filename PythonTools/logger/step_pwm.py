@@ -18,9 +18,9 @@ class PWMInput(Thread):
         Overloaded method from Thread.run. Start sending a square wave.
         """
         while not self.cancelled:
-            PWM.set_duty_cycle(self.ww_sig, 30)
+            PWM.set_duty_cycle(self.ww_sig, 40)
             time.sleep(2.5)
-            PWM.set_duty_cycle(self.ww_sig, 60)
+            PWM.set_duty_cycle(self.ww_sig, 50)
             time.sleep(2.5)
 
 

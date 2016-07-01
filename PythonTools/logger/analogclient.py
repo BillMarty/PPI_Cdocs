@@ -44,7 +44,10 @@ class AnalogClient(Thread):
             # If we've passed the ideal time, get the value
             if t >= self.last_updated + self.frequency:
                 for k, v in self.mlist.iteritems():
-                    self.values[k] = ADC.read_raw(v) / 1000. # change to voltage
+                    val = 0
+                    for i in range(16):
+                        val += ADC.read_raw(v)
+                    self.values[k] = val / 16000. # change to voltage
                 self.last_updated = t
             time.sleep(0.01)
 
