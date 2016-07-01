@@ -65,8 +65,9 @@ class AnalogClient(Thread):
         """
         s = ""
         for m in self.mlist:
-            name = m
-            s += str(self.values[name])
+            val = self.values[m]
+            if val != None:
+                s += str(val)
             s += ","
         return s
 

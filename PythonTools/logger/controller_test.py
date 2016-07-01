@@ -60,9 +60,9 @@ with open(logfile_name, mode="w") as f:
     print("Started deepsea")
     analog.start()
     print("Started analog")
-    s = "%s,%s,%s,%s,%s,%s\n"%("Sample Time", "300V Bus Volt (DS)", "Analog voltage",
-                          "DeepSea reported Current", "Analog current",
-                          "RPM")
+    s = "%s,%s,%s,%s,%s,%s\n"%("time", "ds_volt", "an_volt",
+                          "ds_cur", "an_cur",
+                          "rpm")
     f.write(s)
     print(s)
 
@@ -88,16 +88,14 @@ with open(logfile_name, mode="w") as f:
             PWM.set_duty_cycle(rpm_sig, rpm_val)
 
             # Log the data for this timestamp
-            s = "%d,%f,%f,%f,%f,%f\n"%(t, volts, an_volts, ds_amps, an_amps, rpm)
+            s = deepsea.csv_line() + analog.csv_line() + '\n'
             f.write(s)
 
             if i == 10:
                 i = 0
                 deepsea.print_data()
                 print("%20s %10.2f %10s"%("High Bus V raw", an_volts, "V"))
-                print("%20s %10.2f %10s"%("High Bus V scaled", an_volts * 210.28, "V"))
                 print("%20s %10.2f %10s"%("Generator cur raw", an_amps, "V"))
-                print("%20s %10.2f %10s"%("Generator cur scaled", an_amps * 156.25 - 32.8, "A"))
                 print("-"*80)
 
             # Sleep 1/10 second

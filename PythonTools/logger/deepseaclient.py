@@ -134,7 +134,7 @@ class DeepSeaClient(Thread):
                     )
             x = 0
             if rr == None:
-                x = -9999.9  # flag for missed MODBUS data
+                x = None  # flag for missed MODBUS data
             else:
                 registers = rr.registers
                 x = registers[0]
@@ -147,7 +147,7 @@ class DeepSeaClient(Thread):
         except TypeError as e:  # flag error for debug purposes
             # TODO sort out what this error is
             self.logger.error("TypeError: not sure what this means", exc_info=True)
-            x=-9999.8
+            x = None
         except IndexError:
             # This happens when the frame gets out of sync
             # traceback.print_exc()
@@ -155,7 +155,7 @@ class DeepSeaClient(Thread):
             # self.client.socket.reset_input_buffer()
             self.client.close()
             self.client.connect()
-            x=-9999.7
+            x = None
         except:
             self.logger.critical("Unknown error occured", exc_info=True)
         return x
@@ -194,7 +194,7 @@ class DeepSeaClient(Thread):
         for m in self.mlist:
             name = m[NAME]
             val = self.values[name]
-            if val == -9999.9:
+            if val == None:
                 display = "%20s %10s %10s"%(name, "ERR", m[UNITS])
             elif m[UNITS] == "sec":
                 t = time.gmtime(val)
@@ -221,8 +221,9 @@ class DeepSeaClient(Thread):
         """
         s = ""
         for m in self.mlist:
-            name = m[NAME]
-            s += str(self.values[name])
+            val = self.values[m[NAME]]
+            if val != None:
+                s += str(val)
             s += ","
         return s
 
