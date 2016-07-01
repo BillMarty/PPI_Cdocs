@@ -1,5 +1,6 @@
 import serial
 import threading
+import logging
 from threading import Thread
 
 class BMSClient(Thread):
@@ -8,7 +9,7 @@ class BMSClient(Thread):
     communicate asynchronously. The readDataFrame method will read the battery
     percentage at that moment and put it on the queue.
     """
-    def __init__(self, bconfig):
+    def __init__(self, bconfig, handlers):
         """
         Initialize the bms client from the configuration values.
 
@@ -18,6 +19,12 @@ class BMSClient(Thread):
         super(BMSClient, self).__init__()
         self.daemon = False #TODO decide
         self.cancelled = False
+
+        # Open a logger
+        self.logger = logging.getLogger(__name__)
+        for h in handlers:
+        	self.logger.addHandler(h)
+        self.logger.setLevel(logging.DEBUG)
 
         # Read config values
         BMSClient.check_config(bconfig)
@@ -67,7 +74,7 @@ class BMSClient(Thread):
             try:
                 line = self._ser.readline()
             except:
-                print("BMS not connected")
+                self.logger.warning("BMS not connected")
             else:
                 self._f.write(line)
                 if len(line) <= 4:
@@ -83,7 +90,7 @@ class BMSClient(Thread):
         Stop executing this thread
         """
         self.cancelled = True
-        print('Stopping ' + str(self) + '...')
+        self.logger.info('Stopping ' + str(self) + '...')
 
 
     def get_data(self):
@@ -111,14 +118,14 @@ class BMSClient(Thread):
 
     def csv_header(self):
         """
-        Print out the CSV header for our data
+        Return a string of the CSV header for our data
         """
         return "SoC (%),Current (A)"
 
 
     def csv_line(self):
         """
-        Print out the CSV data in the form:
+        Return the CSV data in the form:
         "%f,%f"%(charge, cur)
         """
         # Short circuit if we haven't started reading data yet
