@@ -62,7 +62,7 @@ with open(logfile_name, mode="w") as f:
     print("Started deepsea")
     analog.start()
     print("Started analog")
-    s = "%s,%s,%s,%s,%s,%s,%s,%s,%s\n"%("time", "rpm", "ds_volt",
+    s = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n"%("linuxtime", "time", "rpm", "ds_volt",
                           "ds_cur_300v", "ds_cur_48v", "soc", "ds_bat_cur",
                           "an_cur_300v", "an_volt")
     f.write(s)
@@ -90,7 +90,7 @@ with open(logfile_name, mode="w") as f:
             PWM.set_duty_cycle(rpm_sig, rpm_val)
 
             # Log the data for this timestamp
-            s = deepsea.csv_line() + analog.csv_line()[:-1] + '\n'
+            s = str(time.time()) + "," + deepsea.csv_line() + analog.csv_line()[:-1] + '\n'
             f.write(s)
 
             if i == 10:

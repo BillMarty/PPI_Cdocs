@@ -11,17 +11,27 @@ class PWMInput(Thread):
         self.ww_sig = ww_sig
         PWM.start(self.ww_sig, 50, 100000)
         self.cancelled = False
+        self.half_period = 20 # half period in seconds
+        self.on = False
+        self.low_val = 40
+        self.high_val = 50
 
 
     def run(self):
         """
         Overloaded method from Thread.run. Start sending a square wave.
         """
+        i = 0
         while not self.cancelled:
-            PWM.set_duty_cycle(self.ww_sig, 40)
-            time.sleep(20)
-            PWM.set_duty_cycle(self.ww_sig, 50)
-            time.sleep(20)
+            if i >= self.half_period:
+                if self.on:
+                    PWM.set_duty_cycle(self.ww_sig, self.low_val)
+                else:
+                    PWM.set_duty_cycle(self.ww_sig, self.high_val)
+                self.on = not self.on
+                i = 0
+            i += 1
+            time.sleep(1.0)
 
 
     def cancel(self):
