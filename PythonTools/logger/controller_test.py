@@ -30,7 +30,7 @@ rpm_default = 0
 
 # Get a logger and logging handler
 logger = logging.getLogger(__name__)
-lh = logging.NullHandler()
+lh = logging.StreamHandler()
 logger.addHandler(lh)
 handlers = [lh]
 

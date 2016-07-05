@@ -178,7 +178,12 @@ class DeepSeaClient(Thread):
             # TODO separate out exception info like main
             self.logger.error("Communication problem: %s", "connection reset", exc_info=True)
             self.client.socket.flushInput()
+            self.client.framer.resetFrame()
+            self.client.transaction.reset()
             time.sleep(0.5)
+            self.client.socket.flushInput()
+            self.client.framer.resetFrame()
+            self.client.transaction.reset()
             x = None
         except:
             self.logger.critical("Unknown error occured", exc_info=True)
