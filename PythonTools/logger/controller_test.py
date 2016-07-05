@@ -63,7 +63,7 @@ with open(logfile_name, mode="w") as f:
     analog.start()
     print("Started analog")
     s = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n"%("linuxtime", "time", "rpm", "ds_volt",
-                          "ds_cur_300v", "ds_cur_48v", "soc", "ds_bat_cur",
+                          "ds_cur_300v", "control", "an_rpm", "ds_bat_cur",
                           "an_cur_300v", "an_volt")
     f.write(s)
     print(s)
