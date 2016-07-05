@@ -141,7 +141,6 @@ class DeepSeaClient(Thread):
                         float(fields[4]), float(fields[5])]
                 if len(fields) > 6:
                     m.append(float(fields[6]))
-
                 MeasList.append(m)
         return MeasList
 
@@ -178,8 +177,8 @@ class DeepSeaClient(Thread):
             # TODO fix so it recovers
             # TODO separate out exception info like main
             self.logger.error("Communication problem: %s", "connection reset", exc_info=True)
-            self.client.close()
-            self.client.connect()
+            self.client.socket.flushInput()
+            time.sleep(0.5)
             x = None
         except:
             self.logger.critical("Unknown error occured", exc_info=True)

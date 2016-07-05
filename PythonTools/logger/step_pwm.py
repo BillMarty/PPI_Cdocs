@@ -19,9 +19,9 @@ class PWMInput(Thread):
         """
         while not self.cancelled:
             PWM.set_duty_cycle(self.ww_sig, 40)
-            time.sleep(10)
+            time.sleep(20)
             PWM.set_duty_cycle(self.ww_sig, 50)
-            time.sleep(10)
+            time.sleep(20)
 
 
     def cancel(self):

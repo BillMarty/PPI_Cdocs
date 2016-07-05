@@ -56,8 +56,8 @@ logfile_name = log_dir + today + "_run%d.csv" % i
 
 with open(logfile_name, mode="w") as f:
     print("Opened file")
-    # input_thread.start()
-    # print("Started input thread")
+    input_thread.start()
+    print("Started input thread")
     deepsea.start()
     print("Started deepsea")
     analog.start()

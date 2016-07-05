@@ -32,11 +32,9 @@ sh.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 # add formatter to fh
-fh.setFormatter(formatter)
+sh.setFormatter(formatter)
 
-handlers = [fh, sh]
-# add fh to logger
-logger.addHandler(fh)
+handlers = [sh]
 # add sh to logger
 logger.addHandler(sh)
 

@@ -25,9 +25,9 @@ class AnalogClient(Thread):
         self.cancelled = False
 
         # Start logger for this module
-        self.logger = loggin.getLogger(__name__)
+        self.logger = logging.getLogger(__name__)
         for h in handlers:
-        	logger.add_handler(h)
+        	self.logger.addHandler(h)
         self.logger.setLevel(logging.DEBUG)
 
         # Read and save measurement list
