@@ -28,16 +28,22 @@ logger.setLevel(logging.DEBUG)
 sh = logging.StreamHandler()  # default is sys.stderr
 sh.setLevel(logging.DEBUG)
 
+# Create file handler
+fh = logging.FileHandler('errors.log')
+fh.setLevel(logging.DEBUG)
+
 # create formatter
 formatter = logging.Formatter(
     '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-# add formatter to fh
+# add formatter to sh and fh
+fh.setFormatter(formatter)
 sh.setFormatter(formatter)
 
-handlers = [sh]
+handlers = [sh, fh]
 # add sh to logger
-logger.addHandler(sh)
+for h in handlers:
+    logger.addHandler(h)
 
 
 # # Setup daemon context

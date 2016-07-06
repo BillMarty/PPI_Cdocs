@@ -28,7 +28,7 @@ class FileWriter(Thread):
             raise ValueError("Log directory does not exist")
         self.queue = queue
         self.cancelled = False
-        self.file = open(os.devnull, 'w')
+        self.f = open(os.devnull, 'w')
         self.csv_header = csv_header
 
     @staticmethod
@@ -51,7 +51,8 @@ class FileWriter(Thread):
         now = datetime.datetime.now()
         hour = now.strftime("%Y-%m-%d_%H")
         i = 0
-        while os.path.exists(self.log_dir + hour + "_run%d.csv" % i):
+        while os.path.exists(os.path.join(self.log_dir,
+                                          hour + "_run%d.csv" % i)):
             i += 1
 
         logfile_name = os.path.join(self.log_dir, hour + "_run%d.csv" % i)
@@ -87,6 +88,7 @@ class FileWriter(Thread):
             if prev_hour != hour:
                 self.f.close()
                 self.f = self.open_new_logfile()
+                prev_hour = hour
                 self.write_line(self.csv_header)
 
             # Get lines out printed

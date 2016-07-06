@@ -62,7 +62,7 @@ from util import is_int, get_input
 ###############################
 # Constants
 ###############################
-default_config_file = "hygen_logger.conf"
+default_config_file = "hygen_logger.py"
 ddefaults = {
         'mlistfile': "mdf.csv",
         # TCP
@@ -320,8 +320,8 @@ def get_analog_configuration():
         m.append(get_input("Enter a measurement name:"))
         m.append(get_input("Enter measurement units:"))
         m.append(get_input("Enter the pin in form \"P9_25\":"))
-        m.append(get_input("Enter the gain"))
-        m.append(get_input("Enter the offset"))
+        m.append(float(get_input("Enter the gain")))
+        m.append(float(get_input("Enter the offset")))
         ms.append(m)
         first = False
         ans = get_input("Add another measurement [y/n]?",

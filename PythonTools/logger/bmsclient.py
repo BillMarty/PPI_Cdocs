@@ -34,7 +34,11 @@ class BMSClient(Thread):
 
         # Open serial port
         self._ser = serial.Serial(dev, baud, timeout=1.0)  # 1 second timeout
-        self._ser.open()
+        try:
+            if not self._ser.isOpen():
+                self._ser.open()
+        except:
+            self.logger.critical("Could not open", exc_info=True)
 
         # Open file
         self._f = open(sfilename, 'a')
@@ -42,6 +46,8 @@ class BMSClient(Thread):
         # Setup global lastline variable
         self.last_string_status = ""
         self.last_module_status = ""
+
+        self.logger.debug("Started BMSClient")
 
     def __del__(self):
         self._ser.close()
@@ -113,7 +119,7 @@ class BMSClient(Thread):
         """
         Return a string of the CSV header for our data
         """
-        return "SoC (%),Current (A)"
+        return "SoC (%),Current (A),"
 
     def csv_line(self):
         """
@@ -122,6 +128,6 @@ class BMSClient(Thread):
         """
         # Short circuit if we haven't started reading data yet
         if self.last_string_status == "":
-            return ""
+            return ",,"
         charge, cur = self.get_data()
-        return "%3d,%3d" % (charge, cur)
+        return "%d,%d," % (charge, cur)

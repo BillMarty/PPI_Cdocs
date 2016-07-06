@@ -95,7 +95,7 @@ def main(config, handlers):
             s += c.csv_header()
             if len(s) == 0:
                 logger.error("CSV header returned by clients is blank")
-            csv_header = s
+            csv_header = "linuxtime," + s
         logqueue = Queue.Queue()
         filewriter = logfilewriter.FileWriter(
             config['filewriter'], handlers, logqueue, csv_header
@@ -115,6 +115,8 @@ def main(config, handlers):
         i = 0
         while True:
             s = ""
+            s += str(time.time()) + ","
+
             # Every 10th time, print data
             if i >= 10:
                 i = 0

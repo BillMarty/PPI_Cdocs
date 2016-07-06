@@ -45,7 +45,7 @@ analog = AnalogClient(aconfig, handlers)
 
 PWM.start(rpm_sig, rpm_default, 100000)
 
-log_dir = "../../Data Analysis/test_logs/"
+log_dir = "../../data_analysis/test_logs/"
 now = datetime.datetime.now()
 today = now.strftime("%Y-%m-%d")
 i=0

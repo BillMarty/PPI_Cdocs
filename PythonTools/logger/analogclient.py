@@ -63,7 +63,7 @@ class AnalogClient(Thread):
                 for m in self.mlist:  # for each measurement
                     name = m[NAME]
                     # retrieve the partial measurement we have so far
-                    val, n = self.partial_values[name]
+                    (val, n) = self.partial_values[name]
                     # If we've taken at least the correct number to average
                     if n >= self.averages:
                         val = val / (n * 1000.)  # scale and convert to voltage
@@ -115,7 +115,7 @@ class AnalogClient(Thread):
         s = ""
         for m in self.mlist:
             val = self.values[m[NAME]]
-            if val is None:
+            if val is not None:
                 s += str(val)
             s += ","
         return s

@@ -73,7 +73,7 @@ class DeepSeaClient(Thread):
         self.mlist = self.read_measurement_description(dconfig['mlistfile'])
         # A list of last updated time
         self.last_updated = {m[NAME]: 0.0 for m in self.mlist}
-        self.values = {m[NAME]: 0.0 for m in self.mlist}
+        self.values = {m[NAME]: None for m in self.mlist}
         self.logger.debug("Started deepsea client")
 
     def __del__(self):
@@ -155,6 +155,7 @@ class DeepSeaClient(Thread):
             x = 0
             if rr is None:
                 x = None  # flag for missed MODBUS data
+                self.logger.error("No response")
             else:
                 registers = rr.registers
                 x = registers[0]
@@ -172,14 +173,9 @@ class DeepSeaClient(Thread):
             x = None
         except IndexError:
             # This happens when the frame gets out of sync
-            # TODO fix so it recovers
             # TODO separate out exception info like main
             self.logger.error("Communication problem: %s", "connection reset",
                               exc_info=True)
-            self.client.socket.flushInput()
-            self.client.framer.resetFrame()
-            self.client.transaction.reset()
-            time.sleep(0.5)
             self.client.socket.flushInput()
             self.client.framer.resetFrame()
             self.client.transaction.reset()
