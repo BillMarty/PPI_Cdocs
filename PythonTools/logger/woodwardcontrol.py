@@ -1,14 +1,21 @@
 from threading import Thread
 import time
+import logging
 import Adafruit_BBIO.PWM as PWM
 
 class WoodwardPWM(Thread):
     """
     Send a square wave input via the PWM
     """
-    def __init__(self, ww_sig):
-        super(PWMInput, self).__init__()
-        self.ww_sig = ww_sig
+    def __init__(self, wconfig, handlers):
+        super(WoodwardPWM, self).__init__()
+
+        self.logger = logging.getLogger(__name__)
+        for h in handlers:
+            self.logger.addHandler(h)
+        self.logger.setLevel(logging.DEBUG)
+
+        self.ww_sig = wconfig['ww_sig']
         PWM.start(self.ww_sig, 50, 100000)
         self.cancelled = False
         self.half_period = 20 # half period in seconds

@@ -23,6 +23,8 @@ import logging
 ##############################
 import deepseaclient
 import bmsclient
+import analogclient
+import woodwardcontrol
 
 def main(config, handlers):
     """
@@ -30,7 +32,7 @@ def main(config, handlers):
     """
     logger = logging.getLogger(__name__)
     for h in handlers:
-        logger.add_handler(h)
+        logger.addHandler(h)
     logger.setLevel(logging.DEBUG)
 
     try:
@@ -41,6 +43,7 @@ def main(config, handlers):
         raise  # pass through whatever exception
 
     # Keep a list of all threads we have running
+    threads = []
     clients = []
 
     if 'deepsea' in config['enabled']:
@@ -52,6 +55,7 @@ def main(config, handlers):
                          %(str(exc_type), str(exc_value)))
         else:
             clients.append(deepSea)
+            threads.append(deepSea)
 
     if 'bms' in config['enabled']:
         try:
@@ -62,14 +66,35 @@ def main(config, handlers):
                          %(str(exc_type), str(exc_value)))
         else:
             clients.append(bms)
+            threads.append(bms)
+
+    if 'analog' in config['enabled']:
+        try:
+            analog = analogclient.AnalogClient(config['analog'], handlers)
+        except:
+            exc_type, exc_value = sys.exc_info()[:2]
+            logger.error("Error opening AnalogClient: %s: %s"\
+                         %(str(exc_type), str(exc_value)))
+        else:
+            clients.append(analog)
+            threads.append(analog)
+
+    if 'woodward' in config['enabled']:
+        try:
+            woodward = woodwardcontrol.WoodwardPWM(config['woodward'], handlers)
+        except:
+            exc_type, exc_value = sys.exc_info()[:2]
+            logger.error("Error opening WoodwardPWM: %s: %s"\
+                         %(str(exc_type), str(exc_value)))
+        else:
+            threads.append(woodward)
 
     if len(clients) == 0:
-        logger.error("No clients started successfully.")
-        logger.error("Exiting")
+        logger.error("No clients started successfully. Exiting.")
         exit(-1)
 
-    for client in clients:
-        client.start()
+    for thread in threads:
+        thread.start()
 
     try:
         with open(config['datafile'], mode='a') as f:
@@ -90,8 +115,8 @@ def main(config, handlers):
                 time.sleep(1.0)
     except KeyboardInterrupt:
         print("Keyboard Interrupt detected. Stopping...")
-        for client in clients:
-            client.cancel()
-            client.join()
-            print("Joined " + str(client))
+        for thread in threads:
+            thread.cancel()
+            thread.join()
+            print("Joined " + str(thread))
         exit(2)

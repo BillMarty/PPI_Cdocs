@@ -9,13 +9,18 @@ import logging
 from threading import Thread
 import Adafruit_BBIO.ADC as ADC
 
+NAME = 0
+UNITS = 1
+PIN = 2
+GAIN = 3
+OFFSET = 4
 
 class AnalogClient(Thread):
     def __init__(self, aconfig, handlers):
         """
         Set up a thread to read in analog values
         aconfig: the configuration values to read in
-            {'measurements': {'current': "P9_39", ... },
+            {'measurements': [['current', 'A', "P9_39", 1.0, 0.0], ...],
              'frequency': 0.1, # seconds
              'averages': 8, # Number of values to average
             }
@@ -35,21 +40,17 @@ class AnalogClient(Thread):
         self.frequency = aconfig['frequency']
         self.averages = aconfig['averages']
         self.mfrequency = self.frequency / self.averages
-        self.sleeptime = self.mfrequency * .9
 
         # Initialize our array of values
-        self.values = {m: 0.0 for m in self.mlist}
-        self.partial_values = {m: (0.0, 0) for m in self.mlist}
+        self.values = {m[NAME]: 0.0 for m in self.mlist}
+        self.partial_values = {m[NAME]: (0.0, 0) for m in self.mlist}
         self.last_updated = time.time()
 
         # Open the ADC
         ADC.setup()
 
-
-    def cancel(self):
-        """End this thread"""
-        self.cancelled = True
-        self.logger.info("Stopping " + str(self) + "...")
+        # Log to debug that we've started
+        self.logger.debug("Started analogclient")
 
 
     def run(self):
@@ -60,15 +61,42 @@ class AnalogClient(Thread):
             t = time.time()
             # If we've passed the ideal time, get the value
             if t >= self.last_updated + self.mfrequency:
-                for k, v in self.mlist.iteritems(): # for each measurement
-                    val, n = self.partial_values[k] # retrieve the partial measurement we have so far
+                for m in self.mlist: # for each measurement
+                    name = m[NAME]
+                    val, n = self.partial_values[name] # retrieve the partial measurement we have so far
                     if n >= self.averages: # If we've taken at least the correct number to average
-                    	self.values[k] = val / (n * 1000.) # Post value, in voltage
+                    	val = val / (n * 1000.) # scale and get to voltage (from mV)
+                        self.values[name] = val * m[GAIN] + m[OFFSET] # Apply correct gain and offset
                     	val, n = 0., 0. # Reset partial value
-                    val, n = val + ADC.read_raw(v), n + 1 # Update the values with new readings
-                    self.partial_values[k] = val, n # Store the new partial values
+                    val, n = val + ADC.read_raw(m[PIN]), n + 1 # Update the values with new readings
+                    self.partial_values[name] = val, n # Store the new partial values
                 self.last_updated = t
             time.sleep(0.01)
+
+
+    ###################################
+    # Methods called from Main Thread
+    ###################################
+
+    def cancel(self):
+        """End this thread"""
+        self.cancelled = True
+        self.logger.info("Stopping " + str(self) + "...")
+
+
+    def print_data(self):
+        """
+        Print all the data as we currently have it, in human-
+        readable format.
+        """
+        for m in self.mlist:
+            name = m[NAME]
+            val = self.values[name]
+            if val == None:
+                display = "%20s %10s %10s"%(name, "ERR", m[UNITS])
+            else:
+                display = "%20s %10.2f %10s"%(name, val, m[UNITS])
+            print(display)
 
 
     def csv_header(self):
@@ -77,7 +105,7 @@ class AnalogClient(Thread):
         """
         s = ""
         for m in self.mlist:
-            s += m + ","
+            s += m[NAME] + ","
         return s
 
 
@@ -87,7 +115,7 @@ class AnalogClient(Thread):
         """
         s = ""
         for m in self.mlist:
-            val = self.values[m]
+            val = self.values[m[NAME]]
             if val != None:
                 s += str(val)
             s += ","

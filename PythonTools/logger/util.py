@@ -16,14 +16,15 @@ def get_input(s, default=""):
     if default == "":
         d = " "
     else:
-        d = " [" + default + "] "
+        d = " [" + str(default) + "] "
+
     if sys.version_info < (3,0):
         x = raw_input(s + d)
     else:
         x = input(s + d)
 
     if x == "":
-        return default
+        return str(default)
     else:
         return x
 

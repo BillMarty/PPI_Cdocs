@@ -33,14 +33,18 @@ It will be structured as a nested dictionary of the following form:
         "baudrate": 9600, # baud rate to read in
         "sfilename": "bmsstream.txt", # A file to store the stream of data verbatim
     },
+
+    "woodward": {
+        "ww_sig": "P9_21", # PWM signal to the Woodward
+    },
+
+
 }
 """
 ###############################
 # Python imports
 ###############################
-import socket
 import ast
-import sys
 import os
 import logging
 
@@ -76,6 +80,10 @@ bdefaults = {
         'sfilename': '/home/hygen/log/bmsstream.log',
         }
 
+wdefaults = {
+        'ww_sig': 'P9_21',
+        }
+
 defaults = {
         'enabled':  [],
         'datafile': "/home/hygen/log/datalog.log",
@@ -83,8 +91,8 @@ defaults = {
         }
 
 
-def get_configuration(fromConsole=False, config_file=default_config_file, 
-					  loghandler=logging.StreamHandler()):
+def get_configuration(fromConsole=False, config_file=default_config_file,
+                        loghandler=logging.StreamHandler()):
     """
     Return a configuration map, either from file or from user input on the console.
     """
@@ -101,17 +109,31 @@ def get_configuration(fromConsole=False, config_file=default_config_file,
         else:
             # Get DeepSea Configuration
             ans = get_input("Use the DeepSea [y/n]?",
-            				default='n').strip().lower()[0]
+                            default='n').strip().lower()[0]
             if ans == "y":
                 config['enabled'].append('deepsea')
                 config['deepsea'] = get_deepsea_configuration()
 
             # Get BMS configuration
             ans = get_input("Use the Beckett BMS [y/n]?",
-            				default='n').strip().lower()[0]
+                            default='n').strip().lower()[0]
             if ans == "y":
                 config['enabled'].append('bms')
                 config['bms'] = get_bms_configuration()
+
+            # Get woodward configuration
+            ans = get_input("Drive the woodward PWM output [y/n]?",
+                            default='n').strip().lower()[0]
+            if ans == 'y':
+                config['enabled'].append('woodward')
+                config['woodward'] = get_woodward_configuration()
+
+            # Get analog input configuration
+            ans = get_input("Use analog inputs [y/n]?",
+                            default='n').strip().lower()[0]
+            if ans == 'y':
+                config['enabled'].append('analog')
+                config['analog'] = get_analog_configuration()
 
             # Add additional async components here
 
@@ -119,7 +141,7 @@ def get_configuration(fromConsole=False, config_file=default_config_file,
             ans = get_input("Where to store the data log file?",
                     default=defaults['datafile'])
             if os.path.exists(ans) and \
-            	os.access(os.path.dirname(ans), os.W_OK):
+                os.access(os.path.dirname(ans), os.W_OK):
                 config['datafile'] = ans
             else:
                 raise IOError("Error with data file")
@@ -128,7 +150,7 @@ def get_configuration(fromConsole=False, config_file=default_config_file,
             # Set up program log
             ans = get_input("Where to store the program log file?",
                     default=defaults['logfile'])
-            if (os.path.exists(ans) and 
+            if (os.path.exists(ans) or \
                 os.access(os.path.dirname(ans), os.W_OK)):
                 config['logfile'] = ans
             else:
@@ -136,14 +158,14 @@ def get_configuration(fromConsole=False, config_file=default_config_file,
                 exit(-1)
 
             # Enable saving to config file
-            ans = get_input("Save configuration to file [y/n]?", default=0)
+            ans = get_input("Save configuration to file [y/n]?", default='n')
             if ans.strip().lower()[0] == "y":
                 ans = get_input("Save file:", default=default_config_file)
                 if not write_config_file(config, ans):
-                	ans = get_input("Writing to disk failed. Continue?",
-                					default='n').strip().lower()[0]
-                	if ans != 'y':
-	                    raise IOError("Error writing config to disk")
+                    ans = get_input("Writing to disk failed. Continue?",
+                                    default='n').strip().lower()[0]
+                    if ans != 'y':
+                        raise IOError("Error writing config to disk")
 
     else:
         try:
@@ -151,9 +173,9 @@ def get_configuration(fromConsole=False, config_file=default_config_file,
             with open(config_file, 'r') as f:
                 s = f.read()
                 try:
-                	config = ast.literal_eval(s)
+                    config = ast.literal_eval(s)
                 except:
-                	raise ValueError("Syntax errors in configuration file")
+                    raise ValueError("Syntax errors in configuration file")
         except:
             raise IOError("Could not open configuration file \"%s\". Exiting..."%(config_file))
             exit(-1)
@@ -176,7 +198,7 @@ def read_measurement_description(filename):
             rline=line.split(',')
             if n>=2:
                 MeasList.append([rline[0], rline[1], int(rline[2]),
-                    			 int(rline[3]), float(rline[4]), float(rline[5])])
+                                 int(rline[3]), float(rline[4]), float(rline[5])])
     return MeasList
 
 
@@ -191,8 +213,8 @@ def get_deepsea_configuration():
 
     if ans == "tcp":
         dconfig['mode'] = "tcp"
-        dconfig['host'] = get_input("Host address?", 
-        							default=ddefaults['host']).strip()
+        dconfig['host'] = get_input("Host address?",
+                                    default=ddefaults['host']).strip()
 
         ans = get_input("Port #?", default=str(ddefaults['port'])).strip()
         while not is_int(ans):
@@ -273,6 +295,62 @@ def get_bms_configuration():
     return bconfig
 
 
+def get_woodward_configuration():
+    """
+    Get configuration values for the woodward PWM control signal
+    """
+    wconfig = {}
+    wconfig['ww_sig'] = get_input("Pin to Woodward RPM signal?",
+                                     default=wdefaults['ww_sig'])
+    return wconfig
+
+
+def get_analog_configuration():
+    """
+    Get configuration values for reading in analog components
+    """
+    aconfig = {}
+
+    first = True
+    ans = 'n'
+    ms = []
+    while first or ans == 'y':
+        m = []
+        m.append(get_input("Enter a measurement name:"))
+        m.append(get_input("Enter measurement units:"))
+        m.append(get_input("Enter the pin in form \"P9_25\":"))
+        m.append(get_input("Enter the gain"))
+        m.append(get_input("Enter the offset"))
+        ms.append(m)
+        first = False
+        ans = get_input("Add another measurement [y/n]?",
+                        default='n').strip().lower()[0]
+    aconfig['measurements'] = ms
+
+    cont = True
+    while cont:
+        try:
+            ans = get_input("Enter how often to measure analog values", default="1.0")
+            f = float(ans)
+            cont = False
+        except:
+            cont = True
+    aconfig['frequency'] = f
+
+    cont = True
+    while cont:
+        try:
+            ans = get_input("How many values to average for each measurement",
+                            default="8")
+            i = int(ans)
+            cont=False
+        except:
+            cont = True
+    aconfig['averages'] = i
+
+    return aconfig
+
+
 def write_config_file(config, path):
     """
     Attempt to write a configuration map to the filename given.
@@ -296,6 +374,4 @@ def write_config_file(config, path):
         return False
 
     return True
-
-
 
