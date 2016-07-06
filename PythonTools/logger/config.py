@@ -134,6 +134,13 @@ def get_configuration(fromConsole=False, config_file=default_config_file):
                 config['enabled'].append('analog')
                 config['analog'] = get_analog_configuration()
 
+            # Get filewriter configuration
+            ans = get_input("Write to file [y/n]?",
+                            default='n').strip().lower()[0]
+            if ans == 'y':
+                config['enabled'].append('filewriter')
+                config['filewriter'] = get_filewriter_configuration()
+
             # Add additional async components here
 
             # Set up data log
@@ -144,16 +151,6 @@ def get_configuration(fromConsole=False, config_file=default_config_file):
                 config['datafile'] = ans
             else:
                 raise IOError("Error with data file")
-                exit(-1)
-
-            # Set up program log
-            ans = get_input("Where to store the program log file?",
-                            default=defaults['logfile'])
-            if (os.path.exists(ans) or
-                    os.access(os.path.dirname(ans), os.W_OK)):
-                config['logfile'] = ans
-            else:
-                raise IOError("Error with log file")
                 exit(-1)
 
             # Enable saving to config file
@@ -354,6 +351,15 @@ def get_analog_configuration():
     aconfig['averages'] = i
 
     return aconfig
+
+
+def get_filewriter_configuration():
+    fconfig = {}
+    ans = get_input("Directory for log files:")
+    while not os.path.exists(ans):
+        ans = get_input("Try again: directory for log files:")
+    fconfig['ldir'] = ans
+    return fconfig
 
 
 def write_config_file(config, path):
