@@ -42,4 +42,4 @@ class WoodwardPWM(Thread):
 
     def cancel(self):
         self.cancelled = True
-        print("Stopping " + str(self) + "...")
+        self.logger.info("Stopping " + str(self) + "...")

@@ -134,10 +134,10 @@ def main(config, handlers):
             i += 1
             time.sleep(0.1)
 
-    except KeyboardInterrupt:
-        print("Keyboard Interrupt detected. Stopping...")
+    except:
+        logger.info("Stopping...")
         for thread in threads:
             thread.cancel()
             thread.join()
-            print("Joined " + str(thread))
+            logger.info("Joined " + str(thread))
         exit(2)

@@ -7,18 +7,17 @@ including PID files, start / stop, and context management.
 """
 
 # System imports
-import lockfile
 import logging
 import signal
 import argparse
 
 # Third party libraries
 import daemon
+from daemon import pidfile
 
 # My imports
 from config import get_configuration
 from main import main
-
 
 # create logger
 logger = logging.getLogger(__name__)
@@ -46,26 +45,22 @@ for h in handlers:
     logger.addHandler(h)
 
 
-# # Setup daemon context
-# context = daemon.DaemonContext(
-# 	working_directory='/',
-# 	pidfile=lockfile.FileLock('/var/run/hygen_logger.pid'),
-# 	files_preserve = [
-# 		fh.stream,
-# 	],
-# 	umask=0o002,
-# )
+# Setup daemon context
+context = daemon.DaemonContext(
+	working_directory='/',
+	pidfile=pidfile.PIDLockFile('/var/run/hygen_logger.pid'),
+	files_preserve = [
+		fh.stream,
+	],
+	umask=0o002,
+)
 
 
 # TODO handle signals (SIGINT, etc.)
-# context.signal_map = { signal.SIGTERM: None, # program cleanup
-# 		signal.SIGHUP: None, # hangup
-# 		signal.SIGTSTP: None, # suspend - configurable
-# 		signal.SIGQUIT: None, # core dump
-# 		signal.SIGSTOP: None, # suspend; un-configurable
-# 		signal.SIGTTIN: None, # tried to read from tty from background
-# 		signal.SIGTTOU: None, # Tried to write to tty from background
-# 		}
+context.signal_map = { signal.SIGTERM: 'terminate', # program cleanup
+                       signal.SIGHUP: 'terminate', # hangup
+                       signal.SIGTSTP: 'terminate', # suspend - configurable
+                     }
 
 # Parse arguments
 parser = argparse.ArgumentParser(description="Start the Hygen logging daemon")
@@ -79,5 +74,5 @@ if args.config:
 else:
     config = get_configuration()
 
-# with context:
-main(config, handlers)
+with context:
+    main(config, handlers)

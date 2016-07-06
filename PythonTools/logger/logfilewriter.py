@@ -65,7 +65,6 @@ class FileWriter(Thread):
         except:
             self.logger.critical("Failed to open log file: %s" % fpath)
             return open(os.devnull, 'w')  # return a null file
-
         return f
 
     def write_line(self, line):
@@ -108,4 +107,6 @@ class FileWriter(Thread):
         """
         Cancels the thread, allowing it to be joined.
         """
+        self.logger.info("Stopping " + str(self))
         self.cancelled = True
+

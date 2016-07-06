@@ -1,6 +1,6 @@
 {
     'deepsea': {
-        'mlistfile': 'cur_rpm.csv',
+        'mlistfile': '/home/hygen/dev/PPI_Cdocs/PythonTools/logger/cur_rpm.csv',
         'baudrate': 115200,
         'mode': 'rtu',
         'dev': '/dev/ttyO1',
