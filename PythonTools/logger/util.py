@@ -1,5 +1,6 @@
 import sys
 
+
 def get_input(s, default=""):
     """
     Get raw input using the correct version for the Python version.
@@ -18,7 +19,7 @@ def get_input(s, default=""):
     else:
         d = " [" + str(default) + "] "
 
-    if sys.version_info < (3,0):
+    if sys.version_info < (3, 0):
         x = raw_input(s + d)
     else:
         x = input(s + d)
@@ -36,6 +37,3 @@ def is_int(s):
         return True
     except ValueError:
         return False
-
-
-

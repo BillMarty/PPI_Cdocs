@@ -11,12 +11,9 @@ The program implements the following functionality:
 # Import required libraries
 ###############################
 import sys
-import os
-import os.path
-import threading
-import thread
 import time
 import logging
+import Queue  # specific to python 2: 3 is queue
 
 ##############################
 # Import my files
@@ -25,6 +22,8 @@ import deepseaclient
 import bmsclient
 import analogclient
 import woodwardcontrol
+import logfilewriter
+
 
 def main(config, handlers):
     """
@@ -35,24 +34,20 @@ def main(config, handlers):
         logger.addHandler(h)
     logger.setLevel(logging.DEBUG)
 
-    try:
-        lf = open(config['datafile'], mode='a')
-        # TODO start a new file every x hours
-        # TODO compression
-    except:
-        raise  # pass through whatever exception
-
     # Keep a list of all threads we have running
     threads = []
     clients = []
 
+    ############################################
+    # Async Data Sources
+    ############################################
     if 'deepsea' in config['enabled']:
         try:
             deepSea = deepseaclient.DeepSeaClient(config['deepsea'], handlers)
         except:
             exc_type, exc_value = sys.exc_info()[:2]
-            logger.error("Error opening DeepSeaClient: %s: %s"\
-                         %(str(exc_type), str(exc_value)))
+            logger.error("Error opening DeepSeaClient: %s: %s"
+                         % (str(exc_type), str(exc_value)))
         else:
             clients.append(deepSea)
             threads.append(deepSea)
@@ -62,8 +57,8 @@ def main(config, handlers):
             bms = bmsclient.BMSClient(config['bms'], handlers)
         except:
             exc_type, exc_value = sys.exc_info()[:2]
-            logger.error("Error opening BMSClient: %s: %s"\
-                         %(str(exc_type), str(exc_value)))
+            logger.error("Error opening BMSClient: %s: %s"
+                         % (str(exc_type), str(exc_value)))
         else:
             clients.append(bms)
             threads.append(bms)
@@ -73,46 +68,70 @@ def main(config, handlers):
             analog = analogclient.AnalogClient(config['analog'], handlers)
         except:
             exc_type, exc_value = sys.exc_info()[:2]
-            logger.error("Error opening AnalogClient: %s: %s"\
-                         %(str(exc_type), str(exc_value)))
+            logger.error("Error opening AnalogClient: %s: %s"
+                         % (str(exc_type), str(exc_value)))
         else:
             clients.append(analog)
             threads.append(analog)
 
+    #######################################
+    # Other Threads
+    #######################################
     if 'woodward' in config['enabled']:
         try:
-            woodward = woodwardcontrol.WoodwardPWM(config['woodward'], handlers)
+            woodward = woodwardcontrol.WoodwardPWM(
+                config['woodward'], handlers
+                )
         except:
             exc_type, exc_value = sys.exc_info()[:2]
-            logger.error("Error opening WoodwardPWM: %s: %s"\
-                         %(str(exc_type), str(exc_value)))
+            logger.error("Error opening WoodwardPWM: %s: %s"
+                         % (str(exc_type), str(exc_value)))
         else:
             threads.append(woodward)
 
+    if 'filewriter' in config['enabled']:
+        s = ""
+        for c in clients:
+            s += c.csv_header()
+            if len(s) == 0:
+                logger.error("CSV header returned by clients is blank")
+            csv_header = s
+        logqueue = Queue.Queue()
+        filewriter = logfilewriter.FileWriter(
+            config['filewriter'], handlers, logqueue, csv_header
+            )
+        threads.append(filewriter)
+
+    # Check whether we have some input
     if len(clients) == 0:
         logger.error("No clients started successfully. Exiting.")
         exit(-1)
 
+    # Start all the threads
     for thread in threads:
         thread.start()
 
     try:
-        with open(config['datafile'], mode='a') as f:
+        i = 0
+        while True:
             s = ""
-            for client in clients:
-                s += client.csv_header()
-            if len(s) > 0:
-                f.write(s + "\n")
-
-            while True:
-                s = ""
+            # Every 10th time, print data
+            if i >= 10:
+                i = 0
                 for client in clients:
                     client.print_data()
                     s += client.csv_line()
-                if len(s) > 0:
-                    f.write(s + "\n")
-                    print('-' * 80)
-                time.sleep(1.0)
+                print('-' * 80)
+            else:
+                for client in clients:
+                    s += client.csv_line()
+
+            # Put the csv data in the logfile
+            if len(s) > 0:
+                logqueue.put(s[:-1])
+            i += 1
+            time.sleep(0.1)
+
     except KeyboardInterrupt:
         print("Keyboard Interrupt detected. Stopping...")
         for thread in threads:

@@ -1,6 +1,5 @@
 from pymodbus.client.sync import ModbusSerialClient, ModbusTcpClient
 import time
-import traceback
 import logging
 from threading import Thread
 from serial import SerialException
@@ -13,6 +12,7 @@ GAIN = 4
 OFFSET = 5
 TIME = 6
 
+
 class DeepSeaClient(Thread):
     # TODO switch to passing in a logging handler, not the logger itself
     def __init__(self, dconfig, handlers):
@@ -21,7 +21,7 @@ class DeepSeaClient(Thread):
         dconfig: the configuration values specific to deepsea
         """
         super(DeepSeaClient, self).__init__()
-        self.daemon = False # TODO decide
+        self.daemon = False  # TODO decide
         self._cancelled = False
         self.logger = logging.getLogger(__name__)
         for h in handlers:
@@ -59,11 +59,13 @@ class DeepSeaClient(Thread):
             maxRegistersPerRequest = 2
             maxBits = 28 + 8*3 + 16*maxRegistersPerRequest + 16 + 28
             # use 10 times the time to be safe
-            # arrived at by trial and error TODO figure out why and improve recovery
+            # arrived at by trial and error
+            # TODO figure out why and improve recovery
             timeout = 10 * maxBits * (1. / baud)
             self.unit = dconfig['id']
-            self.client = ModbusSerialClient(method='rtu',
-                    port=dev, baudrate=baud, timeout=timeout)
+            self.client = ModbusSerialClient(
+                method='rtu', port=dev, baudrate=baud, timeout=timeout
+                )
             if not self.client.connect():
                 raise SerialException()
 
@@ -74,11 +76,9 @@ class DeepSeaClient(Thread):
         self.values = {m[NAME]: 0.0 for m in self.mlist}
         self.logger.debug("Started deepsea client")
 
-
     def __del__(self):
         self.client.close()
         del self.client
-
 
     def run(self):
         """
@@ -89,15 +89,14 @@ class DeepSeaClient(Thread):
             for m in self.mlist:
                 # Find the ideal wake time
                 gtime = 1.0
-                if len(m) > TIME: # if we have a time from the csv, use it
+                if len(m) > TIME:  # if we have a time from the csv, use it
                     gtime = m[TIME]
                 gtime = gtime + self.last_updated[m[NAME]]
                 # If we've passed it, get the value
                 if t >= gtime:
                     self.values[m[NAME]] = self.getDeepSeaValue(m)
                     self.last_updated[m[NAME]] = t
-            time.sleep(0.01) # TODO base run time on minimum
-
+            time.sleep(0.01)  # TODO base run time on minimum
 
     @staticmethod
     def check_config(dconfig):
@@ -124,7 +123,6 @@ class DeepSeaClient(Thread):
         # If we get to this point, the required values are present
         return True
 
-
     @staticmethod
     def read_measurement_description(filename):
         """
@@ -133,17 +131,16 @@ class DeepSeaClient(Thread):
         """
         MeasList = []
         with open(filename) as mdf:
-            MList=mdf.readlines()
-            MeasList=[]
-            for (n,line) in enumerate(MList[2:]):
-                fields=line.split(',')
+            MList = mdf.readlines()
+            MeasList = []
+            for (n, line) in enumerate(MList[2:]):
+                fields = line.split(',')
                 m = [fields[0], fields[1], int(fields[2]), int(fields[3]),
-                        float(fields[4]), float(fields[5])]
+                     float(fields[4]), float(fields[5])]
                 if len(fields) > 6:
                     m.append(float(fields[6]))
                 MeasList.append(m)
         return MeasList
-
 
     def getDeepSeaValue(self, meas):
         """
@@ -156,27 +153,29 @@ class DeepSeaClient(Thread):
                     unit=self.unit
                     )
             x = 0
-            if rr == None:
+            if rr is None:
                 x = None  # flag for missed MODBUS data
             else:
                 registers = rr.registers
                 x = registers[0]
-                if meas[LENGTH]==2: # If we've got 2 bytes, shift left and add
+                if meas[LENGTH] == 2:  # If we've got 2 bytes, shift left, add
                     x = (x << 16) + registers[1]
                 # Do twos complement for negative number
-                if x & (1 << 31): # if MSB set
-                    x = x - (1 << 32) # subtract 1 and do the 1s complement
+                if x & (1 << 31):  # if MSB set
+                    x = x - (1 << 32)  # subtract 1 and do the 1s complement
                 x = float(x) * meas[GAIN] + meas[OFFSET]
-        except TypeError as e:  # flag error for debug purposes
+        except TypeError:  # flag error for debug purposes
             # TODO sort out what this error is
             # TODO separate out exception info like main
-            self.logger.error("TypeError: not sure what this means", exc_info=True)
+            self.logger.error("TypeError: not sure what this means",
+                              exc_info=True)
             x = None
         except IndexError:
             # This happens when the frame gets out of sync
             # TODO fix so it recovers
             # TODO separate out exception info like main
-            self.logger.error("Communication problem: %s", "connection reset", exc_info=True)
+            self.logger.error("Communication problem: %s", "connection reset",
+                              exc_info=True)
             self.client.socket.flushInput()
             self.client.framer.resetFrame()
             self.client.transaction.reset()
@@ -198,7 +197,6 @@ class DeepSeaClient(Thread):
         self._cancelled = True
         self.logger.info("Stopping " + str(self) + "...")
 
-
     def print_data(self):
         """
         Print all the data as we currently have it, in human-
@@ -207,16 +205,15 @@ class DeepSeaClient(Thread):
         for m in self.mlist:
             name = m[NAME]
             val = self.values[name]
-            if val == None:
-                display = "%20s %10s %10s"%(name, "ERR", m[UNITS])
+            if val is None:
+                display = "%20s %10s %10s" % (name, "ERR", m[UNITS])
             elif m[UNITS] == "sec":
                 t = time.gmtime(val)
                 tstr = time.strftime("%Y-%m-%d %H:%M:%S", t)
-                display = "%20s %21s"%(name, tstr)
+                display = "%20s %21s" % (name, tstr)
             else:
-                display = "%20s %10.2f %10s"%(name, val, m[UNITS])
+                display = "%20s %10.2f %10s" % (name, val, m[UNITS])
             print(display)
-
 
     def csv_header(self):
         """
@@ -227,7 +224,6 @@ class DeepSeaClient(Thread):
             s += m[NAME] + ","
         return s
 
-
     def csv_line(self):
         """
         Return a CSV line of the data we currently have
@@ -235,8 +231,7 @@ class DeepSeaClient(Thread):
         s = ""
         for m in self.mlist:
             val = self.values[m[NAME]]
-            if val != None:
+            if val is not None:
                 s += str(val)
             s += ","
         return s
-

@@ -4,7 +4,6 @@ All values are read in at the same frequency.
 """
 
 import time
-import traceback
 import logging
 from threading import Thread
 import Adafruit_BBIO.ADC as ADC
@@ -14,6 +13,7 @@ UNITS = 1
 PIN = 2
 GAIN = 3
 OFFSET = 4
+
 
 class AnalogClient(Thread):
     def __init__(self, aconfig, handlers):
@@ -26,13 +26,13 @@ class AnalogClient(Thread):
             }
         """
         super(AnalogClient, self).__init__()
-        self.daemon = False # TODO decide
+        self.daemon = False  # TODO decide
         self.cancelled = False
 
         # Start logger for this module
         self.logger = logging.getLogger(__name__)
         for h in handlers:
-        	self.logger.addHandler(h)
+            self.logger.addHandler(h)
         self.logger.setLevel(logging.DEBUG)
 
         # Read and save measurement list
@@ -42,7 +42,7 @@ class AnalogClient(Thread):
         self.mfrequency = self.frequency / self.averages
 
         # Initialize our array of values
-        self.values = {m[NAME]: 0.0 for m in self.mlist}
+        self.values = {m[NAME]: None for m in self.mlist}
         self.partial_values = {m[NAME]: (0.0, 0) for m in self.mlist}
         self.last_updated = time.time()
 
@@ -52,7 +52,6 @@ class AnalogClient(Thread):
         # Log to debug that we've started
         self.logger.debug("Started analogclient")
 
-
     def run(self):
         """
         Overloads Thread.run, runs and reads analog inputs
@@ -61,28 +60,30 @@ class AnalogClient(Thread):
             t = time.time()
             # If we've passed the ideal time, get the value
             if t >= self.last_updated + self.mfrequency:
-                for m in self.mlist: # for each measurement
+                for m in self.mlist:  # for each measurement
                     name = m[NAME]
-                    val, n = self.partial_values[name] # retrieve the partial measurement we have so far
-                    if n >= self.averages: # If we've taken at least the correct number to average
-                    	val = val / (n * 1000.) # scale and get to voltage (from mV)
-                        self.values[name] = val * m[GAIN] + m[OFFSET] # Apply correct gain and offset
-                    	val, n = 0., 0. # Reset partial value
-                    val, n = val + ADC.read_raw(m[PIN]), n + 1 # Update the values with new readings
-                    self.partial_values[name] = val, n # Store the new partial values
+                    # retrieve the partial measurement we have so far
+                    val, n = self.partial_values[name]
+                    # If we've taken at least the correct number to average
+                    if n >= self.averages:
+                        val = val / (n * 1000.)  # scale and convert to voltage
+                        # Apply correct gain and offset
+                        self.values[name] = val * m[GAIN] + m[OFFSET]
+                        val, n = 0., 0.  # Reset partial value
+                    # Update the values with new readings
+                    val, n = val + ADC.read_raw(m[PIN]), n + 1
+                    # Store the new partial values
+                    self.partial_values[name] = val, n
                 self.last_updated = t
             time.sleep(0.01)
-
 
     ###################################
     # Methods called from Main Thread
     ###################################
-
     def cancel(self):
         """End this thread"""
         self.cancelled = True
         self.logger.info("Stopping " + str(self) + "...")
-
 
     def print_data(self):
         """
@@ -92,12 +93,11 @@ class AnalogClient(Thread):
         for m in self.mlist:
             name = m[NAME]
             val = self.values[name]
-            if val == None:
-                display = "%20s %10s %10s"%(name, "ERR", m[UNITS])
+            if val is None:
+                display = "%20s %10s %10s" % (name, "ERR", m[UNITS])
             else:
-                display = "%20s %10.2f %10s"%(name, val, m[UNITS])
+                display = "%20s %10.2f %10s" % (name, val, m[UNITS])
             print(display)
-
 
     def csv_header(self):
         """
@@ -108,7 +108,6 @@ class AnalogClient(Thread):
             s += m[NAME] + ","
         return s
 
-
     def csv_line(self):
         """
         Return a CSV line of the data we currently have
@@ -116,8 +115,7 @@ class AnalogClient(Thread):
         s = ""
         for m in self.mlist:
             val = self.values[m[NAME]]
-            if val != None:
+            if val is None:
                 s += str(val)
             s += ","
         return s
-

@@ -1,13 +1,13 @@
 import serial
-import threading
 import logging
 from threading import Thread
 
+
 class BMSClient(Thread):
     """
-    This class specifies the specifics for the Becket battery management system to
-    communicate asynchronously. The readDataFrame method will read the battery
-    percentage at that moment and put it on the queue.
+    This class specifies the specifics for the Becket battery management system
+    to communicate asynchronously. The readDataFrame method will read the
+    battery percentage at that moment and put it on the queue.
     """
     def __init__(self, bconfig, handlers):
         """
@@ -17,13 +17,13 @@ class BMSClient(Thread):
         """
         # Initialize the parent class
         super(BMSClient, self).__init__()
-        self.daemon = False #TODO decide
+        self.daemon = False  # TODO decide
         self.cancelled = False
 
         # Open a logger
         self.logger = logging.getLogger(__name__)
         for h in handlers:
-        	self.logger.addHandler(h)
+            self.logger.addHandler(h)
         self.logger.setLevel(logging.DEBUG)
 
         # Read config values
@@ -33,7 +33,7 @@ class BMSClient(Thread):
         sfilename = bconfig['sfilename']
 
         # Open serial port
-        self._ser = serial.Serial(dev, baud, timeout=1.0) # 1 second timeout
+        self._ser = serial.Serial(dev, baud, timeout=1.0)  # 1 second timeout
         self._ser.open()
 
         # Open file
@@ -43,12 +43,10 @@ class BMSClient(Thread):
         self.last_string_status = ""
         self.last_module_status = ""
 
-
     def __del__(self):
         self._ser.close()
         del(self._ser)
         self._f.close()
-
 
     @staticmethod
     def check_config(bconfig):
@@ -62,7 +60,6 @@ class BMSClient(Thread):
                 raise ValueError("Missing " + val + ", required for BMS")
         # If we get to this point, the required values are present
         return True
-
 
     def run(self):
         """
@@ -84,14 +81,12 @@ class BMSClient(Thread):
                 elif line[4] == 'M':
                     self.last_module_status = line
 
-
     def cancel(self):
         """
         Stop executing this thread
         """
         self.cancelled = True
         self.logger.info('Stopping ' + str(self) + '...')
-
 
     def get_data(self):
         """
@@ -100,7 +95,6 @@ class BMSClient(Thread):
         charge = int(self.last_string_status[19:22])
         cur = int(self.last_string_status[34:39])
         return (charge, cur)
-
 
     def print_data(self):
         """
@@ -112,16 +106,14 @@ class BMSClient(Thread):
             return
 
         charge, cur = self.get_data()
-        print("%20s %10.2f %10s"%("State of Charge", charge, "%"))
-        print("%20s %10.2f %10s"%("Battery Current", cur, "A"))
-
+        print("%20s %10.2f %10s" % ("State of Charge", charge, "%"))
+        print("%20s %10.2f %10s" % ("Battery Current", cur, "A"))
 
     def csv_header(self):
         """
         Return a string of the CSV header for our data
         """
         return "SoC (%),Current (A)"
-
 
     def csv_line(self):
         """
@@ -132,4 +124,4 @@ class BMSClient(Thread):
         if self.last_string_status == "":
             return ""
         charge, cur = self.get_data()
-        return "%3d,%3d"%(charge, cur)
+        return "%3d,%3d" % (charge, cur)

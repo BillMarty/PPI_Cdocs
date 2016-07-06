@@ -25,11 +25,12 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 # create stream handler to stderr and set level to debug
-sh = logging.StreamHandler() # default is sys.stderr
+sh = logging.StreamHandler()  # default is sys.stderr
 sh.setLevel(logging.DEBUG)
 
 # create formatter
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter(
+    '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 # add formatter to fh
 sh.setFormatter(formatter)
@@ -62,8 +63,9 @@ logger.addHandler(sh)
 
 # Parse arguments
 parser = argparse.ArgumentParser(description="Start the Hygen logging daemon")
-parser.add_argument('--config', action='store_const', dest='config',
-        const=True, default=False, help='set configuration variables from the console')
+parser.add_argument(
+    '--config', action='store_const', dest='config', const=True,
+    default=False, help='set configuration variables from the console')
 
 args = parser.parse_args()
 if args.config:
@@ -73,4 +75,3 @@ else:
 
 # with context:
 main(config, handlers)
-

@@ -91,17 +91,16 @@ defaults = {
         }
 
 
-def get_configuration(fromConsole=False, config_file=default_config_file,
-                        loghandler=logging.StreamHandler()):
+def get_configuration(fromConsole=False, config_file=default_config_file):
     """
-    Return a configuration map, either from file or from user input on the console.
+    Return a configuration map, either from file or from user input on the
+    console.
     """
-    logger = logging.getLogger(__name__)
     config = {}
     config['enabled'] = []
     if fromConsole:
         if get_input("Use config file [y/n]?",
-                default='n').strip().lower()[0] == "y":
+                     default='n').strip().lower()[0] == "y":
             config_file = get_input(
                     "Enter the path to the config file:",
                     default=default_config_file)
@@ -139,9 +138,9 @@ def get_configuration(fromConsole=False, config_file=default_config_file,
 
             # Set up data log
             ans = get_input("Where to store the data log file?",
-                    default=defaults['datafile'])
+                            default=defaults['datafile'])
             if os.path.exists(ans) and \
-                os.access(os.path.dirname(ans), os.W_OK):
+                    os.access(os.path.dirname(ans), os.W_OK):
                 config['datafile'] = ans
             else:
                 raise IOError("Error with data file")
@@ -149,9 +148,9 @@ def get_configuration(fromConsole=False, config_file=default_config_file,
 
             # Set up program log
             ans = get_input("Where to store the program log file?",
-                    default=defaults['logfile'])
-            if (os.path.exists(ans) or \
-                os.access(os.path.dirname(ans), os.W_OK)):
+                            default=defaults['logfile'])
+            if (os.path.exists(ans) or
+                    os.access(os.path.dirname(ans), os.W_OK)):
                 config['logfile'] = ans
             else:
                 raise IOError("Error with log file")
@@ -177,7 +176,9 @@ def get_configuration(fromConsole=False, config_file=default_config_file,
                 except:
                     raise ValueError("Syntax errors in configuration file")
         except:
-            raise IOError("Could not open configuration file \"%s\". Exiting..."%(config_file))
+            raise IOError(
+                "Could not open configuration file \"%s\". Exiting..."
+                % (config_file))
             exit(-1)
 
     return config
@@ -191,14 +192,14 @@ def read_measurement_description(filename):
     """
     MeasList = []
     with open(filename) as mdf:
-        MList=mdf.readlines()
-        MeasList=[]
-        labels=""
-        for (n,line) in enumerate(MList):
-            rline=line.split(',')
-            if n>=2:
+        MList = mdf.readlines()
+        MeasList = []
+        for (n, line) in enumerate(MList):
+            rline = line.split(',')
+            if n >= 2:
                 MeasList.append([rline[0], rline[1], int(rline[2]),
-                                 int(rline[3]), float(rline[4]), float(rline[5])])
+                                 int(rline[3]), float(rline[4]),
+                                 float(rline[5])])
     return MeasList
 
 
@@ -206,7 +207,7 @@ def get_deepsea_configuration():
     """
     Get configuration values for the DeepSea from the user console.
     """
-    dconfig ={}
+    dconfig = {}
     ans = ""
     while ans != "tcp" and ans != "rtu":
         ans = get_input("Use tcp or rtu?").lower().strip()
@@ -222,7 +223,7 @@ def get_deepsea_configuration():
         dconfig['port'] = int(ans)
 
         try:
-            c = ModbusTcpClient(host = dconfig['host'], port = dconfig['port'])
+            c = ModbusTcpClient(host=dconfig['host'], port=dconfig['port'])
             c.connect()
         except:
             raise ValueError("Error with host or port params. Exiting...")
@@ -236,28 +237,31 @@ def get_deepsea_configuration():
 
         ans = get_input("Baud rate?", default=str(ddefaults['baudrate']))
         while not is_int(ans):
-            get_input("Invalid. Baud rate?", default=str(ddefaults['baudrate']))
+            get_input("Invalid. Baud rate?",
+                      default=str(ddefaults['baudrate']))
         dconfig['baudrate'] = int(ans)
 
         try:
             c = ModbusSerialClient(
-                    method = "rtu",
-                    port = dconfig['dev'],
-                    baudrate = dconfig['baudrate'])
+                    method="rtu",
+                    port=dconfig['dev'],
+                    baudrate=dconfig['baudrate'])
             c.connect()
         except:
-            raise ValueError("Error with device or baudrate params. Exiting...")
+            raise ValueError(
+                "Error with device or baudrate params. Exiting...")
             exit(-1)
         else:
             c.close()
 
         ans = get_input("Slave device ID?", default=str(ddefaults['id']))
         while not is_int(ans):
-            get_input("Invalid. Slave device ID?", default=str(ddefaults['id']))
+            get_input("Invalid. Slave device ID?",
+                      default=str(ddefaults['id']))
         dconfig['id'] = int(ans)
 
     ans = get_input("Enter path to measurement list CSV:",
-            default=ddefaults['mlistfile'])
+                    default=ddefaults['mlistfile'])
 
     try:
         f = open(ans)
@@ -301,7 +305,7 @@ def get_woodward_configuration():
     """
     wconfig = {}
     wconfig['ww_sig'] = get_input("Pin to Woodward RPM signal?",
-                                     default=wdefaults['ww_sig'])
+                                  default=wdefaults['ww_sig'])
     return wconfig
 
 
@@ -330,7 +334,8 @@ def get_analog_configuration():
     cont = True
     while cont:
         try:
-            ans = get_input("Enter how often to measure analog values", default="1.0")
+            ans = get_input("Enter how often to measure analog values",
+                            default="1.0")
             f = float(ans)
             cont = False
         except:
@@ -343,7 +348,7 @@ def get_analog_configuration():
             ans = get_input("How many values to average for each measurement",
                             default="8")
             i = int(ans)
-            cont=False
+            cont = False
         except:
             cont = True
     aconfig['averages'] = i
@@ -374,4 +379,3 @@ def write_config_file(config, path):
         return False
 
     return True
-
