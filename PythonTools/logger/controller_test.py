@@ -68,7 +68,7 @@ with open(logfile_name, mode="w") as f:
     f.write(s)
     print(s)
 
-    raw_input("Press enter to start logging data")
+    get_input("Press enter to start logging data")
     try:
         i = 0
         while True:

@@ -2,7 +2,8 @@ from threading import Thread
 import time
 import Adafruit_BBIO.PWM as PWM
 
-class WoodwardPWM(Thread):
+
+class PWMInput(Thread):
     """
     Send a square wave input via the PWM
     """
@@ -11,11 +12,10 @@ class WoodwardPWM(Thread):
         self.ww_sig = ww_sig
         PWM.start(self.ww_sig, 50, 100000)
         self.cancelled = False
-        self.half_period = 20 # half period in seconds
+        self.half_period = 20  # half period in seconds
         self.on = False
         self.low_val = 40
         self.high_val = 50
-
 
     def run(self):
         """
@@ -33,8 +33,6 @@ class WoodwardPWM(Thread):
             i += 1
             time.sleep(1.0)
 
-
     def cancel(self):
         self.cancelled = True
         print("Stopping " + str(self) + "...")
-
