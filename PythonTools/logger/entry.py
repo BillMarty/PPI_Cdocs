@@ -28,7 +28,7 @@ sh = logging.StreamHandler()  # default is sys.stderr
 sh.setLevel(logging.DEBUG)
 
 # Create file handler
-fh = logging.FileHandler('errors.log')
+fh = logging.FileHandler('/home/hygen/dev/PPI_Cdocs/PythonTools/logger/errors.log')
 fh.setLevel(logging.DEBUG)
 
 # create formatter
@@ -47,8 +47,8 @@ for h in handlers:
 
 # Setup daemon context
 context = daemon.DaemonContext(
-	working_directory='/',
-	pidfile=pidfile.PIDLockFile('/var/run/hygen_logger.pid'),
+    working_directory='/',
+	pidfile=pidfile.PIDLockFile('/var/run/hygenlogger.pid'),
 	files_preserve = [
 		fh.stream,
 	],

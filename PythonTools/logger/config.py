@@ -62,7 +62,7 @@ from util import is_int, get_input
 ###############################
 # Constants
 ###############################
-default_config_file = "hygen_logger.py"
+default_config_file = "/home/hygen/dev/PPI_Cdocs/PythonTools/logger/hygen_logger.py"
 ddefaults = {
         'mlistfile': "mdf.csv",
         # TCP
