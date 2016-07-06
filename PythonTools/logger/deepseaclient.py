@@ -155,7 +155,7 @@ class DeepSeaClient(Thread):
             x = 0
             if rr is None:
                 x = None  # flag for missed MODBUS data
-                self.logger.error("No response")
+                # self.logger.error("No response")
             else:
                 registers = rr.registers
                 x = registers[0]

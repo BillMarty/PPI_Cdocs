@@ -19,7 +19,7 @@
     'analog': {
         'averages': 8,
         'measurements': [
-            ['an_300v_cur', 'A', 'P9_40', 40.0, 0.0],
+            ['an_300v_cur', 'A', 'P9_40', 40.0, -0.2],
             ['an_300v_volt', 'V', 'P9_39', 1.0, 0.0]
             ],
         'frequency': 1.0
