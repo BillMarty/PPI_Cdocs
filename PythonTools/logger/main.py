@@ -134,10 +134,14 @@ def main(config, handlers):
             i += 1
             time.sleep(0.1)
 
-    except:
+    except SystemExit:
         logger.info("Stopping...")
         for thread in threads:
             thread.cancel()
             thread.join()
             logger.info("Joined " + str(thread))
         exit(2)
+
+    except:
+    	# Handle
+    	pass
