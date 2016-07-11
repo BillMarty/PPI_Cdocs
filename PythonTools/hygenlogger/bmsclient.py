@@ -19,7 +19,7 @@ class BMSClient(Thread):
         """
         # Initialize the parent class
         super(BMSClient, self).__init__()
-        self.daemon = False  # TODO decide
+        self.daemon = False
         self.cancelled = False
 
         # Open a logger

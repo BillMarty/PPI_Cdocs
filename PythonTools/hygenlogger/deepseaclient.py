@@ -14,7 +14,6 @@ TIME = 6
 
 
 class DeepSeaClient(Thread):
-    # TODO switch to passing in a logging handler, not the logger itself
 
     def __init__(self, dconfig, handlers):
         """
@@ -22,20 +21,20 @@ class DeepSeaClient(Thread):
         dconfig: the configuration values specific to deepsea
         """
         super(DeepSeaClient, self).__init__()
-        self.daemon = False  # TODO decide
+        self.daemon = False
         self._cancelled = False
-        self.logger = logging.getLogger(__name__)
+        self._logger = logging.getLogger(__name__)
         for h in handlers:
-            self.logger.addHandler(h)
-        self.logger.setLevel(logging.DEBUG)
+            self._logger.addHandler(h)
+        self._logger.setLevel(logging.DEBUG)
 
         # Do configuration setup
         DeepSeaClient.check_config(dconfig)
         if dconfig['mode'] == "tcp":
             host = dconfig['host']
             port = dconfig['port']
-            self.client = ModbusTcpClient(host=host, port=port)
-            if not self.client.connect():
+            self._client = ModbusTcpClient(host=host, port=port)
+            if not self._client.connect():
                 raise IOError("Could not connect to the DeepSea over TCP")
         elif dconfig['mode'] == 'rtu':
             dev = dconfig['dev']
@@ -64,10 +63,10 @@ class DeepSeaClient(Thread):
             # TODO figure out why and improve recovery
             timeout = 10 * maxBits * (1. / baud)
             self.unit = dconfig['id']
-            self.client = ModbusSerialClient(
+            self._client = ModbusSerialClient(
                 method='rtu', port=dev, baudrate=baud, timeout=timeout
             )
-            if not self.client.connect():
+            if not self._client.connect():
                 raise SerialException()
 
         # Read and save measurement list
@@ -75,11 +74,11 @@ class DeepSeaClient(Thread):
         # A list of last updated time
         self.last_updated = {m[NAME]: 0.0 for m in self.mlist}
         self.values = {m[NAME]: None for m in self.mlist}
-        self.logger.debug("Started deepsea client")
+        self._logger.debug("Started deepsea client")
 
     def __del__(self):
-        self.client.close()
-        del self.client
+        self._client.close()
+        del self._client
 
     def run(self):
         """
@@ -97,7 +96,7 @@ class DeepSeaClient(Thread):
                 if t >= gtime:
                     self.values[m[NAME]] = self.getDeepSeaValue(m)
                     self.last_updated[m[NAME]] = t
-            time.sleep(0.01)  # TODO base run time on minimum
+            time.sleep(0.01)
 
     @staticmethod
     def check_config(dconfig):
@@ -148,7 +147,7 @@ class DeepSeaClient(Thread):
         Get a data value from the deepSea
         """
         try:
-            rr = self.client.read_holding_registers(
+            rr = self._client.read_holding_registers(
                 meas[ADDRESS],
                 meas[LENGTH],
                 unit=self.unit
@@ -156,7 +155,7 @@ class DeepSeaClient(Thread):
             x = 0
             if rr is None:
                 x = None  # flag for missed MODBUS data
-                # self.logger.error("No response")
+                # self._logger.error("No response")
             else:
                 registers = rr.registers
                 x = registers[0]
@@ -167,22 +166,23 @@ class DeepSeaClient(Thread):
                     x = x - (1 << 32)  # subtract 1 and do the 1s complement
                 x = float(x) * meas[GAIN] + meas[OFFSET]
         except TypeError:  # flag error for debug purposes
-            # TODO sort out what this error is
-            # TODO separate out exception info like main
-            self.logger.error("TypeError: not sure what this means",
-                              exc_info=True)
+            exc_type, exc_value = sys.exc_info()[:2]
+            self._logger.error("Not sure what this means: %s, %s"
+                              % (str(exc_type), str(exc_value)))
             x = None
         except IndexError:
             # This happens when the frame gets out of sync
-            # TODO separate out exception info like main
-            self.logger.error("Communication problem: %s", "connection reset",
-                              exc_info=True)
-            self.client.socket.flushInput()
-            self.client.framer.resetFrame()
-            self.client.transaction.reset()
+            exc_type, exc_value = sys.exc_info()[:2]
+            self._logger.error("Communication problem, connection reset: %s, %s"
+                              % (str(exc_type), str(exc_value)))
+            self._client.socket.flushInput()
+            self._client.framer.resetFrame()
+            self._client.transaction.reset()
             x = None
         except:
-            self.logger.critical("Unknown error occured", exc_info=True)
+            exc_type, exc_value = sys.exc_info()[:2]
+            self._logger.critical("Unknown error occured:%s, %s"
+                                 % (str(exc_type), str(exc_value)))
         return x
 
 ##########################
@@ -192,7 +192,7 @@ class DeepSeaClient(Thread):
     def cancel(self):
         """End this thread"""
         self._cancelled = True
-        self.logger.info("Stopping " + str(self) + "...")
+        self._logger.info("Stopping " + str(self) + "...")
 
     def print_data(self):
         """

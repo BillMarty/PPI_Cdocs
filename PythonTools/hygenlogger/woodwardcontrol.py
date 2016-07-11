@@ -188,8 +188,8 @@ class WoodwardPWM(Thread):
                 time.sleep(1.0)
         elif self.mode == 'pid':
             while not self.cancelled:
-                pass
-                # TODO add control
+                output = self.compute()
+                PWM.set_duty_cycle(self.ww_sig, output)
 
     def cancel(self):
         self.cancelled = True

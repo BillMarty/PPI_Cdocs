@@ -56,8 +56,7 @@ context = daemon.DaemonContext(
     umask=0o002,
 )
 
-
-# TODO handle signals (SIGINT, etc.)
+# Handle signals
 context.signal_map = {signal.SIGTERM: 'terminate',  # program cleanup
                       signal.SIGHUP: 'terminate',  # hangup
                       signal.SIGTSTP: 'terminate',  # suspend - configurable
