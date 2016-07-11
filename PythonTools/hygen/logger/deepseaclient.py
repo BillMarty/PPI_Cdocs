@@ -1,4 +1,4 @@
-from pymodbus.client.sync import ModbusSerialClient, ModbusTcpClient
+# from pymodbus.client.sync import ModbusSerialClient, ModbusTcpClient
 from modbus_tk.modbus_rtu import RtuMaster
 from modbus_tk.modbus_tcp import TcpMaster
 import modbus_tk.defines as defines

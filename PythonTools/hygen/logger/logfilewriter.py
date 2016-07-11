@@ -9,7 +9,12 @@ from threading import Thread
 import os
 import time
 import logging
-import Queue
+from utils import PY2, PY3
+
+if PY3:
+    import queue
+elif PY2:
+    import Queue as queue
 
 
 class FileWriter(Thread):
@@ -101,7 +106,7 @@ class FileWriter(Thread):
             while more_items:
                 try:
                     line = self._queue.get(False)
-                except Queue.Empty:
+                except queue.Empty:
                     more_items = False
                 else:
                     self.write_line(line)

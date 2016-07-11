@@ -6,9 +6,10 @@ from threading import Thread
 class BMSClient(Thread):
 
     """
-    This class specifies the specifics for the Becket battery management system
-    to communicate asynchronously. The readDataFrame method will read the
-    battery percentage at that moment and put it on the queue.
+    This class specifies the specifics for the Becket battery
+    management system to communicate asynchronously. The get_data and
+    print_data methods will read the battery percentage at that moment
+    and return or print it.
     """
 
     def __init__(self, bconfig, handlers):
@@ -99,7 +100,7 @@ class BMSClient(Thread):
         Puts the bytes in the reverse order from the ordinary order.
         See https://en.wikipedia.org/wiki/Fletcher%27s_checksum
         """
-        if type(data) != bytes:
+        if not isinstance(data, bytes):
             return None
         sum1, sum2 = 0, 0
         for byte in data:
@@ -136,8 +137,8 @@ class BMSClient(Thread):
             return
 
         charge, cur = self.get_data()
-        print("%20s %10.2f %10s" % ("State of Charge", charge, "%"))
-        print("%20s %10.2f %10s" % ("Battery Current", cur, "A"))
+        print(("%20s %10.2f %10s" % ("State of Charge", charge, "%")))
+        print(("%20s %10.2f %10s" % ("Battery Current", cur, "A")))
 
     def csv_header(self):
         """

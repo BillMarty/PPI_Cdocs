@@ -6,6 +6,8 @@ The program implements the following functionality:
         possibly other sources
     - Write the read data to a USB memory stick location.
 """
+# Import utils
+from hygen.utils import PY2, PY3
 
 ###############################
 # Import required libraries
@@ -13,16 +15,19 @@ The program implements the following functionality:
 import sys
 import time
 import logging
-import Queue  # specific to python 2: 3 is queue
+if PY2:
+    import Queue as queue
+elif PY3:
+    import queue
 
 ##############################
 # Import my files
 ##############################
-import deepseaclient
-import bmsclient
-import analogclient
-import woodwardcontrol
-import logfilewriter
+from hygen.logger import deepseaclient
+from hygen.logger import bmsclient
+from hygen.logger import analogclient
+from hygen.logger import woodwardcontrol
+from hygen.logger import logfilewriter
 
 
 def main(config, handlers):
@@ -98,7 +103,7 @@ def main(config, handlers):
             if len(s) == 0:
                 logger.error("CSV header returned by clients is blank")
             csv_header = "linuxtime," + s
-        logqueue = Queue.Queue()
+        logqueue = queue.Queue()
         filewriter = logfilewriter.FileWriter(
             config['filewriter'], handlers, logqueue, csv_header
         )
@@ -127,7 +132,7 @@ def main(config, handlers):
                 for client in clients:
                     client.print_data()
                     s += client.csv_line()
-                print('-' * 80)
+                print(('-' * 80))
             else:
                 for client in clients:
                     s += client.csv_line()

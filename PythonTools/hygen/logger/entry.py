@@ -16,8 +16,8 @@ import daemon
 from daemon import pidfile
 
 # My imports
-from config import get_configuration
-from main import main
+from hygen.logger.config import get_configuration
+from hygen.logger.main import main
 
 # create logger
 logger = logging.getLogger(__name__)
