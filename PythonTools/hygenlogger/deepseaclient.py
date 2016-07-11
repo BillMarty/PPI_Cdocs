@@ -1,4 +1,7 @@
 from pymodbus.client.sync import ModbusSerialClient, ModbusTcpClient
+from modbus_tk.modbus_rtu import RtuMaster
+from modbus_tk.modbus_tcp import TcpMaster
+import modbus_tk.defines as defines
 import time
 import logging
 from threading import Thread
@@ -33,40 +36,42 @@ class DeepSeaClient(Thread):
         if dconfig['mode'] == "tcp":
             host = dconfig['host']
             port = dconfig['port']
-            self._client = ModbusTcpClient(host=host, port=port)
-            if not self._client.connect():
+            self._client = RtuMaster(host=host, port=port)
+            self._client.open()
+            if not self._client._is_opened:
                 raise IOError("Could not connect to the DeepSea over TCP")
         elif dconfig['mode'] == 'rtu':
             dev = dconfig['dev']
             baud = dconfig['baudrate']
-            # Timeout is determined dynamically based on baud rate.
-            # It must be large enough to include all responses.
-            # At present, we never have more than 2 registers per
-            # response frame. Therefore the message is:
-            # 28 bits - 3.5 character times of silence
-            # 8 bits - station address
-            # 8 bits - function code
-            # 8 bits - byte count
-            # 16 bits - first register
-            # 16 bits - second register
-            # 16 bits - error check CRC
-            # 28 bits - 3.5 character times of silence
-            # ------- Total
-            # 128 bits
-            # See: DeepSea GenComm Standard
-            #      Modbus RTU Standard Frame Format
-            #      http://stackoverflow.com/a/21459211 re: pymodbus
-            maxRegistersPerRequest = 2
-            maxBits = 28 + 8*3 + 16*maxRegistersPerRequest + 16 + 28
-            # use 10 times the time to be safe
-            # arrived at by trial and error
-            # TODO figure out why and improve recovery
-            timeout = 10 * maxBits * (1. / baud)
+            # USED FOR PYMODBUS - UNNECESSARY FOR MODBUS_TK
+            # # Timeout is determined dynamically based on baud rate.
+            # # It must be large enough to include all responses.
+            # # At present, we never have more than 2 registers per
+            # # response frame. Therefore the message is:
+            # # 28 bits - 3.5 character times of silence
+            # # 8 bits - station address
+            # # 8 bits - function code
+            # # 8 bits - byte count
+            # # 16 bits - first register
+            # # 16 bits - second register
+            # # 16 bits - error check CRC
+            # # 28 bits - 3.5 character times of silence
+            # # ------- Total
+            # # 128 bits
+            # # See: DeepSea GenComm Standard
+            # #      Modbus RTU Standard Frame Format
+            # #      http://stackoverflow.com/a/21459211 re: pymodbus
+            # maxRegistersPerRequest = 2
+            # maxBits = 28 + 8*3 + 16*maxRegistersPerRequest + 16 + 28
+            # # use 10 times the time to be safe
+            # # arrived at by trial and error
+            # # TODO figure out why and improve recovery
+            # timeout = 10 * maxBits * (1. / baud)
             self.unit = dconfig['id']
-            self._client = ModbusSerialClient(
-                method='rtu', port=dev, baudrate=baud, timeout=timeout
-            )
-            if not self._client.connect():
+            self._client = RtuMaster(
+                serial.Serial(port=dev, baudrate=baud))
+            self._client.open()
+            if not self._client._is_opened:
                 raise SerialException()
 
         # Read and save measurement list
@@ -147,42 +152,45 @@ class DeepSeaClient(Thread):
         Get a data value from the deepSea
         """
         try:
-            rr = self._client.read_holding_registers(
-                meas[ADDRESS],
-                meas[LENGTH],
-                unit=self.unit
+            rr = self._client.execute(
+                self.unit,  # Slave ID
+                defines.READ_HOLDING_REGISTERS,  # Function code
+                meas[ADDRESS],  # Starting address
+                meas[LENGTH],  # Quantity to read
+                # TODO use the dataformat string to get the value directly
             )
-            x = 0
+
             if rr is None:
                 x = None  # flag for missed MODBUS data
                 # self._logger.error("No response")
             else:
-                registers = rr.registers
-                x = registers[0]
+                x = rr[0]
                 if meas[LENGTH] == 2:  # If we've got 2 bytes, shift left, add
-                    x = (x << 16) + registers[1]
+                    x = (x << 16) + rr[1]
                 # Do twos complement for negative number
                 if x & (1 << 31):  # if MSB set
-                    x = x - (1 << 32)  # subtract 1 and do the 1s complement
+                    x = x - (1 << 32)  # do the 2s complement
                 x = float(x) * meas[GAIN] + meas[OFFSET]
         except TypeError:  # flag error for debug purposes
             exc_type, exc_value = sys.exc_info()[:2]
             self._logger.error("Not sure what this means: %s, %s"
-                              % (str(exc_type), str(exc_value)))
+                               % (str(exc_type), str(exc_value)))
             x = None
         except IndexError:
             # This happens when the frame gets out of sync
             exc_type, exc_value = sys.exc_info()[:2]
-            self._logger.error("Communication problem, connection reset: %s, %s"
-                              % (str(exc_type), str(exc_value)))
-            self._client.socket.flushInput()
-            self._client.framer.resetFrame()
-            self._client.transaction.reset()
+            self._logger.error(
+                "Communication problem, connection reset: %s, %s"
+                % (str(exc_type), str(exc_value)))
+            # NEEDED FOR PYMODBUS NOT MODBUS_TK
+            # self._client.socket.flushInput()
+            # self._client.framer.resetFrame()
+            # self._client.transaction.reset()
             x = None
         except:
             exc_type, exc_value = sys.exc_info()[:2]
             self._logger.critical("Unknown error occured:%s, %s"
-                                 % (str(exc_type), str(exc_value)))
+                                  % (str(exc_type), str(exc_value)))
         return x
 
 ##########################
