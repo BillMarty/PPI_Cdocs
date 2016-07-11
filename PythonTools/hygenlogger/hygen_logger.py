@@ -29,7 +29,7 @@
 
     # Control signal to Woodward
     'woodward': {
-        'ww_sig': 'P9_21',
+        'pin': 'P9_21',
         'Kp': 1.0,
         'Ki': 1.0,
         'Kd': 1.0,
