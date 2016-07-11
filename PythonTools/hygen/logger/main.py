@@ -140,6 +140,9 @@ def main(config, handlers):
             # Put the csv data in the logfile
             if len(s) > 0:
                 logqueue.put(s[:-1])
+
+            woodward.process_variable = analog.values["current"]
+
             i += 1
             time.sleep(0.1)
 
