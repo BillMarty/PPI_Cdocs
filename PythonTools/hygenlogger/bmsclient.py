@@ -96,15 +96,16 @@ class BMSClient(Thread):
     def fletcher16(data):
         """
         Returns the fletcher-16 checksum for data, of type bytes.
+        Puts the bytes in the reverse order from the ordinary order.
         See https://en.wikipedia.org/wiki/Fletcher%27s_checksum
         """
         if type(data) != bytes:
             return None
-        sum1, sum2 = 0
+        sum1, sum2 = 0, 0
         for byte in data:
             sum1 = (sum1 + byte) % 255
             sum2 = (sum2 + sum1) % 255
-        return (sum2 << 8) | sum1
+        return (sum1 << 8) | sum2
 
     #########################################
     # Methods called from Main thread
