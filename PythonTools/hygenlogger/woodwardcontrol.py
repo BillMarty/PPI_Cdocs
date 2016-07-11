@@ -33,7 +33,7 @@ class WoodwardPWM(Thread):
         WoodwardPWM.check_config(wconfig)
 
         # Store configuration values as instance variables
-        self._pin = wconfig['pin']
+        self.ww_sig = wconfig['ww_sig']
         self.set_tunings(
             wconfig['Kp'],
             wconfig['Ki'],
@@ -44,7 +44,7 @@ class WoodwardPWM(Thread):
         self.set_sample_time(wconfig['period'])
 
         # Set up values
-        PWM.start(self._pin, 50, 100000)
+        PWM.start(self.ww_sig, 50, 100000)
         self.half_period = 20  # half period in seconds
         self.on = False
         self.low_val = 40
@@ -66,7 +66,7 @@ class WoodwardPWM(Thread):
         """
         Check to make sure all the required values are present in the configuration file
         """
-        required_config = ['pin', 'Kp', 'Ki', 'Kd', 'setpoint', 'period']
+        required_config = ['ww_sig', 'Kp', 'Ki', 'Kd', 'setpoint', 'period']
         for val in required_config:
             if val not in bconfig:
                 raise ValueError(
@@ -179,9 +179,9 @@ class WoodwardPWM(Thread):
             while not self.cancelled:
                 if i >= self.half_period:
                     if self.on:
-                        PWM.set_duty_cycle(self._pin, self.low_val)
+                        PWM.set_duty_cycle(self.ww_sig, self.low_val)
                     else:
-                        PWM.set_duty_cycle(self._pin, self.high_val)
+                        PWM.set_duty_cycle(self.ww_sig, self.high_val)
                     self.on = not self.on
                     i = 0
                 i += 1
@@ -189,7 +189,7 @@ class WoodwardPWM(Thread):
         elif self.mode == 'pid':
             while not self.cancelled:
                 output = self.compute()
-                PWM.set_duty_cycle(self._pin, output)
+                PWM.set_duty_cycle(self.ww_sig, output)
 
     def cancel(self):
         self.cancelled = True
