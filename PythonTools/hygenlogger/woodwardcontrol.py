@@ -20,14 +20,15 @@ class WoodwardPWM(Thread):
 
     def __init__(self, wconfig, handlers):
         super(WoodwardPWM, self).__init__()
+        self.daemon = True
 
-        self.logger = logging.getLogger(__name__)
+        self._logger = logging.getLogger(__name__)
         for h in handlers:
-            self.logger.addHandler(h)
-        self.logger.setLevel(logging.DEBUG)
+            self._logger.addHandler(h)
+        self._logger.setLevel(logging.DEBUG)
 
         # Set cancelled to correct initial value
-        self.cancelled = False
+        self._cancelled = False
 
         # Check configuration to ensure all values present
         WoodwardPWM.check_config(wconfig)
@@ -40,11 +41,13 @@ class WoodwardPWM(Thread):
             wconfig['Kd']
         )
         self.setpoint = wconfig['setpoint']
-        self.sample_time = 0
+        self._sample_time = 0
         self.set_sample_time(wconfig['period'])
 
-        # Set up values
+        # Set up values for PWM
         PWM.start(self._pin, 50, 100000)
+
+        # Values for step
         self.half_period = 20  # half period in seconds
         self.on = False
         self.low_val = 40
@@ -53,7 +56,7 @@ class WoodwardPWM(Thread):
         # Mode switch: step or pid
         self.mode = 'step'
 
-        # Initialize variables to reasonable defaults
+        # Initialize pid variables to reasonable defaults
         self.last_time = datetime.datetime.now()
         self.process_variable = self.setpoint
         self.last_error = 0.0
@@ -78,8 +81,8 @@ class WoodwardPWM(Thread):
         if Kp < 0 or Ki < 0 or Kd < 0:
             return
         self.kp = Kp
-        self.ki = Ki * self.sample_time
-        self.kd = Kd / self.sample_time
+        self.ki = Ki * self._sample_time
+        self.kd = Kd / self._sample_time
 
         if self.controller_direction == REVERSE:
             self.kp = -self.kp
@@ -92,10 +95,10 @@ class WoodwardPWM(Thread):
 
     def set_sample_time(self, new_sample_time):
         if new_sample_time > 0:
-            ratio = float(new_sample_time) / self.sample_time
+            ratio = float(new_sample_time) / self._sample_time
             self.ki *= ratio
             self.kd /= ratio
-            self.sample_time = float(new_sample_time)
+            self._sample_time = float(new_sample_time)
 
     def set_output_limits(self, outMin, outMax):
         if outMax < outMin:
@@ -138,7 +141,7 @@ class WoodwardPWM(Thread):
 
         self.last_output = self.output
 
-        if time_change >= self.sample_time:
+        if time_change >= self._sample_time:
             # Compute error variable
             error = self.setpoint - self.process_variable
 
@@ -176,7 +179,7 @@ class WoodwardPWM(Thread):
         """
         i = 0
         if self.mode == 'step':
-            while not self.cancelled:
+            while not self._cancelled:
                 if i >= self.half_period:
                     if self.on:
                         PWM.set_duty_cycle(self._pin, self.low_val)
@@ -187,10 +190,10 @@ class WoodwardPWM(Thread):
                 i += 1
                 time.sleep(1.0)
         elif self.mode == 'pid':
-            while not self.cancelled:
+            while not self._cancelled:
                 output = self.compute()
                 PWM.set_duty_cycle(self._pin, output)
 
     def cancel(self):
-        self.cancelled = True
-        self.logger.info("Stopping " + str(self) + "...")
+        self._cancelled = True
+        self._logger.info("Stopping " + str(self) + "...")

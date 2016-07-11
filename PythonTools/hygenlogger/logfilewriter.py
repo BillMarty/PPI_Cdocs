@@ -17,9 +17,11 @@ class FileWriter(Thread):
     def __init__(self, lconfig, handlers, queue, csv_header):
         # General config for the thread
         super(FileWriter, self).__init__()
-        self.logger = logging.getLogger(__name__)
+        self.daemon = True
+        
+        self._logger = logging.getLogger(__name__)
         for h in handlers:
-            self.logger.addHandler(h)
+            self._logger.addHandler(h)
 
         # Specific config for the logger
         ldir = lconfig['ldir']
@@ -27,13 +29,13 @@ class FileWriter(Thread):
             self.log_dir = os.path.abspath(ldir)
         else:
             raise ValueError("Log directory does not exist")
-        self.queue = queue
-        self.cancelled = False
-        self.f = open(os.devnull, 'w')
-        self.csv_header = csv_header
+        self._queue = queue
+        self._cancelled = False
+        self._f = open(os.devnull, 'w')
+        self._csv_header = csv_header
 
     def __del__(self):
-        self.f.close()
+        self._f.close()
 
     @staticmethod
     def check_config(lconfig):
@@ -67,7 +69,7 @@ class FileWriter(Thread):
         try:
             f = open(fpath, 'w')
         except:
-            self.logger.critical("Failed to open log file: %s" % fpath)
+            self._logger.critical("Failed to open log file: %s" % fpath)
             return open(os.devnull, 'w')  # return a null file
         return f
 
@@ -76,9 +78,9 @@ class FileWriter(Thread):
         Write a line to the currently open file.
         """
         if line[-1] == '\n':
-            self.f.write(line)
+            self._f.write(line)
         else:
-            self.f.write(line + '\n')
+            self._f.write(line + '\n')
 
     def run(self):
         """
@@ -86,30 +88,30 @@ class FileWriter(Thread):
         """
         prev_hour = datetime.datetime.now().hour - 1  # ensure new file
 
-        while not self.cancelled:
+        while not self._cancelled:
             hour = datetime.datetime.now().hour
             if prev_hour != hour:
-                self.f.close()
-                self.f = self.open_new_logfile()
+                self._f.close()
+                self._f = self.open_new_logfile()
                 prev_hour = hour
-                self.write_line(self.csv_header)
+                self.write_line(self._csv_header)
 
             # Get lines out printed
             more_items = True
             while more_items:
                 try:
-                    line = self.queue.get(False)
+                    line = self._queue.get(False)
                 except Queue.Empty:
                     more_items = False
                 else:
                     self.write_line(line)
 
             time.sleep(1.0)
-        self.f.close()
+        self._f.close()
 
     def cancel(self):
         """
         Cancels the thread, allowing it to be joined.
         """
-        self.logger.info("Stopping " + str(self))
-        self.cancelled = True
+        self._logger.info("Stopping " + str(self))
+        self._cancelled = True
