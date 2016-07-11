@@ -81,6 +81,10 @@ class BMSClient(Thread):
             except:
                 self.logger.warning("BMS not connected")
             else:
+                data = line[:120]
+                # If the checksum is wrong, skip it
+                if not fletcher16(data) == int(line[122:126], 16):
+                    continue
                 self._f.write(line)
                 if len(line) <= 4:
                     pass
@@ -89,6 +93,24 @@ class BMSClient(Thread):
                 elif line[4] == 'M':
                     self.last_module_status = line
 
+    @staticmethod
+    def fletcher16(data):
+        """
+        Returns the fletcher-16 checksum for data, of type bytes.
+        See https://en.wikipedia.org/wiki/Fletcher%27s_checksum
+        """
+        if type(data) != bytes:
+            return None
+        sum1, sum2 = 0
+        for byte in data:
+            sum1 = (sum1 + byte) % 255
+            sum2 = (sum2 + sum1) % 255
+        return (sum2 << 8) | sum1
+
+    #########################################
+    # Methods called from Main thread
+    #########################################
+    
     def cancel(self):
         """
         Stop executing this thread
