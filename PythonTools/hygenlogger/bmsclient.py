@@ -4,11 +4,13 @@ from threading import Thread
 
 
 class BMSClient(Thread):
+
     """
     This class specifies the specifics for the Becket battery management system
     to communicate asynchronously. The readDataFrame method will read the
     battery percentage at that moment and put it on the queue.
     """
+
     def __init__(self, bconfig, handlers):
         """
         Initialize the bms client from the configuration values.
@@ -17,14 +19,14 @@ class BMSClient(Thread):
         """
         # Initialize the parent class
         super(BMSClient, self).__init__()
-        self.daemon = False  # TODO decide
-        self.cancelled = False
+        self.daemon = True
+        self._cancelled = False
 
         # Open a logger
-        self.logger = logging.getLogger(__name__)
+        self._logger = logging.getLogger(__name__)
         for h in handlers:
-            self.logger.addHandler(h)
-        self.logger.setLevel(logging.DEBUG)
+            self._logger.addHandler(h)
+        self._logger.setLevel(logging.DEBUG)
 
         # Read config values
         BMSClient.check_config(bconfig)
@@ -38,7 +40,7 @@ class BMSClient(Thread):
             if not self._ser.isOpen():
                 self._ser.open()
         except:
-            self.logger.critical("Could not open", exc_info=True)
+            self._logger.critical("Could not open", exc_info=True)
 
         # Open file
         self._f = open(sfilename, 'a')
@@ -47,7 +49,7 @@ class BMSClient(Thread):
         self.last_string_status = ""
         self.last_module_status = ""
 
-        self.logger.debug("Started BMSClient")
+        self._logger.debug("Started BMSClient")
 
     def __del__(self):
         self._ser.close()
@@ -72,13 +74,16 @@ class BMSClient(Thread):
         Overloads Thread.run, continuously reads from the serial port.
         Updates self.lastline.
         """
-        # TODO debug
-        while not self.cancelled:
+        while not self._cancelled:
             try:
                 line = self._ser.readline()
             except:
-                self.logger.warning("BMS not connected")
+                self._logger.warning("BMS not connected")
             else:
+                data = line[:120]
+                # If the checksum is wrong, skip it
+                if not fletcher16(data) == int(line[122:126], 16):
+                    continue
                 self._f.write(line)
                 if len(line) <= 4:
                     pass
@@ -87,12 +92,31 @@ class BMSClient(Thread):
                 elif line[4] == 'M':
                     self.last_module_status = line
 
+    @staticmethod
+    def fletcher16(data):
+        """
+        Returns the fletcher-16 checksum for data, of type bytes.
+        Puts the bytes in the reverse order from the ordinary order.
+        See https://en.wikipedia.org/wiki/Fletcher%27s_checksum
+        """
+        if type(data) != bytes:
+            return None
+        sum1, sum2 = 0, 0
+        for byte in data:
+            sum1 = (sum1 + byte) % 255
+            sum2 = (sum2 + sum1) % 255
+        return (sum1 << 8) | sum2
+
+    #########################################
+    # Methods called from Main thread
+    #########################################
+
     def cancel(self):
         """
         Stop executing this thread
         """
-        self.cancelled = True
-        self.logger.info('Stopping ' + str(self) + '...')
+        self._cancelled = True
+        self._logger.info('Stopping ' + str(self) + '...')
 
     def get_data(self):
         """

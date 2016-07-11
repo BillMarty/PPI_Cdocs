@@ -16,6 +16,7 @@ OFFSET = 4
 
 
 class AnalogClient(Thread):
+
     def __init__(self, aconfig, handlers):
         """
         Set up a thread to read in analog values
@@ -26,14 +27,14 @@ class AnalogClient(Thread):
             }
         """
         super(AnalogClient, self).__init__()
-        self.daemon = False  # TODO decide
-        self.cancelled = False
+        self.daemon = True
+        self._cancelled = False
 
         # Start logger for this module
-        self.logger = logging.getLogger(__name__)
+        self._logger = logging.getLogger(__name__)
         for h in handlers:
-            self.logger.addHandler(h)
-        self.logger.setLevel(logging.DEBUG)
+            self._logger.addHandler(h)
+        self._logger.setLevel(logging.DEBUG)
 
         # Read and save measurement list
         self.mlist = aconfig['measurements']
@@ -50,13 +51,13 @@ class AnalogClient(Thread):
         ADC.setup()
 
         # Log to debug that we've started
-        self.logger.debug("Started analogclient")
+        self._logger.debug("Started analogclient")
 
     def run(self):
         """
         Overloads Thread.run, runs and reads analog inputs
         """
-        while not self.cancelled:
+        while not self._cancelled:
             t = time.time()
             # If we've passed the ideal time, get the value
             if t >= self.last_updated + self.mfrequency:
@@ -82,8 +83,8 @@ class AnalogClient(Thread):
     ###################################
     def cancel(self):
         """End this thread"""
-        self.cancelled = True
-        self.logger.info("Stopping " + str(self) + "...")
+        self._cancelled = True
+        self._logger.info("Stopping " + str(self) + "...")
 
     def print_data(self):
         """

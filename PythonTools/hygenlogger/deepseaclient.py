@@ -1,4 +1,7 @@
 from pymodbus.client.sync import ModbusSerialClient, ModbusTcpClient
+from modbus_tk.modbus_rtu import RtuMaster
+from modbus_tk.modbus_tcp import TcpMaster
+import modbus_tk.defines as defines
 import time
 import logging
 from threading import Thread
@@ -14,59 +17,61 @@ TIME = 6
 
 
 class DeepSeaClient(Thread):
-    # TODO switch to passing in a logging handler, not the logger itself
+
     def __init__(self, dconfig, handlers):
         """
         Set up a DeepSeaClient
         dconfig: the configuration values specific to deepsea
         """
         super(DeepSeaClient, self).__init__()
-        self.daemon = False  # TODO decide
+        self.daemon = True
         self._cancelled = False
-        self.logger = logging.getLogger(__name__)
+        self._logger = logging.getLogger(__name__)
         for h in handlers:
-            self.logger.addHandler(h)
-        self.logger.setLevel(logging.DEBUG)
+            self._logger.addHandler(h)
+        self._logger.setLevel(logging.DEBUG)
 
         # Do configuration setup
         DeepSeaClient.check_config(dconfig)
         if dconfig['mode'] == "tcp":
             host = dconfig['host']
             port = dconfig['port']
-            self.client = ModbusTcpClient(host=host, port=port)
-            if not self.client.connect():
+            self._client = RtuMaster(host=host, port=port)
+            self._client.open()
+            if not self._client._is_opened:
                 raise IOError("Could not connect to the DeepSea over TCP")
         elif dconfig['mode'] == 'rtu':
             dev = dconfig['dev']
             baud = dconfig['baudrate']
-            # Timeout is determined dynamically based on baud rate.
-            # It must be large enough to include all responses.
-            # At present, we never have more than 2 registers per
-            # response frame. Therefore the message is:
-            # 28 bits - 3.5 character times of silence
-            # 8 bits - station address
-            # 8 bits - function code
-            # 8 bits - byte count
-            # 16 bits - first register
-            # 16 bits - second register
-            # 16 bits - error check CRC
-            # 28 bits - 3.5 character times of silence
-            # ------- Total
-            # 128 bits
-            # See: DeepSea GenComm Standard
-            #      Modbus RTU Standard Frame Format
-            #      http://stackoverflow.com/a/21459211 re: pymodbus
-            maxRegistersPerRequest = 2
-            maxBits = 28 + 8*3 + 16*maxRegistersPerRequest + 16 + 28
-            # use 10 times the time to be safe
-            # arrived at by trial and error
-            # TODO figure out why and improve recovery
-            timeout = 10 * maxBits * (1. / baud)
+            # USED FOR PYMODBUS - UNNECESSARY FOR MODBUS_TK
+            # # Timeout is determined dynamically based on baud rate.
+            # # It must be large enough to include all responses.
+            # # At present, we never have more than 2 registers per
+            # # response frame. Therefore the message is:
+            # # 28 bits - 3.5 character times of silence
+            # # 8 bits - station address
+            # # 8 bits - function code
+            # # 8 bits - byte count
+            # # 16 bits - first register
+            # # 16 bits - second register
+            # # 16 bits - error check CRC
+            # # 28 bits - 3.5 character times of silence
+            # # ------- Total
+            # # 128 bits
+            # # See: DeepSea GenComm Standard
+            # #      Modbus RTU Standard Frame Format
+            # #      http://stackoverflow.com/a/21459211 re: pymodbus
+            # maxRegistersPerRequest = 2
+            # maxBits = 28 + 8*3 + 16*maxRegistersPerRequest + 16 + 28
+            # # use 10 times the time to be safe
+            # # arrived at by trial and error
+            # # TODO figure out why and improve recovery
+            # timeout = 10 * maxBits * (1. / baud)
             self.unit = dconfig['id']
-            self.client = ModbusSerialClient(
-                method='rtu', port=dev, baudrate=baud, timeout=timeout
-                )
-            if not self.client.connect():
+            self._client = RtuMaster(
+                serial.Serial(port=dev, baudrate=baud))
+            self._client.open()
+            if not self._client._is_opened:
                 raise SerialException()
 
         # Read and save measurement list
@@ -74,11 +79,11 @@ class DeepSeaClient(Thread):
         # A list of last updated time
         self.last_updated = {m[NAME]: 0.0 for m in self.mlist}
         self.values = {m[NAME]: None for m in self.mlist}
-        self.logger.debug("Started deepsea client")
+        self._logger.debug("Started deepsea client")
 
     def __del__(self):
-        self.client.close()
-        del self.client
+        self._client.close()
+        del self._client
 
     def run(self):
         """
@@ -96,7 +101,7 @@ class DeepSeaClient(Thread):
                 if t >= gtime:
                     self.values[m[NAME]] = self.getDeepSeaValue(m)
                     self.last_updated[m[NAME]] = t
-            time.sleep(0.01)  # TODO base run time on minimum
+            time.sleep(0.01)
 
     @staticmethod
     def check_config(dconfig):
@@ -147,41 +152,45 @@ class DeepSeaClient(Thread):
         Get a data value from the deepSea
         """
         try:
-            rr = self.client.read_holding_registers(
-                    meas[ADDRESS],
-                    meas[LENGTH],
-                    unit=self.unit
-                    )
-            x = 0
+            rr = self._client.execute(
+                self.unit,  # Slave ID
+                defines.READ_HOLDING_REGISTERS,  # Function code
+                meas[ADDRESS],  # Starting address
+                meas[LENGTH],  # Quantity to read
+                # TODO use the dataformat string to get the value directly
+            )
+
             if rr is None:
                 x = None  # flag for missed MODBUS data
-                # self.logger.error("No response")
+                # self._logger.error("No response")
             else:
-                registers = rr.registers
-                x = registers[0]
+                x = rr[0]
                 if meas[LENGTH] == 2:  # If we've got 2 bytes, shift left, add
-                    x = (x << 16) + registers[1]
+                    x = (x << 16) + rr[1]
                 # Do twos complement for negative number
                 if x & (1 << 31):  # if MSB set
-                    x = x - (1 << 32)  # subtract 1 and do the 1s complement
+                    x = x - (1 << 32)  # do the 2s complement
                 x = float(x) * meas[GAIN] + meas[OFFSET]
         except TypeError:  # flag error for debug purposes
-            # TODO sort out what this error is
-            # TODO separate out exception info like main
-            self.logger.error("TypeError: not sure what this means",
-                              exc_info=True)
+            exc_type, exc_value = sys.exc_info()[:2]
+            self._logger.error("Not sure what this means: %s, %s"
+                               % (str(exc_type), str(exc_value)))
             x = None
         except IndexError:
             # This happens when the frame gets out of sync
-            # TODO separate out exception info like main
-            self.logger.error("Communication problem: %s", "connection reset",
-                              exc_info=True)
-            self.client.socket.flushInput()
-            self.client.framer.resetFrame()
-            self.client.transaction.reset()
+            exc_type, exc_value = sys.exc_info()[:2]
+            self._logger.error(
+                "Communication problem, connection reset: %s, %s"
+                % (str(exc_type), str(exc_value)))
+            # NEEDED FOR PYMODBUS NOT MODBUS_TK
+            # self._client.socket.flushInput()
+            # self._client.framer.resetFrame()
+            # self._client.transaction.reset()
             x = None
         except:
-            self.logger.critical("Unknown error occured", exc_info=True)
+            exc_type, exc_value = sys.exc_info()[:2]
+            self._logger.critical("Unknown error occured:%s, %s"
+                                  % (str(exc_type), str(exc_value)))
         return x
 
 ##########################
@@ -191,7 +200,7 @@ class DeepSeaClient(Thread):
     def cancel(self):
         """End this thread"""
         self._cancelled = True
-        self.logger.info("Stopping " + str(self) + "...")
+        self._logger.info("Stopping " + str(self) + "...")
 
     def print_data(self):
         """
