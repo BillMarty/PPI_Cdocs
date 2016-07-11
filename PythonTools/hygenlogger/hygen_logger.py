@@ -8,7 +8,8 @@
     # DeepSea Configuration
     'deepsea': {
         # Where to find the measurement list
-        'mlistfile': '/home/hygen/dev/PPI_Cdocs/PythonTools/logger/cur_rpm.csv',
+        'mlistfile':\
+        '/home/hygen/dev/PPI_Cdocs/PythonTools/logger/cur_rpm.csv',
         # Possible mode values are 'rtu' or 'tcp'
         'mode': 'rtu',
         # RTU settings
@@ -50,9 +51,10 @@
             # 'P9_38' = AIN3 = pulse count circuit / spare analog input
             # 'P9_39' = AIN0 = high bus voltage
             # 'P9_40' = AIN1 = high bus current shunt
-            ['an_300v_cur', 'A', 'P9_40', 40.0, -0.2],  # These will change gains
+            # These will change gains
+            ['an_300v_cur', 'A', 'P9_40', 40.0, -0.2],
             ['an_300v_volt', 'V', 'P9_39', 1.0, 0.0]
-            ],
+        ],
         # How often to report values
         'frequency': 1.0,
     },

@@ -62,33 +62,34 @@ from util import is_int, get_input
 ###############################
 # Constants
 ###############################
-default_config_file = "/home/hygen/dev/PPI_Cdocs/PythonTools/logger/hygen_logger.py"
+default_config_file =\
+    "/home/hygen/dev/PPI_Cdocs/PythonTools/logger/hygen_logger.py"
 ddefaults = {
-        'mlistfile': "mdf.csv",
-        # TCP
-        'host': "192.168.1.212",
-        'port': 1003,
-        # RTU
-        'dev': "/dev/ttyO1",
-        'baudrate': 9600,
-        'id': 0x8,
-        }
+    'mlistfile': "mdf.csv",
+    # TCP
+    'host': "192.168.1.212",
+    'port': 1003,
+    # RTU
+    'dev': "/dev/ttyO1",
+    'baudrate': 9600,
+    'id': 0x8,
+}
 
 bdefaults = {
-        'dev': "/dev/ttyO2",
-        'baudrate': 9600,
-        'sfilename': '/home/hygen/log/bmsstream.log',
-        }
+    'dev': "/dev/ttyO2",
+    'baudrate': 9600,
+    'sfilename': '/home/hygen/log/bmsstream.log',
+}
 
 wdefaults = {
-        'ww_sig': 'P9_21',
-        }
+    'ww_sig': 'P9_21',
+}
 
 defaults = {
-        'enabled':  [],
-        'datafile': "/home/hygen/log/datalog.log",
-        'logfile': "/home/hygen/log/hygen_telemetry.log",
-        }
+    'enabled':  [],
+    'datafile': "/home/hygen/log/datalog.log",
+    'logfile': "/home/hygen/log/hygen_telemetry.log",
+}
 
 
 def get_configuration(fromConsole=False, config_file=default_config_file):
@@ -102,8 +103,8 @@ def get_configuration(fromConsole=False, config_file=default_config_file):
         if get_input("Use config file [y/n]?",
                      default='n').strip().lower()[0] == "y":
             config_file = get_input(
-                    "Enter the path to the config file:",
-                    default=default_config_file)
+                "Enter the path to the config file:",
+                default=default_config_file)
             config = get_configuration(config_file=config_file)
         else:
             # Get DeepSea Configuration
@@ -240,9 +241,9 @@ def get_deepsea_configuration():
 
         try:
             c = ModbusSerialClient(
-                    method="rtu",
-                    port=dconfig['dev'],
-                    baudrate=dconfig['baudrate'])
+                method="rtu",
+                port=dconfig['dev'],
+                baudrate=dconfig['baudrate'])
             c.connect()
         except:
             raise ValueError(

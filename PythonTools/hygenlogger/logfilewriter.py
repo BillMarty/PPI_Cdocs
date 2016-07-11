@@ -13,6 +13,7 @@ import Queue
 
 
 class FileWriter(Thread):
+
     def __init__(self, lconfig, handlers, queue, csv_header):
         # General config for the thread
         super(FileWriter, self).__init__()
@@ -30,6 +31,9 @@ class FileWriter(Thread):
         self.cancelled = False
         self.f = open(os.devnull, 'w')
         self.csv_header = csv_header
+
+    def __del__(self):
+        self.f.close()
 
     @staticmethod
     def check_config(lconfig):
@@ -109,4 +113,3 @@ class FileWriter(Thread):
         """
         self.logger.info("Stopping " + str(self))
         self.cancelled = True
-

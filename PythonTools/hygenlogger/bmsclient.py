@@ -4,11 +4,13 @@ from threading import Thread
 
 
 class BMSClient(Thread):
+
     """
     This class specifies the specifics for the Becket battery management system
     to communicate asynchronously. The readDataFrame method will read the
     battery percentage at that moment and put it on the queue.
     """
+
     def __init__(self, bconfig, handlers):
         """
         Initialize the bms client from the configuration values.

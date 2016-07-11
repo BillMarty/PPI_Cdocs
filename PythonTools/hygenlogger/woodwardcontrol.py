@@ -11,10 +11,13 @@ import Adafruit_BBIO.PWM as PWM
 DIRECT = 0
 REVERSE = 1
 
+
 class WoodwardPWM(Thread):
+
     """
     Send a square wave input via the PWM
     """
+
     def __init__(self, wconfig, handlers):
         super(WoodwardPWM, self).__init__()
 
@@ -35,7 +38,7 @@ class WoodwardPWM(Thread):
             wconfig['Kp'],
             wconfig['Ki'],
             wconfig['Kd']
-            )
+        )
         self.setpoint = wconfig['setpoint']
         self.sample_time = 0
         self.set_sample_time(wconfig['period'])
@@ -66,7 +69,8 @@ class WoodwardPWM(Thread):
         required_config = ['ww_sig', 'Kp', 'Ki', 'Kd', 'setpoint', 'period']
         for val in required_config:
             if val not in bconfig:
-                raise ValueError("Missing " + val + ", required for Woodward control")
+                raise ValueError(
+                    "Missing " + val + ", required for Woodward control")
         # If we get to this point, the required values are present
         return True
 
@@ -137,7 +141,7 @@ class WoodwardPWM(Thread):
         if time_change >= self.sample_time:
             # Compute error variable
             error = self.setpoint - self.process_variable
-            
+
             # Calculate integral term
             self.integral_term += error * self.ki
             if self.integral_term > self.outMax:
@@ -150,8 +154,8 @@ class WoodwardPWM(Thread):
 
             # Compute output
             output = self.kp * error +\
-                     self.integral_term -\
-                     self.kd * dInput
+                self.integral_term -\
+                self.kd * dInput
             if output > self.outMax:
                 output = self.outMax
             elif output < self.outMin:
@@ -184,8 +188,8 @@ class WoodwardPWM(Thread):
                 time.sleep(1.0)
         elif self.mode == 'pid':
             while not self.cancelled:
-
-
+                pass
+                # TODO add control
 
     def cancel(self):
         self.cancelled = True

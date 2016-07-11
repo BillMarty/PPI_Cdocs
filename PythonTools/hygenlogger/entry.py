@@ -28,7 +28,8 @@ sh = logging.StreamHandler()  # default is sys.stderr
 sh.setLevel(logging.DEBUG)
 
 # Create file handler
-fh = logging.FileHandler('/home/hygen/dev/PPI_Cdocs/PythonTools/logger/errors.log')
+fh = logging.FileHandler(
+    '/home/hygen/dev/PPI_Cdocs/PythonTools/logger/errors.log')
 fh.setLevel(logging.DEBUG)
 
 # create formatter
@@ -48,19 +49,19 @@ for h in handlers:
 # Setup daemon context
 context = daemon.DaemonContext(
     working_directory='/',
-	pidfile=pidfile.PIDLockFile('/var/run/hygenlogger.pid'),
-	files_preserve = [
-		fh.stream,
-	],
-	umask=0o002,
+    pidfile=pidfile.PIDLockFile('/var/run/hygenlogger.pid'),
+    files_preserve=[
+        fh.stream,
+    ],
+    umask=0o002,
 )
 
 
 # TODO handle signals (SIGINT, etc.)
-context.signal_map = { signal.SIGTERM: 'terminate', # program cleanup
-                       signal.SIGHUP: 'terminate', # hangup
-                       signal.SIGTSTP: 'terminate', # suspend - configurable
-                     }
+context.signal_map = {signal.SIGTERM: 'terminate',  # program cleanup
+                      signal.SIGHUP: 'terminate',  # hangup
+                      signal.SIGTSTP: 'terminate',  # suspend - configurable
+                      }
 
 # Parse arguments
 parser = argparse.ArgumentParser(description="Start the Hygen logging daemon")

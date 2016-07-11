@@ -81,7 +81,7 @@ def main(config, handlers):
         try:
             woodward = woodwardcontrol.WoodwardPWM(
                 config['woodward'], handlers
-                )
+            )
         except:
             exc_type, exc_value = sys.exc_info()[:2]
             logger.error("Error opening WoodwardPWM: %s: %s"
@@ -99,7 +99,7 @@ def main(config, handlers):
         logqueue = Queue.Queue()
         filewriter = logfilewriter.FileWriter(
             config['filewriter'], handlers, logqueue, csv_header
-            )
+        )
         threads.append(filewriter)
 
     # Check whether we have some input
@@ -143,5 +143,5 @@ def main(config, handlers):
         exit(2)
 
     except:
-    	# Handle
-    	pass
+        # Handle
+        pass

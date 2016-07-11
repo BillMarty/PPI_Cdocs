@@ -16,6 +16,7 @@ OFFSET = 4
 
 
 class AnalogClient(Thread):
+
     def __init__(self, aconfig, handlers):
         """
         Set up a thread to read in analog values

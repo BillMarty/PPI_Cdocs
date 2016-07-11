@@ -15,6 +15,7 @@ TIME = 6
 
 class DeepSeaClient(Thread):
     # TODO switch to passing in a logging handler, not the logger itself
+
     def __init__(self, dconfig, handlers):
         """
         Set up a DeepSeaClient
@@ -65,7 +66,7 @@ class DeepSeaClient(Thread):
             self.unit = dconfig['id']
             self.client = ModbusSerialClient(
                 method='rtu', port=dev, baudrate=baud, timeout=timeout
-                )
+            )
             if not self.client.connect():
                 raise SerialException()
 
@@ -148,10 +149,10 @@ class DeepSeaClient(Thread):
         """
         try:
             rr = self.client.read_holding_registers(
-                    meas[ADDRESS],
-                    meas[LENGTH],
-                    unit=self.unit
-                    )
+                meas[ADDRESS],
+                meas[LENGTH],
+                unit=self.unit
+            )
             x = 0
             if rr is None:
                 x = None  # flag for missed MODBUS data
