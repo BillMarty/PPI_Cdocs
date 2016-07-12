@@ -64,6 +64,10 @@ class WoodwardPWM(Thread):
         self.in_auto = False
         self.controller_direction = DIRECT
 
+        # Set max and min values for the PWM
+        self.outMin = 0.0
+        self.outMax = 100.0
+
     @staticmethod
     def check_config(wconfig):
         """
@@ -191,8 +195,8 @@ class WoodwardPWM(Thread):
                 time.sleep(1.0)
         elif self.mode == 'pid':
             while not self._cancelled:
-                output = self.compute()
-                PWM.set_duty_cycle(self._pin, output)
+                self.compute()
+                PWM.set_duty_cycle(self._pin, self.output)
 
     def cancel(self):
         self._cancelled = True

@@ -29,6 +29,7 @@ class FileWriter(Thread):
             self._logger.addHandler(h)
 
         # Specific config for the logger
+        FileWriter.check_config(lconfig)
         ldir = lconfig['ldir']
         if os.path.exists(ldir) and os.path.isdir(ldir):
             self.log_dir = os.path.abspath(ldir)
@@ -41,7 +42,8 @@ class FileWriter(Thread):
         self._csv_header = csv_header
 
     def __del__(self):
-        self._f.close()
+        if self._f:
+            self._f.close()
 
     @staticmethod
     def check_config(lconfig):
@@ -92,7 +94,7 @@ class FileWriter(Thread):
         """
         Overrides Thread.run. Run the FileWriter
         """
-        prev_hour = datetime.datetime.now().hour - 1  # ensure new file
+        prev_hour = datetime.datetime.now().hour - 1  # ensure starting file
 
         while not self._cancelled:
             hour = datetime.datetime.now().hour
@@ -102,7 +104,7 @@ class FileWriter(Thread):
                 prev_hour = hour
                 self.write_line(self._csv_header)
 
-            # Get lines out printed
+            # Get lines to print
             more_items = True
             while more_items:
                 try:
@@ -113,7 +115,6 @@ class FileWriter(Thread):
                     self.write_line(line)
 
             time.sleep(1.0)
-        self._f.close()
 
     def cancel(self):
         """

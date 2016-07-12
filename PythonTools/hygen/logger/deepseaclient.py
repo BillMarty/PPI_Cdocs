@@ -68,11 +68,11 @@ class DeepSeaClient(Thread):
             # # TODO figure out why and improve recovery
             # timeout = 10 * maxBits * (1. / baud)
             self.unit = dconfig['id']
-            self._client = RtuMaster(
-                serial.Serial(port=dev, baudrate=baud))
+            self._client = RtuMaster(serial.Serial(port=dev, baudrate=baud))
             self._client.open()
             if not self._client._is_opened:
-                raise SerialException()
+                raise SerialException("Could not open " 
+                                      + self._client._serial.name)
 
         # Read and save measurement list
         self.mlist = self.read_measurement_description(dconfig['mlistfile'])
@@ -82,8 +82,9 @@ class DeepSeaClient(Thread):
         self._logger.debug("Started deepsea client")
 
     def __del__(self):
-        self._client.close()
-        del self._client
+        if self._client:
+            self._client.close()
+            del self._client
 
     def run(self):
         """
@@ -93,10 +94,10 @@ class DeepSeaClient(Thread):
             t = time.time()
             for m in self.mlist:
                 # Find the ideal wake time
-                gtime = 1.0
                 if len(m) > TIME:  # if we have a time from the csv, use it
-                    gtime = m[TIME]
-                gtime = gtime + self.last_updated[m[NAME]]
+                    gtime = m[TIME] + self.last_updated[m[NAME]]
+                else:
+                    gtime = 1.0 + self.last_updated[m[NAME]]  # default
                 # If we've passed it, get the value
                 if t >= gtime:
                     self.values[m[NAME]] = self.getDeepSeaValue(m)
@@ -177,7 +178,7 @@ class DeepSeaClient(Thread):
                                % (str(exc_type), str(exc_value)))
             x = None
         except IndexError:
-            # This happens when the frame gets out of sync
+            # This happens when the frame gets out of sync in PyModbus
             exc_type, exc_value = sys.exc_info()[:2]
             self._logger.error(
                 "Communication problem, connection reset: %s, %s"

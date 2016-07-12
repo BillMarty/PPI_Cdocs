@@ -83,7 +83,7 @@ class BmsClient(Thread):
             except:
                 self._logger.warning("BMS not connected")
             else:
-                data = line[:120]
+                data = line[:122]
                 # If the checksum is wrong, skip it
                 if not fletcher16(data) == int(line[122:126], 16):
                     continue
