@@ -45,8 +45,9 @@ It will be structured as a nested dictionary of the following form:
 # Python imports
 ###############################
 import ast
-import os
 import logging
+import os
+import sys
 
 ###############################
 # 3rd party libraries
@@ -56,14 +57,14 @@ from pymodbus.client.sync import ModbusTcpClient, ModbusSerialClient
 ###############################
 # My imports
 ###############################
-from util import is_int, get_input
-
+from hygen.utils import is_int, get_input
 
 ###############################
 # Constants
 ###############################
 default_config_file =\
-    "/home/hygen/dev/PPI_Cdocs/PythonTools/hygenlogger/hygen_logger.py"
+    "/home/hygen/dev/PPI_Cdocs/PythonTools/hygen/logger/hygen_logger.py"
+
 ddefaults = {
     'mlistfile': "mdf.csv",
     # TCP

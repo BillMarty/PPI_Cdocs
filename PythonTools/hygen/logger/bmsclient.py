@@ -2,13 +2,16 @@ import serial
 import logging
 from threading import Thread
 
+from hygen.utils import ignore
 
-class BMSClient(Thread):
+
+class BmsClient(Thread):
 
     """
-    This class specifies the specifics for the Becket battery management system
-    to communicate asynchronously. The readDataFrame method will read the
-    battery percentage at that moment and put it on the queue.
+    This class specifies the specifics for the Becket battery
+    management system to communicate asynchronously. The get_data and
+    print_data methods will read the battery percentage at that moment
+    and return or print it.
     """
 
     def __init__(self, bconfig, handlers):
@@ -18,7 +21,7 @@ class BMSClient(Thread):
         Throws an exception if the configuration is missing values
         """
         # Initialize the parent class
-        super(BMSClient, self).__init__()
+        super(BmsClient, self).__init__()
         self.daemon = True
         self._cancelled = False
 
@@ -29,7 +32,7 @@ class BMSClient(Thread):
         self._logger.setLevel(logging.DEBUG)
 
         # Read config values
-        BMSClient.check_config(bconfig)
+        BmsClient.check_config(bconfig)
         dev = bconfig['dev']
         baud = bconfig['baudrate']
         sfilename = bconfig['sfilename']
@@ -49,11 +52,11 @@ class BMSClient(Thread):
         self.last_string_status = ""
         self.last_module_status = ""
 
-        self._logger.debug("Started BMSClient")
+        self._logger.debug("Started BmsClient")
 
     def __del__(self):
         self._ser.close()
-        del(self._ser)
+        del self._ser
         self._f.close()
 
     @staticmethod
@@ -80,11 +83,14 @@ class BMSClient(Thread):
             except:
                 self._logger.warning("BMS not connected")
             else:
-                data = line[:120]
+                data = line[:122]
                 # If the checksum is wrong, skip it
                 if not fletcher16(data) == int(line[122:126], 16):
                     continue
-                self._f.write(line)
+
+                with ignore(IOError):
+                    self._f.write(line)
+
                 if len(line) <= 4:
                     pass
                 elif line[4] == 'S':
@@ -99,7 +105,7 @@ class BMSClient(Thread):
         Puts the bytes in the reverse order from the ordinary order.
         See https://en.wikipedia.org/wiki/Fletcher%27s_checksum
         """
-        if type(data) != bytes:
+        if not isinstance(data, bytes):
             return None
         sum1, sum2 = 0, 0
         for byte in data:
@@ -136,8 +142,8 @@ class BMSClient(Thread):
             return
 
         charge, cur = self.get_data()
-        print("%20s %10.2f %10s" % ("State of Charge", charge, "%"))
-        print("%20s %10.2f %10s" % ("Battery Current", cur, "A"))
+        print(("%20s %10.2f %10s" % ("State of Charge", charge, "%")))
+        print(("%20s %10.2f %10s" % ("Battery Current", cur, "A")))
 
     def csv_header(self):
         """

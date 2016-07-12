@@ -1,5 +1,8 @@
 import sys
+from contextlib import contextmanager
 
+PY2 = sys.version_info[0] == 2
+PY3 = sys.version_info[0] == 3
 
 def get_input(s, default=""):
     """
@@ -30,10 +33,21 @@ def get_input(s, default=""):
         return x
 
 
-def is_int(s):
+def is_int(s, *args):
     "Return whether a value can be interpreted as an int."
     try:
-        int(s)
+        int(s, *args)
         return True
     except ValueError:
         return False
+
+@contextmanager
+def ignore(*exceptions):
+    """
+    Ignore whichever exceptions are given as arguments.
+    Taken from http://stackoverflow.com/a/15573313 (MIT license)
+    """
+    try:
+        yield
+    except exceptions:
+        pass
