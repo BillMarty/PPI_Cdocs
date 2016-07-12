@@ -159,7 +159,7 @@ def main(config, handlers):
             if len(vals) > 0:
                 logqueue.put(','.join(vals))
 
-            woodward.process_variable = analog.values["current"]
+            woodward.process_variable = analog.values["an_300v_cur"]
 
             i += 1
             time.sleep(0.1)
@@ -173,5 +173,8 @@ def main(config, handlers):
         exit(2)
 
     except:
-        # Handle
-        pass
+         for thread in threads:
+            thread.cancel()
+            thread.join()
+            logger.info("Joined " + str(thread))
+         raise

@@ -2,7 +2,7 @@ import serial
 import logging
 from threading import Thread
 
-from hygen.utils import ignore
+from hygen.utils import ignore, PY2, PY3
 
 
 class BmsClient(Thread):
@@ -85,7 +85,7 @@ class BmsClient(Thread):
             else:
                 data = line[:122]
                 # If the checksum is wrong, skip it
-                if not fletcher16(data) == int(line[122:126], 16):
+                if not BmsClient.fletcher16(data) == int(line[122:126], 16):
                     continue
 
                 with ignore(IOError):
@@ -107,10 +107,16 @@ class BmsClient(Thread):
         """
         if not isinstance(data, bytes):
             return None
-        sum1, sum2 = 0, 0
-        for byte in data:
-            sum1 = (sum1 + byte) % 255
-            sum2 = (sum2 + sum1) % 255
+        if PY3:
+            sum1, sum2 = 0, 0
+            for byte in data:
+                sum1 = (sum1 + byte) % 255
+                sum2 = (sum2 + sum1) % 255
+        elif PY2:
+            sum1, sum2 = 0, 0
+            for byte in data:
+                sum1 = (sum1 + ord(byte)) % 255
+                sum2 = (sum2 + sum1) % 255
         return (sum1 << 8) | sum2
 
     #########################################
