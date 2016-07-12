@@ -3,6 +3,7 @@ A module to asynchronously read in values from the ADC inputs.
 All values are read in at the same frequency.
 """
 
+import monotonic
 import time
 import logging
 from threading import Thread
@@ -45,7 +46,7 @@ class AnalogClient(Thread):
         # Initialize our array of values
         self.values = {m[NAME]: None for m in self.mlist}
         self.partial_values = {m[NAME]: (0.0, 0) for m in self.mlist}
-        self.last_updated = time.time()
+        self.last_updated = monotonic.monotonic()
 
         # Open the ADC
         ADC.setup()
@@ -58,7 +59,7 @@ class AnalogClient(Thread):
         Overloads Thread.run, runs and reads analog inputs
         """
         while not self._cancelled:
-            t = time.time()
+            t = monotonic.monotonic()
             # If we've passed the ideal time, get the value
             if t >= self.last_updated + self.mfrequency:
                 for m in self.mlist:  # for each measurement

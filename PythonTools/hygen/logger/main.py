@@ -159,7 +159,10 @@ def main(config, handlers):
             if len(vals) > 0:
                 logqueue.put(','.join(vals))
 
-            woodward.process_variable = analog.values["an_300v_cur"]
+            try:
+                woodward.process_variable = analog.values["an_300v_cur"]
+            except UnboundLocalError:
+                pass
 
             i += 1
             time.sleep(0.1)
