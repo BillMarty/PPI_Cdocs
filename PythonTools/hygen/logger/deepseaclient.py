@@ -1,10 +1,13 @@
+# System imports
+import time
+import logging
+import sys
+from threading import Thread
+
 # from pymodbus.client.sync import ModbusSerialClient, ModbusTcpClient
 from modbus_tk.modbus_rtu import RtuMaster
 from modbus_tk.modbus_tcp import TcpMaster
 import modbus_tk.defines as defines
-import time
-import logging
-from threading import Thread
 from serial import SerialException
 import serial
 

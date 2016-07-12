@@ -57,7 +57,13 @@ from pymodbus.client.sync import ModbusTcpClient, ModbusSerialClient
 ###############################
 # My imports
 ###############################
-from hygen.utils import is_int, get_input
+if __package__ is None:
+    import sys
+    from os import path
+    sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+    from utils import is_int, get_input
+else:
+    from ..utils import is_int, get_input
 
 ###############################
 # Constants

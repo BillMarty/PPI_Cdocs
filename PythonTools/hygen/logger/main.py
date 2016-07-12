@@ -7,7 +7,16 @@ The program implements the following functionality:
     - Write the read data to a USB memory stick location.
 """
 # Import utils
-from hygen.utils import PY2, PY3
+if __package__ is None:
+    import sys
+    from os import path
+    sys.path.append(
+            path.dirname(
+                path.dirname(
+                    path.dirname(path.abspath(__file__)))))
+    from hygen.utils import PY2, PY3
+else:
+    from ..utils import PY2, PY3
 
 ###############################
 # Import required libraries
@@ -23,11 +32,24 @@ elif PY3:
 ##############################
 # Import my files
 ##############################
-from hygen.logger import deepseaclient
-from hygen.logger import bmsclient
-from hygen.logger import analogclient
-from hygen.logger import woodwardcontrol
-from hygen.logger import logfilewriter
+if __package__ is None:
+    import sys
+    from os import path
+    sys.path.append(
+            path.dirname(
+                path.dirname(
+                    path.dirname(path.abspath(__file__)))))
+    from hygen.logger import deepseaclient
+    from hygen.logger import bmsclient
+    from hygen.logger import analogclient
+    from hygen.logger import woodwardcontrol
+    from hygen.logger import logfilewriter
+else:
+    import deepseaclient
+    import bmsclient
+    import analogclient
+    import woodwardcontrol
+    import logfilewriter
 
 
 def main(config, handlers):

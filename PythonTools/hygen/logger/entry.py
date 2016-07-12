@@ -16,8 +16,16 @@ import daemon
 from daemon import pidfile
 
 # My imports
-from hygen.logger.config import get_configuration
-from hygen.logger.main import main
+if __name__ == '__main__':
+    if __package__ is None:
+        import sys
+        from os import path
+        sys.path.append(path.dirname(path.abspath(__file__)))
+        from config import get_configuration
+        from main import main
+    else:
+        from .config import get_configuration
+        from .main import main
 
 # create logger
 logger = logging.getLogger(__name__)
@@ -29,7 +37,7 @@ sh.setLevel(logging.DEBUG)
 
 # Create file handler
 fh = logging.FileHandler(
-    '/home/hygen/dev/PPI_Cdocs/PythonTools/hygenlogger/errors.log')
+    '/home/hygen/dev/PPI_Cdocs/PythonTools/hygen/logger/errors.log')
 fh.setLevel(logging.DEBUG)
 
 # create formatter
@@ -74,5 +82,5 @@ if args.config:
 else:
     config = get_configuration()
 
-with context:
-    main(config, handlers)
+# with context:
+main(config, handlers)
