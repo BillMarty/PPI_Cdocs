@@ -34,6 +34,7 @@ class FileWriter(Thread):
             self.log_dir = os.path.abspath(ldir)
         else:
             raise ValueError("Log directory does not exist")
+
         self._queue = queue
         self._cancelled = False
         self._f = open(os.devnull, 'w')

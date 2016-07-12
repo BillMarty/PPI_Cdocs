@@ -3,7 +3,8 @@ import logging
 from threading import Thread
 
 
-class BMSClient(Thread):
+
+class BmsClient(Thread):
 
     """
     This class specifies the specifics for the Becket battery
@@ -19,7 +20,7 @@ class BMSClient(Thread):
         Throws an exception if the configuration is missing values
         """
         # Initialize the parent class
-        super(BMSClient, self).__init__()
+        super(BmsClient, self).__init__()
         self.daemon = True
         self._cancelled = False
 
@@ -30,7 +31,7 @@ class BMSClient(Thread):
         self._logger.setLevel(logging.DEBUG)
 
         # Read config values
-        BMSClient.check_config(bconfig)
+        BmsClient.check_config(bconfig)
         dev = bconfig['dev']
         baud = bconfig['baudrate']
         sfilename = bconfig['sfilename']
@@ -50,11 +51,11 @@ class BMSClient(Thread):
         self.last_string_status = ""
         self.last_module_status = ""
 
-        self._logger.debug("Started BMSClient")
+        self._logger.debug("Started BmsClient")
 
     def __del__(self):
         self._ser.close()
-        del(self._ser)
+        del self._ser
         self._f.close()
 
     @staticmethod

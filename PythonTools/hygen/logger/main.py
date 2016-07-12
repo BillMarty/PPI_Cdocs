@@ -60,7 +60,7 @@ def main(config, handlers):
 
     if 'bms' in config['enabled']:
         try:
-            bms = bmsclient.BMSClient(config['bms'], handlers)
+            bms = bmsclient.BmsClient(config['bms'], handlers)
         except:
             exc_type, exc_value = sys.exc_info()[:2]
             logger.error("Error opening BMSClient: %s: %s"
