@@ -22,7 +22,7 @@ class BmsClient(Thread):
         """
         # Initialize the parent class
         super(BmsClient, self).__init__()
-        self.daemon = True
+        self.daemon = False
         self._cancelled = False
 
         # Open a logger

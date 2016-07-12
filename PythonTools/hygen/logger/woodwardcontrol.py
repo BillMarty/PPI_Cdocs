@@ -20,7 +20,7 @@ class WoodwardPWM(Thread):
 
     def __init__(self, wconfig, handlers):
         super(WoodwardPWM, self).__init__()
-        self.daemon = True
+        self.daemon = False
 
         self._logger = logging.getLogger(__name__)
         for h in handlers:

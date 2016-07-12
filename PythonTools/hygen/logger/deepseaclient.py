@@ -25,7 +25,7 @@ class DeepSeaClient(Thread):
         dconfig: the configuration values specific to deepsea
         """
         super(DeepSeaClient, self).__init__()
-        self.daemon = True
+        self.daemon = False
         self._cancelled = False
         self._logger = logging.getLogger(__name__)
         for h in handlers:

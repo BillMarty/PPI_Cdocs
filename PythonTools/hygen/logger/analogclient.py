@@ -27,7 +27,7 @@ class AnalogClient(Thread):
             }
         """
         super(AnalogClient, self).__init__()
-        self.daemon = True
+        self.daemon = False
         self._cancelled = False
 
         # Start logger for this module
