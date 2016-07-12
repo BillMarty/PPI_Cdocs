@@ -2,6 +2,7 @@ import serial
 import logging
 from threading import Thread
 
+from hygen.utils import ignore
 
 
 class BmsClient(Thread):
@@ -86,7 +87,10 @@ class BmsClient(Thread):
                 # If the checksum is wrong, skip it
                 if not fletcher16(data) == int(line[122:126], 16):
                     continue
-                self._f.write(line)
+
+                with ignore(IOError):
+                    self._f.write(line)
+
                 if len(line) <= 4:
                     pass
                 elif line[4] == 'S':
