@@ -52,7 +52,8 @@ import sys
 ###############################
 # 3rd party libraries
 ###############################
-from pymodbus.client.sync import ModbusTcpClient, ModbusSerialClient
+from modbus_tk.modbus_rtu import RtuMaster
+from modbus_tk.modbus_tcp import TcpMaster
 
 ###############################
 # My imports
@@ -228,8 +229,8 @@ def get_deepsea_configuration():
         dconfig['port'] = int(ans)
 
         try:
-            c = ModbusTcpClient(host=dconfig['host'], port=dconfig['port'])
-            c.connect()
+            c = TcpMaster(host=dconfig['host'], port=dconfig['port'])
+            c.open()
         except:
             raise ValueError("Error with host or port params. Exiting...")
             exit(-1)
@@ -247,11 +248,11 @@ def get_deepsea_configuration():
         dconfig['baudrate'] = int(ans)
 
         try:
-            c = ModbusSerialClient(
-                method="rtu",
+            c = RtuMaster(serial.Serial(
                 port=dconfig['dev'],
-                baudrate=dconfig['baudrate'])
-            c.connect()
+                baudrate=dconfig['baudrate']
+            ))
+            c.open()
         except:
             raise ValueError(
                 "Error with device or baudrate params. Exiting...")
