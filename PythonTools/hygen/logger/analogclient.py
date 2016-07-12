@@ -36,10 +36,13 @@ class AnalogClient(Thread):
             self._logger.addHandler(h)
         self._logger.setLevel(logging.DEBUG)
 
-        # Read and save measurement list
+        # Read configuration values
+        AnalogClient.check_config(aconifg)
         self.mlist = aconfig['measurements']
         self.frequency = aconfig['frequency']
         self.averages = aconfig['averages']
+        if self.averages == 0:
+            raise ValueError("Cannot average 0 values")
         self.mfrequency = self.frequency / self.averages
 
         # Initialize our array of values
@@ -52,6 +55,19 @@ class AnalogClient(Thread):
 
         # Log to debug that we've started
         self._logger.debug("Started analogclient")
+
+    @staticmethod
+    def check_config(aconfig):
+        """
+        Check that the config is complete. Throw an exception if any
+        configuration values are missing.
+        """
+        required_config = ['measurements', 'frequency', 'averages']
+        for val in required_config:
+            if val not in aconfig:
+                raise ValueError("Missing " + val + ", required for modbus")
+        # If we get to this point, the required values are present
+        return True
 
     def run(self):
         """
