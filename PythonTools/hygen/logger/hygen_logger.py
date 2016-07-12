@@ -9,7 +9,7 @@
     'deepsea': {
         # Where to find the measurement list
         'mlistfile':\
-        '/home/hygen/dev/PPI_Cdocs/PythonTools/hygen/logger/cur_rpm.csv',
+        '/home/hygen/dev/PPI_Cdocs/PythonTools/hygen/logger/mdf.csv',
         # Possible mode values are 'rtu' or 'tcp'
         'mode': 'rtu',
         # RTU settings

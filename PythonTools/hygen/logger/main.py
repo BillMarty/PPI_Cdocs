@@ -60,6 +60,24 @@ def main(config, handlers):
     ############################################
     # Async Data Sources
     ############################################
+    if 'deepsea' in config['enabled']:
+        try:
+            deepSea = deepseaclient.DeepSeaClient(config['deepsea'], handlers)
+        except ValueError:
+            exc_type, exc_value = sys.exc_info()[:2]
+            logger.error("Error with DeepSeaClient config: %s: %s"
+                         % (str(exc_type), str(exc_value)))
+        except serial.SerialException as e:
+            logger.error("SerialException({0}) opening BmsClient: {1}"
+                         .format(e.errno, e.strerror))
+        except IOError:
+            exc_type, exc_value = sys.exc_info()[:2]
+            logger.error("Error opening BMSClient: %s: %s"
+                         % (str(exc_type), str(exc_value)))
+        else:
+            clients.append(deepSea)
+            threads.append(deepSea)
+
     if 'analog' in config['enabled']:
         try:
             analog = analogclient.AnalogClient(config['analog'], handlers)
@@ -90,24 +108,6 @@ def main(config, handlers):
         else:
             clients.append(bms)
             threads.append(bms)
-
-    if 'deepsea' in config['enabled']:
-        try:
-            deepSea = deepseaclient.DeepSeaClient(config['deepsea'], handlers)
-        except ValueError:
-            exc_type, exc_value = sys.exc_info()[:2]
-            logger.error("Error with DeepSeaClient config: %s: %s"
-                         % (str(exc_type), str(exc_value)))
-        except serial.SerialException as e:
-            logger.error("SerialException({0}) opening BmsClient: {1}"
-                         .format(e.errno, e.strerror))
-        except IOError:
-            exc_type, exc_value = sys.exc_info()[:2]
-            logger.error("Error opening BMSClient: %s: %s"
-                         % (str(exc_type), str(exc_value)))
-        else:
-            clients.append(deepSea)
-            threads.append(deepSea)
 
     #######################################
     # Other Threads
