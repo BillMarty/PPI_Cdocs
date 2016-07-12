@@ -22,7 +22,7 @@ class BmsClient(Thread):
         """
         # Initialize the parent class
         super(BmsClient, self).__init__()
-        self.daemon = True
+        self.daemon = False
         self._cancelled = False
 
         # Open a logger
@@ -147,9 +147,11 @@ class BmsClient(Thread):
 
     def csv_header(self):
         """
-        Return a string of the CSV header for our data
+        Return a string of the CSV header for our data.
+
+        No newline or trailing comma.
         """
-        return "SoC (%),Current (A),"
+        return "SoC (%),Current (A)"
 
     def csv_line(self):
         """
@@ -158,6 +160,6 @@ class BmsClient(Thread):
         """
         # Short circuit if we haven't started reading data yet
         if self.last_string_status == "":
-            return ",,"
+            return ","
         charge, cur = self.get_data()
-        return "%d,%d," % (charge, cur)
+        return "%d,%d" % (charge, cur)

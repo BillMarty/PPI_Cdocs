@@ -28,7 +28,7 @@ class DeepSeaClient(Thread):
         dconfig: the configuration values specific to deepsea
         """
         super(DeepSeaClient, self).__init__()
-        self.daemon = True
+        self.daemon = False
         self._cancelled = False
         self._logger = logging.getLogger(__name__)
         for h in handlers:
@@ -227,21 +227,24 @@ class DeepSeaClient(Thread):
 
     def csv_header(self):
         """
-        Return the CSV header line (sans new-line)
+        Return the CSV header line.
+        Does not include newline or trailing comma.
         """
-        s = ""
+        vals = []
         for m in self.mlist:
-            s += m[NAME] + ","
-        return s
+            vals.append(m[NAME])
+        return ','.join(vals)
 
     def csv_line(self):
         """
-        Return a CSV line of the data we currently have
+        Return a CSV line of the data we currently have.
+        Does not include newline or trailing comma.
         """
-        s = ""
+        vals = []
         for m in self.mlist:
             val = self.values[m[NAME]]
             if val is not None:
-                s += str(val)
-            s += ","
-        return s
+                vals.append('')
+            else:
+                vals.append(str(val))
+        return ','.join(vals)

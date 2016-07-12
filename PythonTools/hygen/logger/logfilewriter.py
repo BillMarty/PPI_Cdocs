@@ -22,7 +22,7 @@ class FileWriter(Thread):
     def __init__(self, lconfig, handlers, queue, csv_header):
         # General config for the thread
         super(FileWriter, self).__init__()
-        self.daemon = True
+        self.daemon = False
         
         self._logger = logging.getLogger(__name__)
         for h in handlers:
