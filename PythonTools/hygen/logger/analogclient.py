@@ -102,21 +102,24 @@ class AnalogClient(Thread):
 
     def csv_header(self):
         """
-        Return the CSV header line (sans new-line)
+        Return the CSV header line with no new line or trailing comma
         """
-        s = ""
+        vals = []
         for m in self.mlist:
-            s += m[NAME] + ","
-        return s
+            vals.append(m[NAME])
+        return ','.join(str(x) for x in vals)
 
     def csv_line(self):
         """
-        Return a CSV line of the data we currently have
+        Return a CSV line of the data we currently have.
+
+        The line is returned with no new line or trailing comma.
         """
-        s = ""
+        vals = []
         for m in self.mlist:
             val = self.values[m[NAME]]
             if val is not None:
-                s += str(val)
-            s += ","
-        return s
+                vals.append(str(val))
+            else:
+                vals.append('')
+        return ','.join(vals)

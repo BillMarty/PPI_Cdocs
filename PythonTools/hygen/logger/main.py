@@ -123,23 +123,23 @@ def main(config, handlers):
     try:
         i = 0
         while True:
-            s = ""
-            s += str(time.time()) + ","
+            vals = []
+            vals.append(str(time.time()))
 
             # Every 10th time, print data
             if i >= 10:
                 i = 0
                 for client in clients:
                     client.print_data()
-                    s += client.csv_line()
+                    vals.append(client.csv_line())
                 print(('-' * 80))
             else:
                 for client in clients:
-                    s += client.csv_line()
+                    vals.append(client.csv_line())
 
             # Put the csv data in the logfile
-            if len(s) > 0:
-                logqueue.put(s[:-1])
+            if len(vals) > 0:
+                logqueue.put(','.join(vals))
 
             woodward.process_variable = analog.values["current"]
 
