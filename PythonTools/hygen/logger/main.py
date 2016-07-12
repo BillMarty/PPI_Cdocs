@@ -39,9 +39,8 @@ def main(config, handlers):
         logger.addHandler(h)
     logger.setLevel(logging.DEBUG)
 
-    # Keep a list of all async clients we have running
-    # threads = []
-    # daemonizing the threads means Python runtime takes care of shutdown.
+    # Keep a list of all threads we have running
+    threads = []
     clients = []
 
     ############################################
@@ -56,7 +55,7 @@ def main(config, handlers):
                          % (str(exc_type), str(exc_value)))
         else:
             clients.append(deepSea)
-            # threads.append(deepSea)
+            threads.append(deepSea)
 
     if 'bms' in config['enabled']:
         try:
@@ -67,7 +66,7 @@ def main(config, handlers):
                          % (str(exc_type), str(exc_value)))
         else:
             clients.append(bms)
-            # threads.append(bms)
+            threads.append(bms)
 
     if 'analog' in config['enabled']:
         try:
@@ -78,7 +77,7 @@ def main(config, handlers):
                          % (str(exc_type), str(exc_value)))
         else:
             clients.append(analog)
-            # threads.append(analog)
+            threads.append(analog)
 
     #######################################
     # Other Threads
@@ -93,8 +92,7 @@ def main(config, handlers):
             logger.error("Error opening WoodwardPWM: %s: %s"
                          % (str(exc_type), str(exc_value)))
         else:
-            # threads.append(woodward)
-            pass
+            threads.append(woodward)
 
     if 'filewriter' in config['enabled']:
         s = ""
@@ -107,7 +105,7 @@ def main(config, handlers):
         filewriter = logfilewriter.FileWriter(
             config['filewriter'], handlers, logqueue, csv_header
         )
-        # threads.append(filewriter)
+        threads.append(filewriter)
 
     # Check whether we have some input
     if len(clients) == 0:
@@ -115,10 +113,8 @@ def main(config, handlers):
         exit(-1)
 
     # Start all the threads
-    # for thread in threads:
-        # thread.start()
-    for client in clients:
-        client.start()
+    for thread in threads:
+        thread.start()
 
     try:
         i = 0
@@ -148,10 +144,10 @@ def main(config, handlers):
 
     except SystemExit:
         logger.info("Stopping...")
-        # for thread in threads:
-        #     thread.cancel()
-        #     thread.join()
-        #     logger.info("Joined " + str(thread))
+        for thread in threads:
+            thread.cancel()
+            thread.join()
+            logger.info("Joined " + str(thread))
         exit(2)
 
     except:
