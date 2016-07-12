@@ -20,6 +20,14 @@ elif PY2:
 class FileWriter(Thread):
 
     def __init__(self, lconfig, handlers, queue, csv_header):
+        """
+        Initialize a filewriter which writes to file whatever is put
+        on its queue.
+
+        Can raise:
+        - ValueError for invalid config
+        - IOError (Python < 3.3) or OSError (Python >= 3.3) for inaccessible file
+        """
         # General config for the thread
         super(FileWriter, self).__init__()
         self.daemon = False
