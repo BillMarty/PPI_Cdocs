@@ -83,9 +83,21 @@ class BmsClient(Thread):
             except:
                 self._logger.warning("BMS not connected")
             else:
-                data = line[:122]
                 # If the checksum is wrong, skip it
-                if not BmsClient.fletcher16(data) == int(line[122:126], 16):
+                try:
+                    data = line[:122]
+                    checksum = int(line[122:126], 16)
+                except ValueError:
+                    # If we don't have a long enough line the
+                    # conversion fails with a blank string
+                    continue
+                except IndexError:
+                    # I'm not sure we ever hit this, but it also
+                    # would indicate a short line
+                    continue
+
+                # If the checksum fails we have a bad line
+                if not BmsClient.fletcher16(data) == checksum:
                     continue
 
                 with ignore(IOError):
@@ -134,9 +146,13 @@ class BmsClient(Thread):
         """
         Get the data
         """
-        charge = int(self.last_string_status[19:22])
-        cur = int(self.last_string_status[34:39])
-        return (charge, cur)
+        # If we have a last string
+        if self.last_string_status:
+            charge = int(self.last_string_status[19:22])
+            cur = int(self.last_string_status[34:39])
+            return (charge, cur)
+        else:
+            return None, None
 
     def print_data(self):
         """
@@ -148,8 +164,15 @@ class BmsClient(Thread):
             return
 
         charge, cur = self.get_data()
-        print(("%20s %10.2f %10s" % ("State of Charge", charge, "%")))
-        print(("%20s %10.2f %10s" % ("Battery Current", cur, "A")))
+        if charge != None:
+            print(("%20s %10d %10s" % ("State of Charge", charge, "%")))
+        else:
+            print(("%20s %10s %10s" % ("State of Charge", "ERR", "%")))
+
+        if cur != None:
+            print(("%20s %10d %10s" % ("Battery Current", cur, "A")))
+        else:
+            print(("%20s %10s %10s" % ("Battery Current", "ERR", "A")))
 
     def csv_header(self):
         """
@@ -168,4 +191,7 @@ class BmsClient(Thread):
         if self.last_string_status == "":
             return ","
         charge, cur = self.get_data()
-        return "%d,%d" % (charge, cur)
+        if charge != None and cur != None:
+            return "%d,%d" % (charge, cur)
+        else:
+            return ","

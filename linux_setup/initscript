@@ -20,7 +20,7 @@
 # Process name (for display)
 NAME=hygenlogger
 # Daemon name (actual executable)
-DAEMON=/home/hygen/dev/PPI_Cdocs/PythonTools/logger/entry.py
+DAEMON=/home/hygen/dev/PPI_Cdocs/PythonTools/hygen/logger/entry.py
 # pid file for the daemon
 PIDFILE=/var/run/hygenlogger.pid
 

@@ -8,6 +8,7 @@ from threading import Thread
 from modbus_tk.modbus_rtu import RtuMaster
 from modbus_tk.modbus_tcp import TcpMaster
 import modbus_tk.defines as defines
+from modbus_tk.exceptions import ModbusError, ModbusInvalidResponseError
 from serial import SerialException
 import serial
 
@@ -192,10 +193,16 @@ class DeepSeaClient(Thread):
             # self._client.framer.resetFrame()
             # self._client.transaction.reset()
             x = None
+        except ModbusInvalidResponseError:
+            exc_type, exc_value = sys.exc_info()[:2]
+            self._logger.error("ModbusInvalidResponseError occured:%s, %s"
+                                  % (str(exc_type), str(exc_value)))
+            x = None
         except:
             exc_type, exc_value = sys.exc_info()[:2]
-            self._logger.critical("Unknown error occured:%s, %s"
+            self._logger.critical("ModbusInvalidResponseError occured:%s, %s"
                                   % (str(exc_type), str(exc_value)))
+            x = None
         return x
 
 ##########################
