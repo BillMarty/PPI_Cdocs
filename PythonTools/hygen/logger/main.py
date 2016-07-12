@@ -6,17 +6,6 @@ The program implements the following functionality:
         possibly other sources
     - Write the read data to a USB memory stick location.
 """
-# Import utils
-if __package__ is None:
-    import sys
-    from os import path
-    sys.path.append(
-            path.dirname(
-                path.dirname(
-                    path.dirname(path.abspath(__file__)))))
-    from hygen.utils import PY2, PY3
-else:
-    from ..utils import PY2, PY3
 
 ###############################
 # Import required libraries
@@ -24,9 +13,10 @@ else:
 import sys
 import time
 import logging
-if PY2:
+import serial
+if sys.version_info[0] == 2:
     import Queue as queue
-elif PY3:
+else:
     import queue
 
 ##############################
@@ -44,12 +34,14 @@ if __package__ is None:
     from hygen.logger import analogclient
     from hygen.logger import woodwardcontrol
     from hygen.logger import logfilewriter
+    from hygen.utils import PY2, PY3
 else:
     import deepseaclient
     import bmsclient
     import analogclient
     import woodwardcontrol
     import logfilewriter
+    from ..utils import PY2, PY3
 
 
 def main(config, handlers):
@@ -86,10 +78,15 @@ def main(config, handlers):
     if 'bms' in config['enabled']:
         try:
             bms = bmsclient.BmsClient(config['bms'], handlers)
-        except:
+        except serial.SerialException as e:
+            logger.error("SerialException({0}) opening BmsClient: {1}"
+                         .format(e.errno, e.strerror))
+        except (OSError, IOError):
             exc_type, exc_value = sys.exc_info()[:2]
             logger.error("Error opening BMSClient: %s: %s"
                          % (str(exc_type), str(exc_value)))
+        except ValueError as e:
+            logger.error("ValueError with BmsClient config")
         else:
             clients.append(bms)
             threads.append(bms)
@@ -97,9 +94,16 @@ def main(config, handlers):
     if 'deepsea' in config['enabled']:
         try:
             deepSea = deepseaclient.DeepSeaClient(config['deepsea'], handlers)
-        except:
+        except ValueError:
             exc_type, exc_value = sys.exc_info()[:2]
-            logger.error("Error opening DeepSeaClient: %s: %s"
+            logger.error("Error with DeepSeaClient config: %s: %s"
+                         % (str(exc_type), str(exc_value)))
+        except serial.SerialException as e:
+            logger.error("SerialException({0}) opening BmsClient: {1}"
+                         .format(e.errno, e.strerror))
+        except IOError:
+            exc_type, exc_value = sys.exc_info()[:2]
+            logger.error("Error opening BMSClient: %s: %s"
                          % (str(exc_type), str(exc_value)))
         else:
             clients.append(deepSea)

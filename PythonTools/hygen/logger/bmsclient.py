@@ -1,8 +1,9 @@
 import serial
 import logging
+import sys
 from threading import Thread
 
-from hygen.utils import ignore, PY2, PY3
+from hygen.utils import PY2, PY3
 
 
 class BmsClient(Thread):
@@ -18,7 +19,10 @@ class BmsClient(Thread):
         """
         Initialize the bms client from the configuration values.
 
-        Throws an exception if the configuration is missing values
+        Could throw the following exceptions:
+        - IOError
+        - serial.SerialException
+        - ValueError
         """
         # Initialize the parent class
         super(BmsClient, self).__init__()
@@ -38,14 +42,18 @@ class BmsClient(Thread):
         sfilename = bconfig['sfilename']
 
         # Open serial port
-        self._ser = serial.Serial(dev, baud, timeout=1.0)  # 1 second timeout
         try:
+            self._ser = serial.Serial(
+                dev, baud, timeout=1.0)  # 1 second timeout
             if not self._ser.isOpen():
                 self._ser.open()
-        except:
-            self._logger.critical("Could not open", exc_info=True)
+        except serial.SerialException as e:
+            exc_type, exc_value = sys.exc_info()[:2]
+            self._logger.critical("SerialException({0}): {1}"
+                                  .format(e.errno, e.strerror))
+            raise
 
-        # Open file
+        # Open file - IOError could be thrown
         self._f = open(sfilename, 'a')
 
         # Setup global lastline variable
@@ -100,8 +108,10 @@ class BmsClient(Thread):
                 if not BmsClient.fletcher16(data) == checksum:
                     continue
 
-                with ignore(IOError):
+                try:
                     self._f.write(line)
+                except IOError:
+                    pass  # Ignore IOErrors
 
                 if len(line) <= 4:
                     pass

@@ -3,6 +3,7 @@ import time
 import logging
 import sys
 from threading import Thread
+import monotonic
 
 # from pymodbus.client.sync import ModbusSerialClient, ModbusTcpClient
 from modbus_tk.modbus_rtu import RtuMaster
@@ -219,7 +220,7 @@ class DeepSeaClient(Thread):
             self._client = RtuMaster(serial.Serial(port=dev, baudrate=baud))
             self._client.open()
             if not self._client._is_opened:
-                raise SerialException("Could not open " 
+                raise SerialException("Could not open "
                                       + self._client._serial.name)
 
         # Read and save measurement list
@@ -239,7 +240,7 @@ class DeepSeaClient(Thread):
         Overloads Thread.run, runs and reads from the DeepSea.
         """
         while not self._cancelled:
-            t = time.time()
+            t = monotonic.monotonic()
             for m in self.mlist:
                 # Find the ideal wake time
                 if len(m) > TIME:  # if we have a time from the csv, use it
@@ -311,6 +312,7 @@ class DeepSeaClient(Thread):
                     data_format = ">h"
                 else:
                     data_format = ">H"
+
             rr = self._client.execute(
                 self.unit,  # Slave ID
                 defines.READ_HOLDING_REGISTERS,  # Function code
@@ -321,36 +323,28 @@ class DeepSeaClient(Thread):
 
             if rr is None:
                 x = None  # flag for missed MODBUS data
-                # self._logger.error("No response")
             else:
                 x = rr[0]
                 x = float(x) * meas[GAIN] + meas[OFFSET]
-        except TypeError:  # flag error for debug purposes
-            exc_type, exc_value = sys.exc_info()[:2]
-            self._logger.error("Not sure what this means: %s, %s"
-                               % (str(exc_type), str(exc_value)))
-            x = None
-        except IndexError:
-            # This happens when the frame gets out of sync in PyModbus
-            exc_type, exc_value = sys.exc_info()[:2]
-            self._logger.error(
-                "Communication problem, connection reset: %s, %s"
-                % (str(exc_type), str(exc_value)))
-            # NEEDED FOR PYMODBUS NOT MODBUS_TK
-            # self._client.socket.flushInput()
-            # self._client.framer.resetFrame()
-            # self._client.transaction.reset()
-            x = None
+
         except ModbusInvalidResponseError:
             exc_type, exc_value = sys.exc_info()[:2]
-            self._logger.error("ModbusInvalidResponseError occured:%s, %s"
-                                  % (str(exc_type), str(exc_value)))
+            self._logger.error("ModbusInvalidResponseError occured: %s, %s"
+                               % (str(exc_type), str(exc_value)))
+            x = None
+        except ModbusError as e:
+            self._logger.error("DeepSea returned an exception: %s"
+                               % e.value)
+            x = None
+        except SerialException:
+            exc_type, exc_value = sys.exc_info()[:2]
+            self._logger.error("SerialException occured: %s, %s"
+                               % (str(exc_type), str(exc_value)))
             x = None
         except:
             exc_type, exc_value = sys.exc_info()[:2]
-            self._logger.critical("ModbusInvalidResponseError occured:%s, %s"
+            self._logger.critical("Unknown error occured: %s, %s"
                                   % (str(exc_type), str(exc_value)))
-            x = None
         return x
 
 ##########################

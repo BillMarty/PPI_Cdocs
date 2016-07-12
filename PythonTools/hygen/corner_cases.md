@@ -4,17 +4,18 @@
 - config file does not have required config values throws ValueError - handled in main.py
 - averages is set to 0 in the config file, causing div by 0 - handled in `AnalogClient.__init__`, throws ValueError, handled in main.py
 - time is corrected backwards, so we never report a value (time not monotonic) - handled by using the `monotonic` library
-- ADC.read_raw returns RuntimeError, ValueError, or IOError
-- Measurement with invalid IO Pins or lists
+- ADC.read_raw returns RuntimeError, ValueError, or IOError - handled in `AnalogClient.run`
+- Measurement with invalid IO Pins or lists - handled in check_config, where we check that all measurement items are the right length and contain the right types
 
 # bmsclient.py
 
-- Error opening serial port
-- Stream file unable to open for appends
-- Constructor fails: caller must handle
-- Integer conversion of charge or SoC fails (Extremely unlikely - we have confirmed checksum) But try blocks are cheap
-- Integer conversion of checksum fails (ValueError)
-- Stream file write error (USB removed, corrupted, unmounted, etc.)
+- Constructor fails: caller must handle - handled in main.py
+	+ Error opening serial port - SerialException
+	+ Error opening stream file - IOError (Python2) or OSError (Python >= 3.3)
+	+ Error with configuration map - ValueError
+- Integer conversion of charge or SoC fails (Extremely unlikely - we have confirmed checksum) But try blocks are cheap - handled in `BmsClient.run`
+- Integer conversion of checksum fails (ValueError) - handled in `BmsClient.run`
+- Stream file write error (USB removed, corrupted, unmounted, etc.) - ignored in `BmsClient.run`
 
 # config.py
 
@@ -22,11 +23,12 @@
 
 # deepseaclient.py
 
-- Constructor fails
-	+ Cannot open serial port
-	+ Fails out of constructor before `_client` assigned, so `__del__` throws an exception
-	+ Read measurement description file fails
-- Time set during loop (non-monotonic)
+- Constructor fails - handled IOError, serial.SerialException, and ValueError in `main.py`
+	+ Cannot open TCP port - IOError
+	+ Cannot open serial RTU - serial.SerialException
+	+ Fails out of constructor before `_client` assigned, so `__del__` throws an exception - handled in `__del__`
+	+ Read measurement description file fails - ValueError
+- Time set during loop (non-monotonic) - handled using `monotonic` package
 - Modbus execute errors
 	+ Sending errors
 		* SerialException from serial.serialutil

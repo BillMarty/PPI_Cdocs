@@ -6,6 +6,7 @@ All values are read in at the same frequency.
 import monotonic
 import time
 import logging
+import sys
 from threading import Thread
 import Adafruit_BBIO.ADC as ADC
 
@@ -38,7 +39,7 @@ class AnalogClient(Thread):
         self._logger.setLevel(logging.DEBUG)
 
         # Read configuration values
-        AnalogClient.check_config(aconifg)
+        AnalogClient.check_config(aconfig)
         self.mlist = aconfig['measurements']
         self.frequency = aconfig['frequency']
         self.averages = aconfig['averages']
@@ -67,6 +68,17 @@ class AnalogClient(Thread):
         for val in required_config:
             if val not in aconfig:
                 raise ValueError("Missing " + val + ", required for modbus")
+        # Make sure the measurements are in the right format
+        for m in aconfig['measurements']:
+            try:
+                assert len(m) == 5
+                assert isinstance(m[NAME], str)
+                assert isinstance(m[UNITS], str)
+                assert isinstance(m[PIN], str)
+                assert isinstance(m[GAIN], float)
+                assert isinstance(m[OFFSET], float)
+            except AssertionError:
+                raise ValueError("Measurement list formatted incorrectly")
         # If we get to this point, the required values are present
         return True
 
@@ -89,7 +101,22 @@ class AnalogClient(Thread):
                         self.values[name] = val * m[GAIN] + m[OFFSET]
                         val, n = 0., 0.  # Reset partial value
                     # Update the values with new readings
-                    val, n = val + ADC.read_raw(m[PIN]), n + 1
+                    try:
+                        val, n = val + ADC.read_raw(m[PIN]), n + 1
+                    except RuntimeError:
+                        # Shouldn't ever happen
+                        exc_type, exc_value = sys.exc_info()[:2]
+                        self._logger.error("ADC reading error: %s %s"
+                                           % (exc_type, exc_value))
+                    except ValueError:
+                        # Invalid AIN or pin name
+                        exc_type, exc_value = sys.exc_info()[:2]
+                        self._logger.error("Invalid AIN or pin name: %s %s"
+                                           % (exc_type, exc_value))
+                    except IOError:
+                        # File reading error
+                        exc_type, exc_value = sys.exc_info()[:2]
+                        self._logger.error("%s %s", exc_type, exc_value)
                     # Store the new partial values
                     self.partial_values[name] = val, n
                 self.last_updated = t
