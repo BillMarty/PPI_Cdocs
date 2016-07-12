@@ -35,14 +35,11 @@ class WoodwardPWM(Thread):
 
         # Store configuration values as instance variables
         self._pin = wconfig['pin']
-        self.set_tunings(
-            wconfig['Kp'],
-            wconfig['Ki'],
-            wconfig['Kd']
-        )
+        self._sample_time = wconfig['period']
+        self.kp = wconfig['Kp'],
+        self.ki = wconfig['Ki'],
+        self.kd = wconfig['Kd']
         self.setpoint = wconfig['setpoint']
-        self._sample_time = 0
-        self.set_sample_time(wconfig['period'])
 
         # Set up values for PWM
         PWM.start(self._pin, 50, 100000)
@@ -63,6 +60,7 @@ class WoodwardPWM(Thread):
         self.integral_term = 0.0
         self.in_auto = False
         self.controller_direction = DIRECT
+        self._logger.debug("Started Woodward controller")
 
     @staticmethod
     def check_config(wconfig):
@@ -71,7 +69,7 @@ class WoodwardPWM(Thread):
         """
         required_config = ['pin', 'Kp', 'Ki', 'Kd', 'setpoint', 'period']
         for val in required_config:
-            if val not in bconfig:
+            if val not in wconfig:
                 raise ValueError(
                     "Missing " + val + ", required for Woodward control")
         # If we get to this point, the required values are present
@@ -94,6 +92,8 @@ class WoodwardPWM(Thread):
             self.controller_direction = direction
 
     def set_sample_time(self, new_sample_time):
+        if self._sample_time == 0:
+            self._sample_time = new_sample_time
         if new_sample_time > 0:
             ratio = float(new_sample_time) / self._sample_time
             self.ki *= ratio

@@ -6,6 +6,7 @@ import time
 import logging
 from threading import Thread
 from serial import SerialException
+import serial
 
 NAME = 0
 UNITS = 1
