@@ -49,19 +49,19 @@
 
 # logfilewriter.py
 
-- 'ldir' key not in config
-- constructor errors
-- Main thread crashes, how do we respond?
-- File cannot be written to (full disk, USB removed, etc.)
+- 'ldir' key not in config - handled with ValueError in `logfilewriter.py`
+- constructor errors - handled in `main`
+- Main thread crashes, how do we respond? - current approach: loop infinitely, never do anything.
+- File cannot be written to (full disk, USB removed, etc.) - Handled in `write_line` - simply logged and skipped
 
 # main.py
 
-- Threads crash - monitor and restart
-- print_data raises an exception from one of the clients
-- csv_line raises an exception from one of the clients
-- Queue runs out of space (unlikely, since we're using an unlimited queue. Only if logfilewriter crashes)
-- analog.values does not have the necessary key 'current' for sending to woodwardcontrol as process_variable
-- Unhandled exceptions ought to restart the program
+- Threads crash - monitor and restart - every 10th time around the `main` loop (about once a second) check if threads are alive and start them again if they aren't.
+- print_data raises an exception from one of the clients - we want to handle this in the functions, not in main. Avoid hardening this to avoid missing errors.
+- csv_line raises an exception from one of the clients - same.
+- Queue runs out of space (unlikely, since we're using an unlimited queue. Only if logfilewriter crashes) - catching the exception. This probably ought to be an exit condition, because something went really screwy.
+- analog.values does not have the necessary key 'current' for sending to woodwardcontrol as process_variable - report it once by logger then pass
+- Unhandled exceptions ought to restart the program - I think actually we'd rather just make sure that every possible exception is handled. On an unhandled exception, exit.
 
 # woodwardcontrol.py
 

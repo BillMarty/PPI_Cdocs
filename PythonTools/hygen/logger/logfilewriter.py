@@ -93,10 +93,13 @@ class FileWriter(Thread):
         """
         Write a line to the currently open file.
         """
-        if line[-1] == '\n':
-            self._f.write(line)
-        else:
-            self._f.write(line + '\n')
+        try:
+            if line[-1] == '\n':
+                self._f.write(line)
+            else:
+                self._f.write(line + '\n')
+        except IOError, OSError:
+            self._logger.error("Could not write to log file")
 
     def run(self):
         """

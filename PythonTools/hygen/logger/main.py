@@ -132,9 +132,16 @@ def main(config, handlers):
                 logger.error("CSV header returned by clients is blank")
             csv_header = "linuxtime," + ','.join(headers)
         logqueue = queue.Queue()
-        filewriter = logfilewriter.FileWriter(
-            config['filewriter'], handlers, logqueue, csv_header
-        )
+        try:
+            filewriter = logfilewriter.FileWriter(
+                config['filewriter'], handlers, logqueue, csv_header
+            )
+        except ValueError as e:
+            logger.error("FileWriter did not start with message \"{0}\""
+                         .format(str(e)))
+        except (IOError, OSError) as e:
+            logger.error("FileWriter did not start with message \"{0}\""
+                         .format(str(e)))
         threads.append(filewriter)
 
     # Check whether we have some input
@@ -146,46 +153,64 @@ def main(config, handlers):
     for thread in threads:
         thread.start()
 
-    try:
-        i = 0
-        while True:
+    i = 0
+    reported = False
+    going = True
+    while going:
+        try:
             vals = []
             vals.append(str(time.time()))
 
-            # Every 10th time, print data
+            # Every 10th time
             if i >= 10:
                 i = 0
                 for client in clients:
                     client.print_data()
                     vals.append(client.csv_line())
                 print(('-' * 80))
+
+                # Check threads to ensure they're running
+                for thread in threads:
+                    if not thread.is_alive():
+                        thread.start()
             else:
                 for client in clients:
                     vals.append(client.csv_line())
 
             # Put the csv data in the logfile
             if len(vals) > 0:
-                logqueue.put(','.join(vals))
+                try:
+                    logqueue.put(','.join(vals))
+                except queue.Full:
+                    pass
+                    # TODO What should we do here?
 
             try:
                 woodward.process_variable = analog.values["an_300v_cur"]
             except UnboundLocalError:
                 pass
+            except KeyError:
+                if not reported:
+                    logger.critical("Key does not exist for the analog values")
+                    reported = True
+                pass
 
             i += 1
             time.sleep(0.1)
 
-    except SystemExit:
-        logger.info("Stopping...")
-        for thread in threads:
-            thread.cancel()
-            thread.join()
-            logger.info("Joined " + str(thread))
-        exit(2)
+        except SystemExit:
+            going = False
+            stop_threads(threads, logger)
 
-    except:
-         for thread in threads:
-            thread.cancel()
-            thread.join()
-            logger.info("Joined " + str(thread))
-         raise
+        except:
+            stop_threads(threads, logger)
+            raise
+
+    exit(0)
+
+
+def stop_threads(threads, logger):
+    for thread in threads:
+        thread.cancel()
+        thread.join()
+        logger.debug("Joined " + str(thread))
