@@ -60,6 +60,24 @@ def main(config, handlers):
     ############################################
     # Async Data Sources
     ############################################
+    if 'deepsea' in config['enabled']:
+        try:
+            deepSea = deepseaclient.DeepSeaClient(config['deepsea'], handlers)
+        except ValueError:
+            exc_type, exc_value = sys.exc_info()[:2]
+            logger.error("Error with DeepSeaClient config: %s: %s"
+                         % (str(exc_type), str(exc_value)))
+        except serial.SerialException as e:
+            logger.error("SerialException({0}) opening BmsClient: {1}"
+                         .format(e.errno, e.strerror))
+        except IOError:
+            exc_type, exc_value = sys.exc_info()[:2]
+            logger.error("Error opening BMSClient: %s: %s"
+                         % (str(exc_type), str(exc_value)))
+        else:
+            clients.append(deepSea)
+            threads.append(deepSea)
+
     if 'analog' in config['enabled']:
         try:
             analog = analogclient.AnalogClient(config['analog'], handlers)
@@ -70,7 +88,7 @@ def main(config, handlers):
         except RuntimeError:
             exc_type, exc_value = sys.exc_info()[:2]
             logger.error("Error opening the analog to digital converter: %s: %s"
-                         % (str(exc_type), str(exc_value)))            
+                         % (str(exc_type), str(exc_value)))
         else:
             clients.append(analog)
             threads.append(analog)
@@ -91,24 +109,6 @@ def main(config, handlers):
             clients.append(bms)
             threads.append(bms)
 
-    if 'deepsea' in config['enabled']:
-        try:
-            deepSea = deepseaclient.DeepSeaClient(config['deepsea'], handlers)
-        except ValueError:
-            exc_type, exc_value = sys.exc_info()[:2]
-            logger.error("Error with DeepSeaClient config: %s: %s"
-                         % (str(exc_type), str(exc_value)))
-        except serial.SerialException as e:
-            logger.error("SerialException({0}) opening BmsClient: {1}"
-                         .format(e.errno, e.strerror))
-        except IOError:
-            exc_type, exc_value = sys.exc_info()[:2]
-            logger.error("Error opening BMSClient: %s: %s"
-                         % (str(exc_type), str(exc_value)))
-        else:
-            clients.append(deepSea)
-            threads.append(deepSea)
-
     #######################################
     # Other Threads
     #######################################
@@ -125,12 +125,12 @@ def main(config, handlers):
             threads.append(woodward)
 
     if 'filewriter' in config['enabled']:
-        s = ""
+        headers = []
         for c in clients:
-            s += c.csv_header()
-            if len(s) == 0:
+            headers.append(c.csv_header())
+            if len(headers) == 0:
                 logger.error("CSV header returned by clients is blank")
-            csv_header = "linuxtime," + s
+            csv_header = "linuxtime," + ','.join(headers)
         logqueue = queue.Queue()
         filewriter = logfilewriter.FileWriter(
             config['filewriter'], handlers, logqueue, csv_header

@@ -393,7 +393,7 @@ class DeepSeaClient(Thread):
         for m in self.mlist:
             val = self.values[m[NAME]]
             if val is not None:
-                vals.append('')
-            else:
                 vals.append(str(val))
+            else:
+                vals.append('')
         return ','.join(vals)

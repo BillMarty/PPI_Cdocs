@@ -82,5 +82,5 @@ if args.config:
 else:
     config = get_configuration()
 
-with context:
-    main(config, handlers)
+# with context:
+main(config, handlers)
