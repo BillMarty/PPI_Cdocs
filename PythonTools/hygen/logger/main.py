@@ -26,9 +26,9 @@ if __package__ is None:
     import sys
     from os import path
     sys.path.append(
+        path.dirname(
             path.dirname(
-                path.dirname(
-                    path.dirname(path.abspath(__file__)))))
+                path.dirname(path.abspath(__file__)))))
     from hygen.logger import deepseaclient
     from hygen.logger import bmsclient
     from hygen.logger import analogclient
@@ -87,8 +87,9 @@ def main(config, handlers):
                          % (str(exc_type), str(exc_value)))
         except RuntimeError:
             exc_type, exc_value = sys.exc_info()[:2]
-            logger.error("Error opening the analog to digital converter: %s: %s"
-                         % (str(exc_type), str(exc_value)))
+            logger.error(
+                "Error opening the analog to digital converter: %s: %s"
+                % (str(exc_type), str(exc_value)))
         else:
             clients.append(analog)
             threads.append(analog)
@@ -214,3 +215,12 @@ def stop_threads(threads, logger):
         thread.cancel()
         thread.join()
         logger.debug("Joined " + str(thread))
+
+if __name__ == "__main__":
+    sh = logging.StreamHandler()
+    sh.setFormatter(
+        logging.Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+    from config import get_configuration
+    c = get_configuration()
+    main(c, [sh])
