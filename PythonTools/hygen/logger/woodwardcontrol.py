@@ -37,6 +37,7 @@ class WoodwardPWM(Thread):
         # Store configuration values as instance variables
         self._pin = wconfig['pin']
         self._sample_time = wconfig['period']
+        self.controller_direction = DIRECT
         self.set_tunings(wconfig['Kp'],
 						 wconfig['Ki'],
 						 wconfig['Kd'])
@@ -52,14 +53,13 @@ class WoodwardPWM(Thread):
         self.high_val = 50
 
         # Mode switch: step or pid
-        self.mode = 'step'
+        self.mode = 'pid'
 
         # Initialize pid variables to reasonable defaults
         self.last_time = 0
         self.process_variable = self.setpoint
         self.integral_term = 0.0
         self.in_auto = False
-        self.controller_direction = DIRECT
         self._logger.debug("Started Woodward controller")
 
         # Set max and min values for the PWM
@@ -83,7 +83,7 @@ class WoodwardPWM(Thread):
 		# Maybe close PWM here
         del self._output
 
-	output = property(get_output, set_output, del_output, "PWM Output Value")
+    output = property(get_output, set_output, del_output, "PWM Output Value")
 
     @staticmethod
     def check_config(wconfig):
@@ -221,8 +221,8 @@ class WoodwardPWM(Thread):
 
             # Return the calculated value
             return output
-		else:
-			return self.output
+        else:
+            return self.output
 
     def run(self):
         """
@@ -231,7 +231,7 @@ class WoodwardPWM(Thread):
         i = 0
         if self.mode == 'step':
             # If we're in step mode, we do a squarewave
-			half_period = 0.5 * self.period
+	    half_period = 0.5 * self.period
             while not self._cancelled:
                 # Period
                 if i >= half_period:

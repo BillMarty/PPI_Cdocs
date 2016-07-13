@@ -9,11 +9,11 @@ from threading import Thread
 import os
 import time
 import logging
-from utils import PY2, PY3
+import sys
 
-if PY3:
+if sys.version_info[0] == 3:
     import queue
-elif PY2:
+elif sys.version_info[0] == 2:
     import Queue as queue
 
 
@@ -31,7 +31,7 @@ class FileWriter(Thread):
         # General config for the thread
         super(FileWriter, self).__init__()
         self.daemon = False
-        
+
         self._logger = logging.getLogger(__name__)
         for h in handlers:
             self._logger.addHandler(h)

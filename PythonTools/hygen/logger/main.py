@@ -22,6 +22,11 @@ else:
 ##############################
 # Import my files
 ##############################
+if __name__ == '__main__':
+    import sys
+    from os import path
+    sys.path.append(path.dirname(path.abspath(__file__)))
+
 if __package__ is None:
     import sys
     from os import path
@@ -158,6 +163,7 @@ def main(config, handlers):
     i = 0
     reported = False
     going = True
+    woodward.set_mode(True)
     while going:
         try:
             vals = []
@@ -188,7 +194,9 @@ def main(config, handlers):
                     # TODO What should we do here?
 
             try:
-                woodward.process_variable = analog.values["an_300v_cur"]
+                cur = analog.values["an_300v_cur"]
+                if not cur is None:
+                    woodward.process_variable = cur
             except UnboundLocalError:
                 pass
             except KeyError:
