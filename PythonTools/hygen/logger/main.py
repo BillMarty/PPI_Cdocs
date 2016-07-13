@@ -118,10 +118,11 @@ def main(config, handlers):
             woodward = woodwardcontrol.WoodwardPWM(
                 config['woodward'], handlers
             )
-        except:
-            exc_type, exc_value = sys.exc_info()[:2]
-            logger.error("Error opening WoodwardPWM: %s: %s"
-                         % (str(exc_type), str(exc_value)))
+        # ValueError can be from a missing value in the config map
+        # or from an error in the parameters to PWM.start(...)
+        except ValueError as e:
+            logger.error("ValueError: %s"
+                         % (e.args[0]))
         else:
             threads.append(woodward)
 

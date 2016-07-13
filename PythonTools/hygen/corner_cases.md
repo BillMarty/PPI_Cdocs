@@ -65,7 +65,7 @@
 
 # woodwardcontrol.py
 
-- Constructor exceptions
+- Constructor exceptions - handled in `main.py`
 	+ ValueError for invalid config map
 	+ ValueError for invalid config value such as PWM pin
 - Still need to debug compute and main run loop
