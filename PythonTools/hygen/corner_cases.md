@@ -68,4 +68,5 @@
 - Constructor exceptions - handled in `main.py`
 	+ ValueError for invalid config map
 	+ ValueError for invalid config value such as PWM pin
-- Still need to debug compute and main run loop
+- Still need to debug compute and main run loop - Ran through with Herb. Need to test.
+- non-monotonic time - handled using `monotonic` library

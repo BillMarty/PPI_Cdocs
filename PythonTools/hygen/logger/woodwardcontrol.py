@@ -2,6 +2,7 @@
 Implement PID control for the Woodward
 """
 
+import monotonic
 from threading import Thread
 import datetime
 import time
@@ -36,16 +37,16 @@ class WoodwardPWM(Thread):
         # Store configuration values as instance variables
         self._pin = wconfig['pin']
         self._sample_time = wconfig['period']
-        self.kp = wconfig['Kp'],
-        self.ki = wconfig['Ki'],
-        self.kd = wconfig['Kd']
+        self.set_tunings(wconfig['Kp'],
+						 wconfig['Ki'],
+						 wconfig['Kd'])
         self.setpoint = wconfig['setpoint']
 
         # Set up PWM output
         PWM.start(self._pin, 50, 100000)
 
         # Values for step
-        self.period = 20  # half period in seconds
+        self.period = 20  # period in seconds
         self.on = False
         self.low_val = 40
         self.high_val = 50
@@ -54,9 +55,8 @@ class WoodwardPWM(Thread):
         self.mode = 'step'
 
         # Initialize pid variables to reasonable defaults
-        self.last_time = datetime.datetime.now()
+        self.last_time = 0
         self.process_variable = self.setpoint
-        self.last_error = 0.0
         self.integral_term = 0.0
         self.in_auto = False
         self.controller_direction = DIRECT
@@ -67,23 +67,23 @@ class WoodwardPWM(Thread):
         self.outMax = 100.0
 
         # Initialize the property for output
-        self._output = None
+        self._output = 0.0
 
     # Output property automatically updates
-    @property
-    def output(self):
+    def get_output(self):
         return self._output
 
-    @output.setter
-    def output(self, value):  # lint:ok
+    def set_output(self, value):  # lint:ok
         # Only set it if it's in the valid range
         if 0 <= value <= 100:
             PWM.set_duty_cycle(self._pin, value)
             self._output = value
 
-    @output.deleter
-    def output(self):  # lint:ok
+    def del_output(self):  # lint:ok
+		# Maybe close PWM here
         del self._output
+
+	output = property(get_output, set_output, del_output, "PWM Output Value")
 
     @staticmethod
     def check_config(wconfig):
@@ -97,7 +97,6 @@ class WoodwardPWM(Thread):
                 raise ValueError(
                     "Missing " + val + ", required for woodward config")
         # If we get to this point, the required values are present
-        return True
 
     def set_tunings(self, Kp, Ki, Kd):
         """Set new PID controller tunings.
@@ -138,7 +137,7 @@ class WoodwardPWM(Thread):
         """
         if self._sample_time == 0:
             self._sample_time = new_sample_time
-        if new_sample_time > 0:
+        elif new_sample_time > 0:
             ratio = float(new_sample_time) / self._sample_time
             self.ki *= ratio
             self.kd /= ratio
@@ -190,10 +189,8 @@ class WoodwardPWM(Thread):
         if not self.in_auto:
             return self.output
 
-        now = datetime.datetime.now()
-        time_change = (now - self.last_time).total_seconds()
-
-        self.last_output = self.output
+        now = monotonic.monotonic()
+        time_change = (now - self.last_time)
 
         if time_change >= self._sample_time:
             # Compute error variable
@@ -220,11 +217,12 @@ class WoodwardPWM(Thread):
 
             # Save variables for the next time
             self.last_time = now
-            self.last_error = error
             self.last_input = self.process_variable
 
             # Return the calculated value
             return output
+		else:
+			return self.output
 
     def run(self):
         """
@@ -233,8 +231,8 @@ class WoodwardPWM(Thread):
         i = 0
         if self.mode == 'step':
             # If we're in step mode, we do a squarewave
+			half_period = 0.5 * self.period
             while not self._cancelled:
-                half_period = 0.5 * self.period
                 # Period
                 if i >= half_period:
                     if self.on:
@@ -249,7 +247,7 @@ class WoodwardPWM(Thread):
             while not self._cancelled:
                 # output property automatically adjusts PWM output
                 self.output = self.compute()
-                time.sleep(0.01)  # avoid tight looping
+                time.sleep(0.1)  # avoid tight looping
 
     def cancel(self):
         self._cancelled = True
