@@ -19,6 +19,8 @@ if sys.version_info[0] == 2:
 else:
     import queue
 
+import Adafruit_BBIO.PWM as PWM
+
 ##############################
 # Import my files
 ##############################
@@ -67,7 +69,7 @@ def main(config, handlers):
     ############################################
     if 'deepsea' in config['enabled']:
         try:
-            deepSea = deepseaclient.DeepSeaClient(config['deepsea'], handlers)
+            deepsea = deepseaclient.DeepSeaClient(config['deepsea'], handlers)
         except ValueError:
             exc_type, exc_value = sys.exc_info()[:2]
             logger.error("Error with DeepSeaClient config: %s: %s"
@@ -80,8 +82,8 @@ def main(config, handlers):
             logger.error("Error opening BMSClient: %s: %s"
                          % (str(exc_type), str(exc_value)))
         else:
-            clients.append(deepSea)
-            threads.append(deepSea)
+            clients.append(deepsea)
+            threads.append(deepsea)
 
     if 'analog' in config['enabled']:
         try:
@@ -135,9 +137,12 @@ def main(config, handlers):
         headers = []
         for c in clients:
             headers.append(c.csv_header())
-            if len(headers) == 0:
-                logger.error("CSV header returned by clients is blank")
-            csv_header = "linuxtime," + ','.join(headers)
+
+        if len(headers) == 0:
+            logger.error("CSV header returned by clients is blank")
+
+        headers.append("output_woodward")
+        csv_header = "linuxtime," + ','.join(headers)
         logqueue = queue.Queue()
         try:
             filewriter = logfilewriter.FileWriter(
@@ -160,10 +165,13 @@ def main(config, handlers):
     for thread in threads:
         thread.start()
 
-    i = 0
+    i, j  = 0, 0
     reported = False
     going = True
-    woodward.set_mode(True)
+    # Start RPM analog signal
+    rpm_sig = "P9_22"
+    rpm_default = 0
+    PWM.start(rpm_sig, rpm_default, 100000)
     while going:
         try:
             vals = []
@@ -172,9 +180,19 @@ def main(config, handlers):
             # Every 10th time
             if i >= 10:
                 i = 0
+                j += 1
                 for client in clients:
                     client.print_data()
                     vals.append(client.csv_line())
+                print("%20s %10s %10s" % ("PID enabled", str(woodward.in_auto),
+                                          "True/False"))
+                print("%20s %10.2f %10s" % ("PID Output", woodward.output,
+                                            "% duty cycle"))
+                print("%20s %10.2f %10s" % ("Cur Setpoint", woodward.setpoint,
+                                            "A"))
+                print("%20s %10.2f" % ("Kp", woodward.kp))
+                print("%20s %10.2f" % ("Ki", woodward.ki))
+                print("%20s %10.2f" % ("Kd", woodward.kd))
                 print(('-' * 80))
 
                 # Check threads to ensure they're running
@@ -184,6 +202,23 @@ def main(config, handlers):
             else:
                 for client in clients:
                     vals.append(client.csv_line())
+
+            # Every 100th time (every 10 seconds)
+            if j >= 10:
+                # Read in the config file to update the coefficients
+                wc = get_configuration()['woodward']
+                woodward.set_tunings(wc['Kp'], wc['Ki'], wc['Kd'])
+                j = 0
+                woodward.setpoint = wc['setpoint']
+
+            # Output rpm on analog
+            rpm_val = rpm_default
+            rpm = deepsea.values['ds_rpm']
+            if 2100 <= rpm <= 3000:
+                rpm_val = (rpm - 2100) / 900 * 100
+            PWM.set_duty_cycle(rpm_sig, rpm_val)
+
+            vals.append(str(woodward.output))
 
             # Put the csv data in the logfile
             if len(vals) > 0:
@@ -204,6 +239,19 @@ def main(config, handlers):
                     logger.critical("Key does not exist for the analog values")
                     reported = True
                 pass
+
+            try:
+                pid_enable = deepsea.values["pid_enable_flag"]
+                if (pid_enable
+                    and int(pid_enable) & (1 << 6)):
+                    woodward.set_auto(True)
+                else:
+                    woodward.set_auto(False)
+                    woodward.output = 0.0
+            except UnboundLocalError:
+                pass
+            except KeyError:
+                logger.critical("Key does not exist for the PID enable flag")
 
             i += 1
             time.sleep(0.1)

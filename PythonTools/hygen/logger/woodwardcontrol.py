@@ -39,8 +39,8 @@ class WoodwardPWM(Thread):
         self._sample_time = wconfig['period']
         self.controller_direction = DIRECT
         self.set_tunings(wconfig['Kp'],
-						 wconfig['Ki'],
-						 wconfig['Kd'])
+                wconfig['Ki'],
+                wconfig['Kd'])
         self.setpoint = wconfig['setpoint']
 
         # Set up PWM output
@@ -80,7 +80,7 @@ class WoodwardPWM(Thread):
             self._output = value
 
     def del_output(self):  # lint:ok
-		# Maybe close PWM here
+        # Maybe close PWM here
         del self._output
 
     output = property(get_output, set_output, del_output, "PWM Output Value")
@@ -95,8 +95,8 @@ class WoodwardPWM(Thread):
         for val in required_config:
             if val not in wconfig:
                 raise ValueError(
-                    "Missing " + val + ", required for woodward config")
-        # If we get to this point, the required values are present
+                        "Missing " + val + ", required for woodward config")
+                # If we get to this point, the required values are present
 
     def set_tunings(self, Kp, Ki, Kd):
         """Set new PID controller tunings.
@@ -163,7 +163,7 @@ class WoodwardPWM(Thread):
         elif self.integral_term > self.outMax:
             self.integral_term = self.outMax
 
-    def set_mode(self, new_auto):
+    def set_auto(self, new_auto):
         """
         Set whether we're in auto mode or manual.
         """
@@ -208,8 +208,8 @@ class WoodwardPWM(Thread):
 
             # Compute output
             output = self.kp * error +\
-                self.integral_term -\
-                self.kd * dInput
+                    self.integral_term -\
+                    self.kd * dInput
             if output > self.outMax:
                 output = self.outMax
             elif output < self.outMin:
@@ -231,7 +231,7 @@ class WoodwardPWM(Thread):
         i = 0
         if self.mode == 'step':
             # If we're in step mode, we do a squarewave
-	    half_period = 0.5 * self.period
+            half_period = 0.5 * self.period
             while not self._cancelled:
                 # Period
                 if i >= half_period:
