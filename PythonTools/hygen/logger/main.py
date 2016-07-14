@@ -11,15 +11,16 @@ The program implements the following functionality:
 # Import required libraries
 ###############################
 import sys
+import socket
 import time
 import logging
 import serial
+import Adafruit_BBIO.PWM as PWM
+
 if sys.version_info[0] == 2:
     import Queue as queue
 else:
     import queue
-
-import Adafruit_BBIO.PWM as PWM
 
 ##############################
 # Import my files
@@ -27,11 +28,13 @@ import Adafruit_BBIO.PWM as PWM
 if __name__ == '__main__':
     import sys
     from os import path
+
     sys.path.append(path.dirname(path.abspath(__file__)))
 
 if __package__ is None:
     import sys
     from os import path
+
     sys.path.append(
         path.dirname(
             path.dirname(
@@ -41,14 +44,12 @@ if __package__ is None:
     from hygen.logger import analogclient
     from hygen.logger import woodwardcontrol
     from hygen.logger import logfilewriter
-    from hygen.utils import PY2, PY3
 else:
     import deepseaclient
     import bmsclient
     import analogclient
     import woodwardcontrol
     import logfilewriter
-    from ..utils import PY2, PY3
 
 
 def main(config, handlers):
@@ -77,7 +78,7 @@ def main(config, handlers):
         except serial.SerialException as e:
             logger.error("SerialException({0}) opening BmsClient: {1}"
                          .format(e.errno, e.strerror))
-        except IOError:
+        except socket.error:
             exc_type, exc_value = sys.exc_info()[:2]
             logger.error("Error opening BMSClient: %s: %s"
                          % (str(exc_type), str(exc_value)))
@@ -111,7 +112,7 @@ def main(config, handlers):
             exc_type, exc_value = sys.exc_info()[:2]
             logger.error("Error opening BMSClient: %s: %s"
                          % (str(exc_type), str(exc_value)))
-        except ValueError as e:
+        except ValueError:
             logger.error("ValueError with BmsClient config")
         else:
             clients.append(bms)
@@ -131,6 +132,7 @@ def main(config, handlers):
             logger.error("ValueError: %s"
                          % (e.args[0]))
         else:
+            clients.append(woodward)
             threads.append(woodward)
 
     if 'filewriter' in config['enabled']:
@@ -143,10 +145,10 @@ def main(config, handlers):
 
         headers.append("output_woodward")
         csv_header = "linuxtime," + ','.join(headers)
-        logqueue = queue.Queue()
+        log_queue = queue.Queue()
         try:
             filewriter = logfilewriter.FileWriter(
-                config['filewriter'], handlers, logqueue, csv_header
+                config['filewriter'], handlers, log_queue, csv_header
             )
         except ValueError as e:
             logger.error("FileWriter did not start with message \"{0}\""
@@ -154,7 +156,8 @@ def main(config, handlers):
         except (IOError, OSError) as e:
             logger.error("FileWriter did not start with message \"{0}\""
                          .format(str(e)))
-        threads.append(filewriter)
+        else:
+            threads.append(filewriter)
 
     # Check whether we have some input
     if len(clients) == 0:
@@ -165,7 +168,7 @@ def main(config, handlers):
     for thread in threads:
         thread.start()
 
-    i, j  = 0, 0
+    i, j = 0, 0
     reported = False
     going = True
     # Start RPM analog signal
@@ -174,8 +177,7 @@ def main(config, handlers):
     PWM.start(rpm_sig, rpm_default, 100000)
     while going:
         try:
-            vals = []
-            vals.append(str(time.time()))
+            vals = [str(time.time())]
 
             # Every 10th time
             if i >= 10:
@@ -193,7 +195,7 @@ def main(config, handlers):
                 print("%20s %10.2f" % ("Kp", woodward.kp))
                 print("%20s %10.2f" % ("Ki", woodward.ki))
                 print("%20s %10.2f" % ("Kd", woodward.kd))
-                print(('-' * 80))
+                print('-' * 80)
 
                 # Check threads to ensure they're running
                 for thread in threads:
@@ -223,14 +225,14 @@ def main(config, handlers):
             # Put the csv data in the logfile
             if len(vals) > 0:
                 try:
-                    logqueue.put(','.join(vals))
+                    log_queue.put(','.join(vals))
                 except queue.Full:
                     pass
                     # TODO What should we do here?
 
             try:
                 cur = analog.values["an_300v_cur"]
-                if not cur is None:
+                if cur is not None:
                     woodward.process_variable = cur
             except UnboundLocalError:
                 pass
@@ -242,8 +244,7 @@ def main(config, handlers):
 
             try:
                 pid_enable = deepsea.values["pid_enable_flag"]
-                if (pid_enable
-                    and int(pid_enable) & (1 << 6)):
+                if pid_enable and int(pid_enable) & (1 << 6):
                     woodward.set_auto(True)
                 else:
                     woodward.set_auto(False)
@@ -273,11 +274,13 @@ def stop_threads(threads, logger):
         thread.join()
         logger.debug("Joined " + str(thread))
 
+
 if __name__ == "__main__":
     sh = logging.StreamHandler()
     sh.setFormatter(
         logging.Formatter(
             '%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
     from config import get_configuration
-    c = get_configuration()
-    main(c, [sh])
+
+    configuration = get_configuration()
+    main(configuration, [sh])

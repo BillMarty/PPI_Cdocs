@@ -13,7 +13,7 @@
         # Possible mode values are 'rtu' or 'tcp'
         'mode': 'rtu',
         # RTU settings
-        'baudrate': 115200,  # serial port baudrate
+        'baudrate': 19200,  # serial port baudrate
         'dev': '/dev/ttyO1',  # serial device
         'id': 10,  # Set on deepsea - slave ID
     },

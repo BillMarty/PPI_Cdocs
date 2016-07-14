@@ -4,7 +4,6 @@ Implement PID control for the Woodward
 
 import monotonic
 from threading import Thread
-import datetime
 import time
 import logging
 import Adafruit_BBIO.PWM as PWM
@@ -14,7 +13,6 @@ REVERSE = 1
 
 
 class WoodwardPWM(Thread):
-
     """
     Send a square wave input via the PWM
     """
@@ -28,46 +26,43 @@ class WoodwardPWM(Thread):
             self._logger.addHandler(h)
         self._logger.setLevel(logging.DEBUG)
 
-        # Set cancelled to correct initial value
-        self._cancelled = False
-
         # Check configuration to ensure all values present
         WoodwardPWM.check_config(wconfig)
 
-        # Store configuration values as instance variables
+        # Initialize member variables
+        self._cancelled = False
         self._pin = wconfig['pin']
         self._sample_time = wconfig['period']
-        self.controller_direction = DIRECT
-        self.set_tunings(wconfig['Kp'],
-                wconfig['Ki'],
-                wconfig['Kd'])
+        self._direction = DIRECT
         self.setpoint = wconfig['setpoint']
+        self.out_min = 0.0
+        self.out_max = 100.0
+        self.last_time = 0  # ensure that we run on the first time
+        self.process_variable = self.setpoint  # Start by assuming we are there
+        self.last_input = self.process_variable  # Initialize
+        self.integral_term = 0.0  # Start with no integral windup
+        self.in_auto = False  # Start in manual control
+        self.kp, self.ki, self.kd = None, None, None
+        self.set_tunings(wconfig['Kp'],
+                         wconfig['Ki'],
+                         wconfig['Kd'])
 
-        # Set up PWM output
-        PWM.start(self._pin, 50, 100000)
+        # Mode switch: step or pid
+        self.mode = 'pid'
 
+        # Initialize the property for output and PWM
+        self._output = 0.0
+        PWM.start(self._pin, 0.0, 100000)
+
+        # { Step configuration
         # Values for step
         self.period = 20  # period in seconds
         self.on = False
         self.low_val = 40
         self.high_val = 50
+        # }
 
-        # Mode switch: step or pid
-        self.mode = 'pid'
-
-        # Initialize pid variables to reasonable defaults
-        self.last_time = 0
-        self.process_variable = self.setpoint
-        self.integral_term = 0.0
-        self.in_auto = False
         self._logger.debug("Started Woodward controller")
-
-        # Set max and min values for the PWM
-        self.outMin = 0.0
-        self.outMax = 100.0
-
-        # Initialize the property for output
-        self._output = 0.0
 
     # Output property automatically updates
     def get_output(self):
@@ -95,10 +90,10 @@ class WoodwardPWM(Thread):
         for val in required_config:
             if val not in wconfig:
                 raise ValueError(
-                        "Missing " + val + ", required for woodward config")
+                    "Missing " + val + ", required for woodward config")
                 # If we get to this point, the required values are present
 
-    def set_tunings(self, Kp, Ki, Kd):
+    def set_tunings(self, kp, ki, kd):
         """Set new PID controller tunings.
 
         Kp, Ki, Kd are positive floats or integers that serve as the
@@ -106,25 +101,25 @@ class WoodwardPWM(Thread):
         """
         # We can't ever have negative tunings
         # that is accomplished with self.controller_direction
-        if Kp < 0 or Ki < 0 or Kd < 0:
+        if kp < 0 or ki < 0 or kd < 0:
             return
-        self.kp = Kp
-        self.ki = Ki * self._sample_time
-        self.kd = Kd / self._sample_time
+        self.kp = kp
+        self.ki = ki * self._sample_time
+        self.kd = kd / self._sample_time
 
-        if self.controller_direction == REVERSE:
+        if self._direction == REVERSE:
             self.kp = -self.kp
             self.ki = -self.ki
             self.kd = -self.kd
 
     def set_controller_direction(self, direction):
         """
-        Set the controller direction to one of woodwardcontrol.DIRECT
-        or woodwardcontrol.REVERSE.
+        Set the controller direction to one of DIRECT
+        or REVERSE.
         """
-        old_direction = self.controller_direction
+        old_direction = self._direction
         if direction in [DIRECT, REVERSE]:
-            self.controller_direction = direction
+            self._direction = direction
             if direction != old_direction:
                 # If we've changed direction, invert the tunings
                 self.set_tunings(self.kp, self.ki, self.kd)
@@ -143,25 +138,25 @@ class WoodwardPWM(Thread):
             self.kd /= ratio
             self._sample_time = float(new_sample_time)
 
-    def set_output_limits(self, outMin, outMax):
+    def set_output_limits(self, out_min, out_max):
         """
         Set limits on the output. If the current output or integral term is
         outside those limits, bring it inside the boundaries.
         """
-        if outMax < outMin:
+        if out_max < out_min:
             return
-        self.outMin = outMin
-        self.outMax = outMax
+        self.out_min = out_min
+        self.out_max = out_max
 
-        if self.output < self.outMin:
-            self.output = self.outMin
-        elif self.output > self.outMax:
-            self.output = self.outMax
+        if self.output < self.out_min:
+            self.output = self.out_min
+        elif self.output > self.out_max:
+            self.output = self.out_max
 
-        if self.integral_term < self.outMin:
-            self.integral_term = self.outMin
-        elif self.integral_term > self.outMax:
-            self.integral_term = self.outMax
+        if self.integral_term < self.out_min:
+            self.integral_term = self.out_min
+        elif self.integral_term > self.out_max:
+            self.integral_term = self.out_max
 
     def set_auto(self, new_auto):
         """
@@ -177,10 +172,10 @@ class WoodwardPWM(Thread):
         """
         self.last_input = self.process_variable
         self.integral_term = self.output
-        if self.integral_term > self.outMax:
-            self.integral_term = self.outMax
-        elif self.integral_term < self.outMin:
-            self.integral_term = self.outMin
+        if self.integral_term > self.out_max:
+            self.integral_term = self.out_max
+        elif self.integral_term < self.out_min:
+            self.integral_term = self.out_min
 
     def compute(self):
         """
@@ -198,22 +193,22 @@ class WoodwardPWM(Thread):
 
             # Calculate integral term
             self.integral_term += error * self.ki
-            if self.integral_term > self.outMax:
-                self.integral_term = self.outMax
-            elif self.integral_term < self.outMin:
-                self.integral_term = self.outMin
+            if self.integral_term > self.out_max:
+                self.integral_term = self.out_max
+            elif self.integral_term < self.out_min:
+                self.integral_term = self.out_min
 
             # Compute the proxy for the derivative term
-            dInput = (self.process_variable - self.last_input)
+            d_pv = (self.process_variable - self.last_input)
 
             # Compute output
-            output = self.kp * error +\
-                    self.integral_term -\
-                    self.kd * dInput
-            if output > self.outMax:
-                output = self.outMax
-            elif output < self.outMin:
-                output = self.outMin
+            output = (self.kp * error +
+                      self.integral_term -
+                      self.kd * d_pv)
+            if output > self.out_max:
+                output = self.out_max
+            elif output < self.out_min:
+                output = self.out_min
 
             # Save variables for the next time
             self.last_time = now
@@ -230,7 +225,7 @@ class WoodwardPWM(Thread):
         """
         i = 0
         if self.mode == 'step':
-            # If we're in step mode, we do a squarewave
+            # If we're in step mode, we do a square wave
             half_period = 0.5 * self.period
             while not self._cancelled:
                 # Period
@@ -249,6 +244,53 @@ class WoodwardPWM(Thread):
                 self.output = self.compute()
                 time.sleep(0.1)  # avoid tight looping
 
+    ##########################
+    # Methods from Main thread
+    ##########################
+
     def cancel(self):
         self._cancelled = True
         self._logger.info("Stopping " + str(self) + "...")
+
+    def print_data(self):
+        """
+        Print all the data as we currently have it, in human-
+        readable format.
+        """
+        print("%20s %10s %10s" % ("PID enabled", str(self.in_auto), "T/F"))
+        print("%20s %10.2f %10s" % ("PID output", self.output, "%"))
+        print("%20s %10.2f %10s" % ("Setpoint A", self.setpoint, "A"))
+
+        factor = 1
+        if self._direction == REVERSE:
+            factor = -1
+        print("%20s %10.2f" % ("Kp", self.kp * factor))
+        print("%20s %10.2f" % ("Ki", self.ki * factor / self._sample_time))
+        print("%20s %10.2f" % ("Kd", self.kd * factor * self._sample_time))
+
+    @staticmethod
+    def csv_header():
+        """
+        Return the CSV header line.
+        Does not include newline or trailing comma.
+        """
+        titles = ["pid_out_percent", "setpoint_amps", "kp", "ki", 'kd']
+        return ','.join(titles)
+
+    def csv_line(self):
+        """
+        Return a CSV line of the data we currently have.
+        Does not include newline or trailing comma.
+        """
+        if self._direction == REVERSE:
+            factor = -1
+        else:
+            factor = 1
+        values = [
+            str(self.output),
+            str(self.setpoint),
+            str(self.kp * factor),
+            str(self.ki * factor / self._sample_time),
+            str(self.kd * factor * self._sample_time),
+        ]
+        return ','.join(values)
