@@ -7,3 +7,4 @@ ds_300v_cur,A,1224,2,0.1,0,0.1
 ww_control,V,43811,1,1,0,0.1
 an_rpm,RPM,43809,1,1,0,0.1
 ds_300v_bat_cur,A,1230,2,1,0,0.1
+pid_enable_flag,flags,3345,1,1,0

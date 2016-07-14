@@ -9,7 +9,7 @@
     'deepsea': {
         # Where to find the measurement list
         'mlistfile':\
-        '/home/hygen/dev/PPI_Cdocs/PythonTools/hygen/logger/mdf.csv',
+        '/home/hygen/dev/PPI_Cdocs/PythonTools/hygen/logger/cur_rpm.csv',
         # Possible mode values are 'rtu' or 'tcp'
         'mode': 'rtu',
         # RTU settings
@@ -31,16 +31,16 @@
     'woodward': {
         'pin': 'P9_21',
         'Kp': 1.0,
-        'Ki': 1.0,
-        'Kd': 1.0,
-        'setpoint': 25.0,  # Amps
+        'Ki': 0.5,
+        'Kd': 0.0,
+        'setpoint': 24.0,  # Amps
         'period': 1.0,
     },
 
     # Analog measurements to take
     'analog': {
         # How many values to average for each reported value
-        'averages': 8,
+        'averages': 64,
         'measurements': [
             # [ 'name', 'units', 'pin', gain, offset ]
             # valid values for 'pin' are:
