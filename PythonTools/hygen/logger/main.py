@@ -51,6 +51,17 @@ else:
     import woodwardcontrol
     import logfilewriter
 
+# Master values dictionary
+# Keys should be one of
+# a) Modbus address
+# b) analog pin in
+# c) our assigned "one true name" for each BMS variable
+# d) PWM pin out for Woodward signals
+data_store = {}
+
+# Modbus addresses
+RPM = 1030
+
 
 def main(config, handlers):
     """
@@ -70,7 +81,7 @@ def main(config, handlers):
     ############################################
     if 'deepsea' in config['enabled']:
         try:
-            deepsea = deepseaclient.DeepSeaClient(config['deepsea'], handlers)
+            deepsea = deepseaclient.DeepSeaClient(config['deepsea'], handlers, data_store)
         except ValueError:
             exc_type, exc_value = sys.exc_info()[:2]
             logger.error("Error with DeepSeaClient config: %s: %s"
@@ -88,7 +99,7 @@ def main(config, handlers):
 
     if 'analog' in config['enabled']:
         try:
-            analog = analogclient.AnalogClient(config['analog'], handlers)
+            analog = analogclient.AnalogClient(config['analog'], handlers, data_store)
         except ValueError:
             exc_type, exc_value = sys.exc_info()[:2]
             logger.error("Configuration error from AnalogClient: %s: %s"
@@ -177,7 +188,7 @@ def main(config, handlers):
     PWM.start(rpm_sig, rpm_default, 100000)
     while going:
         try:
-            vals = [str(time.time())]
+            csv_parts = [str(time.time())]
 
             # Every 10th time
             if i >= 10:
@@ -185,16 +196,7 @@ def main(config, handlers):
                 j += 1
                 for client in clients:
                     client.print_data()
-                    vals.append(client.csv_line())
-                print("%20s %10s %10s" % ("PID enabled", str(woodward.in_auto),
-                                          "True/False"))
-                print("%20s %10.2f %10s" % ("PID Output", woodward.output,
-                                            "% duty cycle"))
-                print("%20s %10.2f %10s" % ("Cur Setpoint", woodward.setpoint,
-                                            "A"))
-                print("%20s %10.2f" % ("Kp", woodward.kp))
-                print("%20s %10.2f" % ("Ki", woodward.ki))
-                print("%20s %10.2f" % ("Kd", woodward.kd))
+                    csv_parts.append(client.csv_line())
                 print('-' * 80)
 
                 # Check threads to ensure they're running
@@ -203,47 +205,48 @@ def main(config, handlers):
                         thread.start()
             else:
                 for client in clients:
-                    vals.append(client.csv_line())
+                    csv_parts.append(client.csv_line())
 
-            # Every 100th time (every 10 seconds)
-            if j >= 10:
-                # Read in the config file to update the coefficients
-                wc = get_configuration()['woodward']
-                woodward.set_tunings(wc['Kp'], wc['Ki'], wc['Kd'])
-                j = 0
-                woodward.setpoint = wc['setpoint']
-
-            # Output rpm on analog
-            rpm_val = rpm_default
-            rpm = deepsea.values['ds_rpm']
-            if 2100 <= rpm <= 3000:
-                rpm_val = (rpm - 2100) / 900 * 100
-            PWM.set_duty_cycle(rpm_sig, rpm_val)
-
-            vals.append(str(woodward.output))
+            # Read in the config file to update the coefficients
+            wc = get_configuration()['woodward']
+            woodward.set_tunings(wc['Kp'], wc['Ki'], wc['Kd'])
+            j = 0
+            woodward.setpoint = wc['setpoint']
 
             # Put the csv data in the logfile
-            if len(vals) > 0:
+            if len(csv_parts) > 0:
                 try:
-                    log_queue.put(','.join(vals))
+                    log_queue.put(','.join(csv_parts))
                 except queue.Full:
                     pass
                     # TODO What should we do here?
 
+            # Connect rpm to analog out
+            rpm_val = rpm_default
             try:
-                cur = analog.values["an_300v_cur"]
+                rpm = data_store[1030]  # From DeepSea GenComm manual
+            except KeyError:
+                logger.warning('RPM is not being read in from the DeepSea')
+            if 2100 <= rpm <= 3000:
+                rpm_val = (rpm - 2100) / 900 * 100
+            PWM.set_duty_cycle(rpm_sig, rpm_val)
+
+            # Connect the analog current in to the woodward process
+            try:
+                cur = data_store['P9_40']
                 if cur is not None:
                     woodward.process_variable = cur
             except UnboundLocalError:
                 pass
             except KeyError:
                 if not reported:
-                    logger.critical("Key does not exist for the analog values")
+                    logger.critical('Current is not being read in.')
                     reported = True
                 pass
 
+            # Connect the on / off signal from the deepSea to the PID
             try:
-                pid_enable = deepsea.values["pid_enable_flag"]
+                pid_enable = data_store[3345]  # From DeepSea GenComm manual
                 if pid_enable and int(pid_enable) & (1 << 6):
                     woodward.set_auto(True)
                 else:

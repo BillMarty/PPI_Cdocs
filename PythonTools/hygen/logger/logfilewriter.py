@@ -5,11 +5,11 @@ Created on Wed Jul 06 08:18:52 2016
 @author: mwest
 """
 import datetime
-from threading import Thread
 import os
 import time
-import logging
 import sys
+
+from logger.asynciothread import AsyncIOThread
 
 if sys.version_info[0] == 3:
     import queue
@@ -17,9 +17,9 @@ elif sys.version_info[0] == 2:
     import Queue as queue
 
 
-class FileWriter(Thread):
+class FileWriter(AsyncIOThread):
 
-    def __init__(self, lconfig, handlers, queue, csv_header):
+    def __init__(self, lconfig, handlers, log_queue, csv_header):
         """
         Initialize a filewriter which writes to file whatever is put
         on its queue.
@@ -29,12 +29,7 @@ class FileWriter(Thread):
         - IOError (Python < 3.3) or OSError (Python >= 3.3) for inaccessible file
         """
         # General config for the thread
-        super(FileWriter, self).__init__()
-        self.daemon = False
-
-        self._logger = logging.getLogger(__name__)
-        for h in handlers:
-            self._logger.addHandler(h)
+        super(FileWriter, self).__init__(handlers)
 
         # Specific config for the logger
         FileWriter.check_config(lconfig)
@@ -44,8 +39,7 @@ class FileWriter(Thread):
         else:
             raise ValueError("Log directory does not exist")
 
-        self._queue = queue
-        self._cancelled = False
+        self._queue = log_queue
         self._f = open(os.devnull, 'w')
         self._csv_header = csv_header
 
@@ -84,7 +78,7 @@ class FileWriter(Thread):
         fpath = self.get_file_path()
         try:
             f = open(fpath, 'w')
-        except:
+        except IOError:
             self._logger.critical("Failed to open log file: %s" % fpath)
             return open(os.devnull, 'w')  # return a null file
         return f
@@ -98,7 +92,7 @@ class FileWriter(Thread):
                 self._f.write(line)
             else:
                 self._f.write(line + '\n')
-        except IOError, OSError:
+        except (IOError, OSError):
             self._logger.error("Could not write to log file")
 
     def run(self):

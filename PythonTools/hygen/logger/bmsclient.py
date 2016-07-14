@@ -1,12 +1,10 @@
 import serial
-import logging
-import sys
-from threading import Thread
+from ..utils import PY2, PY3
 
-from hygen.utils import PY2, PY3
+from logger.asynciothread import AsyncIOThread
 
 
-class BmsClient(Thread):
+class BmsClient(AsyncIOThread):
 
     """
     This class specifies the specifics for the Becket battery
@@ -25,15 +23,8 @@ class BmsClient(Thread):
         - ValueError
         """
         # Initialize the parent class
-        super(BmsClient, self).__init__()
+        super(BmsClient, self).__init__(handlers)
         self.daemon = False
-        self._cancelled = False
-
-        # Open a logger
-        self._logger = logging.getLogger(__name__)
-        for h in handlers:
-            self._logger.addHandler(h)
-        self._logger.setLevel(logging.DEBUG)
 
         # Read config values
         BmsClient.check_config(bconfig)
@@ -48,7 +39,6 @@ class BmsClient(Thread):
             if not self._ser.isOpen():
                 self._ser.open()
         except serial.SerialException as e:
-            exc_type, exc_value = sys.exc_info()[:2]
             self._logger.critical("SerialException({0}): {1}"
                                   .format(e.errno, e.strerror))
             raise
@@ -56,7 +46,7 @@ class BmsClient(Thread):
         # Open file - IOError could be thrown
         self._f = open(sfilename, 'a')
 
-        # Setup global lastline variable
+        # Setup global last line variables
         self.last_string_status = ""
         self.last_module_status = ""
 
@@ -88,7 +78,7 @@ class BmsClient(Thread):
         while not self._cancelled:
             try:
                 line = self._ser.readline()
-            except:
+            except serial.SerialException:
                 self._logger.warning("BMS not connected")
             else:
                 # If the checksum is wrong, skip it
@@ -134,7 +124,7 @@ class BmsClient(Thread):
             for byte in data:
                 sum1 = (sum1 + byte) % 255
                 sum2 = (sum2 + sum1) % 255
-        elif PY2:
+        else:
             sum1, sum2 = 0, 0
             for byte in data:
                 sum1 = (sum1 + ord(byte)) % 255
@@ -160,7 +150,7 @@ class BmsClient(Thread):
         if self.last_string_status:
             charge = int(self.last_string_status[19:22])
             cur = int(self.last_string_status[34:39])
-            return (charge, cur)
+            return charge, cur
         else:
             return None, None
 
@@ -174,15 +164,15 @@ class BmsClient(Thread):
             return
 
         charge, cur = self.get_data()
-        if charge != None:
-            print(("%20s %10d %10s" % ("State of Charge", charge, "%")))
+        if charge is not None:
+            print("%20s %10d %10s" % ("State of Charge", charge, "%"))
         else:
-            print(("%20s %10s %10s" % ("State of Charge", "ERR", "%")))
+            print("%20s %10s %10s" % ("State of Charge", "ERR", "%"))
 
-        if cur != None:
-            print(("%20s %10d %10s" % ("Battery Current", cur, "A")))
+        if cur is not None:
+            print("%20s %10d %10s" % ("Battery Current", cur, "A"))
         else:
-            print(("%20s %10s %10s" % ("Battery Current", "ERR", "A")))
+            print("%20s %10s %10s" % ("Battery Current", "ERR", "A"))
 
     def csv_header(self):
         """
@@ -201,7 +191,7 @@ class BmsClient(Thread):
         if self.last_string_status == "":
             return ","
         charge, cur = self.get_data()
-        if charge != None and cur != None:
+        if charge is not None and cur is not None:
             return "%d,%d" % (charge, cur)
         else:
             return ","

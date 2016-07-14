@@ -8,24 +8,19 @@ import time
 import logging
 import Adafruit_BBIO.PWM as PWM
 
+from logger.asynciothread import AsyncIOThread
+
 DIRECT = 0
 REVERSE = 1
 
 
-class WoodwardPWM(Thread):
+class WoodwardPWM(AsyncIOThread):
     """
     Send a square wave input via the PWM
     """
 
     def __init__(self, wconfig, handlers):
-        super(WoodwardPWM, self).__init__()
-        self.daemon = False
-
-        self._logger = logging.getLogger(__name__)
-        for h in handlers:
-            self._logger.addHandler(h)
-        self._logger.setLevel(logging.DEBUG)
-
+        super(WoodwardPWM, self).__init__(handlers)
         # Check configuration to ensure all values present
         WoodwardPWM.check_config(wconfig)
 
@@ -68,13 +63,13 @@ class WoodwardPWM(Thread):
     def get_output(self):
         return self._output
 
-    def set_output(self, value):  # lint:ok
+    def set_output(self, value):
         # Only set it if it's in the valid range
         if 0 <= value <= 100:
             PWM.set_duty_cycle(self._pin, value)
             self._output = value
 
-    def del_output(self):  # lint:ok
+    def del_output(self):
         # Maybe close PWM here
         del self._output
 
@@ -248,10 +243,6 @@ class WoodwardPWM(Thread):
     # Methods from Main thread
     ##########################
 
-    def cancel(self):
-        self._cancelled = True
-        self._logger.info("Stopping " + str(self) + "...")
-
     def print_data(self):
         """
         Print all the data as we currently have it, in human-
@@ -268,8 +259,7 @@ class WoodwardPWM(Thread):
         print("%20s %10.2f" % ("Ki", self.ki * factor / self._sample_time))
         print("%20s %10.2f" % ("Kd", self.kd * factor * self._sample_time))
 
-    @staticmethod
-    def csv_header():
+    def csv_header(self):
         """
         Return the CSV header line.
         Does not include newline or trailing comma.

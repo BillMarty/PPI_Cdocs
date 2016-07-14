@@ -1,17 +1,15 @@
 # System imports
 import time
-import logging
 import sys
-from threading import Thread
 import monotonic
 
-# from pymodbus.client.sync import ModbusSerialClient, ModbusTcpClient
 from modbus_tk.modbus_rtu import RtuMaster
 from modbus_tk.modbus_tcp import TcpMaster
 import modbus_tk.defines as defines
 from modbus_tk.exceptions import ModbusError, ModbusInvalidResponseError
 from serial import SerialException
 import serial
+from asynciothread import AsyncIOThread
 
 NAME = 0
 UNITS = 1
@@ -19,7 +17,7 @@ ADDRESS = 2
 LENGTH = 3
 GAIN = 4
 OFFSET = 5
-TIME = 6
+PERIOD = 6
 
 # List of addresses which hold signed values.
 # Ref: DeepSea_Modbus_manualGenComm
@@ -165,19 +163,13 @@ SIGNED_ADDRESSES = {
 }
 
 
-class DeepSeaClient(Thread):
-    def __init__(self, dconfig, handlers):
+class DeepSeaClient(AsyncIOThread):
+    def __init__(self, dconfig, handlers, data_store):
         """
         Set up a DeepSeaClient
         dconfig: the configuration values specific to deepsea
         """
-        super(DeepSeaClient, self).__init__()
-        self.daemon = False
-        self._cancelled = False
-        self._logger = logging.getLogger(__name__)
-        for h in handlers:
-            self._logger.addHandler(h)
-        self._logger.setLevel(logging.DEBUG)
+        super(DeepSeaClient, self).__init__(handlers)
 
         # Do configuration setup
         DeepSeaClient.check_config(dconfig)
@@ -194,10 +186,10 @@ class DeepSeaClient(Thread):
             self._client.open()
 
         # Read and save measurement list
-        self.mlist = self.read_measurement_description(dconfig['mlistfile'])
+        self._input_list = self.read_measurement_description(dconfig['mlistfile'])
         # A list of last updated time
-        self.last_updated = {m[NAME]: 0.0 for m in self.mlist}
-        self.values = {m[NAME]: None for m in self.mlist}
+        self._data_store = data_store
+        self._data_store.update({m[ADDRESS]: None for m in self._input_list})
         self._logger.debug("Started deepsea client")
 
     def __del__(self):
@@ -210,21 +202,14 @@ class DeepSeaClient(Thread):
         Overloads Thread.run, runs and reads from the DeepSea.
         """
         while not self._cancelled:
-            t = monotonic.monotonic()
-            for m in self.mlist:
-                # Find the ideal wake time
-                if len(m) > TIME:  # if we have a time from the csv, use it
-                    gtime = m[TIME] + self.last_updated[m[NAME]]
-                else:
-                    gtime = 1.0 + self.last_updated[m[NAME]]  # default
-                # If we've passed it, get the value
-                if t >= gtime:
-                    self.values[m[NAME]] = self.get_deepsea_value(m)
-                    self.last_updated[m[NAME]] = t
+            for m in self._input_list:
+                t, last_time = monotonic(), self._data_store[m[ADDRESS]][1]
+                if t - last_time >= m[PERIOD]:
+                    self._data_store[m[ADDRESS]] = self.get_value(m), monotonic()
             time.sleep(0.01)
 
     @staticmethod
-    def check_config(dconfig):
+    def check_config(config):
         """
         Check that the config is complete. Throw an exception if any
         configuration values are missing.
@@ -233,15 +218,15 @@ class DeepSeaClient(Thread):
         required_rtu_config = ['dev', 'baudrate', 'id']
         required_tcp_config = ['host', 'port']
         for val in required_config:
-            if val not in dconfig:
+            if val not in config:
                 raise ValueError("Missing " + val + ", required for modbus")
-        if dconfig['mode'] == 'tcp':
+        if config['mode'] == 'tcp':
             for val in required_tcp_config:
-                if val not in dconfig:
+                if val not in config:
                     raise ValueError("Missing " + val + ", required for tcp")
-        elif dconfig['mode'] == 'rtu':
+        elif config['mode'] == 'rtu':
             for val in required_rtu_config:
-                if val not in dconfig:
+                if val not in config:
                     raise ValueError("Missing " + val + ", required for rtu")
         else:
             raise ValueError("Mode must be 'tcp' or 'rtu'")
@@ -272,80 +257,65 @@ class DeepSeaClient(Thread):
                 measurement_list.append(m)
         return measurement_list
 
-    def get_deepsea_value(self, meas):
+    def get_value(self, m):
         """
         Get a data value from the deepSea
         """
+        x = None
         try:
-            if meas[LENGTH] == 2:
-                if meas[ADDRESS] in SIGNED_ADDRESSES:
+            if m[LENGTH] == 2:
+                if m[ADDRESS] in SIGNED_ADDRESSES:
                     data_format = ">i"
                 else:
                     data_format = ">I"
             else:
-                if meas[ADDRESS] in SIGNED_ADDRESSES:
+                if m[ADDRESS] in SIGNED_ADDRESSES:
                     data_format = ">h"
                 else:
                     data_format = ">H"
 
-            rr = self._client.execute(
+            result = self._client.execute(
                 self.unit,  # Slave ID
                 defines.READ_HOLDING_REGISTERS,  # Function code
-                meas[ADDRESS],  # Starting address
-                meas[LENGTH],  # Quantity to read
+                m[ADDRESS],  # Starting address
+                m[LENGTH],  # Quantity to read
                 data_format=data_format,
             )
 
-            if rr is None:
-                x = None  # flag for missed MODBUS data
-            else:
-                x = rr[0]
-                x = float(x) * meas[GAIN] + meas[OFFSET]
-
+            if result:
+                x = float(result[0]) * m[GAIN] + m[OFFSET]
         except ModbusInvalidResponseError:
             exc_type, exc_value = sys.exc_info()[:2]
             self._logger.error("ModbusInvalidResponseError occurred: %s, %s"
                                % (str(exc_type), str(exc_value)))
-            x = None
         except ModbusError as e:
             self._logger.error("DeepSea returned an exception: %s"
                                % e.args[0])
-            x = None
         except SerialException:
             exc_type, exc_value = sys.exc_info()[:2]
             self._logger.error("SerialException occurred: %s, %s"
                                % (str(exc_type), str(exc_value)))
-            x = None
-        # except:
-        #     exc_type, exc_value = sys.exc_info()[:2]
-        #     self._logger.critical("Unknown error occured: %s, %s"
-        #                           % (str(exc_type), str(exc_value)))
-        #     x = None
+
         return x
 
     ##########################
     # Methods from Main thread
     ##########################
 
-    def cancel(self):
-        """End this thread"""
-        self._cancelled = True
-        self._logger.info("Stopping " + str(self) + "...")
-
     def print_data(self):
         """
         Print all the data as we currently have it, in human-
         readable format.
         """
-        for m in self.mlist:
+        for m in self._input_list:
             name = m[NAME]
-            val = self.values[name]
+            val = self._data_store[m[ADDRESS]]
             if val is None:
                 display = "%20s %10s %10s" % (name, "ERR", m[UNITS])
             elif m[UNITS] == "sec":
                 t = time.gmtime(val)
-                tstr = time.strftime("%Y-%m-%d %H:%M:%S", t)
-                display = "%20s %21s" % (name, tstr)
+                time_string = time.strftime("%Y-%m-%d %H:%M:%S", t)
+                display = "%20s %21s" % (name, time_string)
             else:
                 display = "%20s %10.2f %10s" % (name, val, m[UNITS])
             print(display)
@@ -355,10 +325,10 @@ class DeepSeaClient(Thread):
         Return the CSV header line.
         Does not include newline or trailing comma.
         """
-        vals = []
-        for m in self.mlist:
-            vals.append(m[NAME])
-        return ','.join(vals)
+        names = []
+        for m in self._input_list:
+            names.append(m[NAME])
+        return ','.join(names)
 
     def csv_line(self):
         """
@@ -366,8 +336,8 @@ class DeepSeaClient(Thread):
         Does not include newline or trailing comma.
         """
         values = []
-        for m in self.mlist:
-            val = self.values[m[NAME]]
+        for m in self._input_list:
+            val = self._data_store[m[NAME]]
             if val is not None:
                 values.append(str(val))
             else:
