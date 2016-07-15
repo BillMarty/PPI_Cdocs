@@ -44,12 +44,15 @@ if __package__ is None:
     from hygen.logger import analogclient
     from hygen.logger import woodwardcontrol
     from hygen.logger import logfilewriter
+    from hygen.logger.config import get_configuration
 else:
     import deepseaclient
     import bmsclient
     import analogclient
     import woodwardcontrol
     import logfilewriter
+    from config import get_configuration
+
 
 # Master values dictionary
 # Keys should be one of
@@ -179,7 +182,7 @@ def main(config, handlers):
     for thread in threads:
         thread.start()
 
-    i, j = 0, 0
+    i = 0
     reported = False
     going = True
     # Start RPM analog signal
@@ -193,7 +196,6 @@ def main(config, handlers):
             # Every 10th time
             if i >= 10:
                 i = 0
-                j += 1
                 for client in clients:
                     client.print_data()
                     csv_parts.append(client.csv_line())
@@ -208,10 +210,13 @@ def main(config, handlers):
                     csv_parts.append(client.csv_line())
 
             # Read in the config file to update the coefficients
-            wc = get_configuration()['woodward']
-            woodward.set_tunings(wc['Kp'], wc['Ki'], wc['Kd'])
-            j = 0
-            woodward.setpoint = wc['setpoint']
+            try:
+                wc = get_configuration()['woodward']
+            except IOError:
+                pass
+            else:
+                woodward.set_tunings(wc['Kp'], wc['Ki'], wc['Kd'])
+                woodward.setpoint = wc['setpoint']
 
             # Put the csv data in the logfile
             if len(csv_parts) > 0:
@@ -227,7 +232,7 @@ def main(config, handlers):
                 rpm = data_store[1030]  # From DeepSea GenComm manual
             except KeyError:
                 logger.warning('RPM is not being read in from the DeepSea')
-            if 2100 <= rpm <= 3000:
+            if rpm and 2100 <= rpm <= 3000:
                 rpm_val = (rpm - 2100) / 900 * 100
             PWM.set_duty_cycle(rpm_sig, rpm_val)
 

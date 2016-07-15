@@ -33,6 +33,7 @@ class AsyncIOThread(Thread):
         self._logger = logging.getLogger(type(self).__name__)
         for h in handlers:
             self._logger.addHandler(h)
+        self._logger.setLevel(logging.DEBUG)
 
     #####################################
     # Methods for call from parent thread

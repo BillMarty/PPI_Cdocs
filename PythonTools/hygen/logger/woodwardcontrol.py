@@ -8,7 +8,7 @@ import time
 import logging
 import Adafruit_BBIO.PWM as PWM
 
-from logger.asynciothread import AsyncIOThread
+from asynciothread import AsyncIOThread
 
 DIRECT = 0
 REVERSE = 1

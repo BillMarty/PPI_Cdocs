@@ -89,8 +89,8 @@ class AnalogClient(AsyncIOThread):
                     key = m[PIN]
                     sum_, n = self.partial_values[key]
 
-                    if t >= self.last_updated + self.frequency:
-                        average = sum_ / n * 1000.
+                    if n >= self.averages:
+                        average = sum_ / (n * 1000.)
                         self.data_store[key] = average * m[GAIN] + m[OFFSET]
                         sum_, n = 0., 0.
 
@@ -126,9 +126,9 @@ class AnalogClient(AsyncIOThread):
             key = m[PIN]
             val = self.data_store[key]
             if val is None:
-                display = "%20s %10s %10s" % (key, "ERR", m[UNITS])
+                display = "%20s %10s %10s" % (m[NAME], "ERR", m[UNITS])
             else:
-                display = "%20s %10.2f %10s" % (key, val, m[UNITS])
+                display = "%20s %10.2f %10s" % (m[NAME], val, m[UNITS])
             print(display)
 
     def csv_header(self):

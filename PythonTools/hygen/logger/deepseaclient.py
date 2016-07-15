@@ -1,7 +1,7 @@
 # System imports
 import time
 import sys
-import monotonic
+from monotonic import monotonic
 
 from modbus_tk.modbus_rtu import RtuMaster
 from modbus_tk.modbus_tcp import TcpMaster
@@ -183,6 +183,7 @@ class DeepSeaClient(AsyncIOThread):
             baud = dconfig['baudrate']
             self.unit = dconfig['id']
             self._client = RtuMaster(serial.Serial(port=dev, baudrate=baud))
+            self._client.set_timeout(0.1)
             self._client.open()
 
         # Read and save measurement list
@@ -190,6 +191,7 @@ class DeepSeaClient(AsyncIOThread):
         # A list of last updated time
         self._data_store = data_store
         self._data_store.update({m[ADDRESS]: None for m in self._input_list})
+        self._last_updated = {m[ADDRESS]: 0 for m in self._input_list}
         self._logger.debug("Started deepsea client")
 
     def __del__(self):
@@ -203,9 +205,18 @@ class DeepSeaClient(AsyncIOThread):
         """
         while not self._cancelled:
             for m in self._input_list:
-                t, last_time = monotonic(), self._data_store[m[ADDRESS]][1]
-                if t - last_time >= m[PERIOD]:
-                    self._data_store[m[ADDRESS]] = self.get_value(m), monotonic()
+                key = m[ADDRESS]
+                t, last_time = monotonic(), self._last_updated[key]
+                if len(m) > PERIOD:
+                    period = m[PERIOD]
+                else:
+                    period = 1.0
+
+                if t - last_time >= period:
+                    value = self.get_value(m)
+                    if value is not None:
+                        self._data_store[key] = value
+                        self._last_updated[key] = t
             time.sleep(0.01)
 
     @staticmethod
@@ -262,14 +273,18 @@ class DeepSeaClient(AsyncIOThread):
         Get a data value from the deepSea
         """
         x = None
+        address = m[ADDRESS]
+        length = m[LENGTH]
+        # self._logger.debug("Reading from {0}, length {1}"
+        #                    .format(address, length))
         try:
-            if m[LENGTH] == 2:
-                if m[ADDRESS] in SIGNED_ADDRESSES:
+            if length == 2:
+                if address in SIGNED_ADDRESSES:
                     data_format = ">i"
                 else:
                     data_format = ">I"
             else:
-                if m[ADDRESS] in SIGNED_ADDRESSES:
+                if address in SIGNED_ADDRESSES:
                     data_format = ">h"
                 else:
                     data_format = ">H"
@@ -277,8 +292,8 @@ class DeepSeaClient(AsyncIOThread):
             result = self._client.execute(
                 self.unit,  # Slave ID
                 defines.READ_HOLDING_REGISTERS,  # Function code
-                m[ADDRESS],  # Starting address
-                m[LENGTH],  # Quantity to read
+                address,  # Starting address
+                length,  # Quantity to read
                 data_format=data_format,
             )
 
@@ -295,7 +310,8 @@ class DeepSeaClient(AsyncIOThread):
             exc_type, exc_value = sys.exc_info()[:2]
             self._logger.error("SerialException occurred: %s, %s"
                                % (str(exc_type), str(exc_value)))
-
+        # self._logger.debug("Returning from {0}, value {1}"
+        #                    .format(address, x))
         return x
 
     ##########################
@@ -335,11 +351,16 @@ class DeepSeaClient(AsyncIOThread):
         Return a CSV line of the data we currently have.
         Does not include newline or trailing comma.
         """
+        self.last_written = 0
         values = []
         for m in self._input_list:
-            val = self._data_store[m[NAME]]
-            if val is not None:
+            key = m[ADDRESS]
+            val = self._data_store[key]
+            updated = self._last_updated[key]
+            if updated > self.last_written and val is not None:
                 values.append(str(val))
             else:
                 values.append('')
+        self.last_written = monotonic()
         return ','.join(values)
+

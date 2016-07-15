@@ -31,9 +31,9 @@
     'woodward': {
         'pin': 'P9_21',
         'Kp': 1.0,
-        'Ki': 0.5,
+        'Ki': 0.8,
         'Kd': 0.0,
-        'setpoint': 24.0,  # Amps
+        'setpoint': 25.0,  # Amps
         'period': 1.0,
     },
 

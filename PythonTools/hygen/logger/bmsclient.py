@@ -1,7 +1,7 @@
 import serial
 from ..utils import PY2, PY3
 
-from logger.asynciothread import AsyncIOThread
+from asynciothread import AsyncIOThread
 
 
 class BmsClient(AsyncIOThread):
@@ -99,7 +99,7 @@ class BmsClient(AsyncIOThread):
                     continue
 
                 try:
-                    self._f.write(line)
+                    self._f.write(str(line))
                 except IOError:
                     pass  # Ignore IOErrors
 
