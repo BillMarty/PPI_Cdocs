@@ -1,0 +1,2 @@
+linuxtime,ds_time,ds_rpm,ds_300v_volt,ds_300v_cur,ww_control,an_rpm,ds_300v_bat_cur,pid_enable_flag,an_300v_cur,an_300v_volt,SoC (%),Current (A),pid_out_percent,setpoint_amps,kp,ki,kd,output_woodward
+1468532135.31,,,,,,,,,,,,,0.0,24.0,1.0,0.5,0.0
