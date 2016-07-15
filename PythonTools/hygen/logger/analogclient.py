@@ -5,9 +5,7 @@ All values are read in at the same frequency.
 
 import monotonic
 import time
-import logging
 import sys
-from threading import Thread
 import Adafruit_BBIO.ADC as ADC
 
 from asynciothread import AsyncIOThread

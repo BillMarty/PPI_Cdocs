@@ -45,9 +45,7 @@ It will be structured as a nested dictionary of the following form:
 # Python imports
 ###############################
 import ast
-import logging
 import os
-import sys
 
 ###############################
 # 3rd party libraries

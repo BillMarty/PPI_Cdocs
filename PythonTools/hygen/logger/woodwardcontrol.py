@@ -3,9 +3,7 @@ Implement PID control for the Woodward
 """
 
 import monotonic
-from threading import Thread
 import time
-import logging
 import Adafruit_BBIO.PWM as PWM
 
 from asynciothread import AsyncIOThread
