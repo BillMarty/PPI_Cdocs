@@ -4,10 +4,12 @@ Created on Wed Jul 06 08:18:52 2016
 
 @author: mwest
 """
-import datetime
+from datetime import datetime
 import os
 import time
 import sys
+from subprocess import call, CalledProcessError
+import Adafruit_BBIO.GPIO as GPIO
 
 from asynciothread import AsyncIOThread
 
@@ -33,25 +35,30 @@ class FileWriter(AsyncIOThread):
 
         # Specific config for the logger
         FileWriter.check_config(lconfig)
-        ldir = lconfig['ldir']
-        if os.path.exists(ldir) and os.path.isdir(ldir):
-            self.log_dir = os.path.abspath(ldir)
-        else:
-            raise ValueError("Log directory does not exist")
+
+        self.directory = lconfig['ldir']  # Relative directory on USB
+        self.log_directory = self.get_directory()
 
         self._queue = log_queue
         self._f = open(os.devnull, 'w')
         self._csv_header = csv_header
 
+        self.eject_button = ""  # TODO fix this - this is bogus
+
+        self.drive = None
+
     def __del__(self):
+        """
+        Close the file object on object deletion.
+        """
         if self._f:
             self._f.close()
 
     @staticmethod
     def check_config(lconfig):
         """
-        Check that the config is complete. Throw an exception if any
-        configuration values are missing.
+        Check that the config is complete. Throw a ValueError if any
+        configuration values are missing from the dictionary.
         """
         required_config = ['ldir']
         for val in required_config:
@@ -60,22 +67,54 @@ class FileWriter(AsyncIOThread):
         # If we get to this point, the required values are present
         return True
 
-    def get_file_path(self):
+    def get_directory(self):
         """
-        Get a path to a unique log file for the current hour.
+        Get the directory in whatever USB drive we have plugged in.
         """
-        now = datetime.datetime.now()
+        # Check for USB directory
+        media = os.listdir('/media')
+        
+        drive = None
+        drives = ['sda', 'sda1', 'sda2']  # Possible mount points
+        for d in drives:
+            if d in media:
+                drive = os.join('/media', d)
+                break
+
+        if drive is not None:
+            log_directory = os.path.join(drive, self.directory)
+            self.drive = drive
+        else:
+            return None
+
+        # Make any necessary paths
+        try:
+            os.makedirs(log_directory, exist_ok=True)
+        except OSError:
+            # Directory already exists
+            pass
+        return log_directory
+
+    def _get_new_logfile(self):
+        """
+        Open a new logfile for the current hour. If opening the file fails,
+        returns the null file.
+        """
+        directory = self.get_directory()
+
+        # Find unique file name for this hour
+        now = datetime.now()
         hour = now.strftime("%Y-%m-%d_%H")
         i = 0
-        while os.path.exists(os.path.join(self.log_dir,
-                                          hour + "_run%d.csv" % i)):
+        while os.path.exists(
+            os.path.join(directory, hour + "_run%d.csv" % i)):
             i += 1
 
-        logfile_name = os.path.join(self.log_dir, hour + "_run%d.csv" % i)
-        return logfile_name
-
-    def open_new_logfile(self):
-        fpath = self.get_file_path()
+        fpath = os.path.join(
+            self.log_directory,
+            hour + "_run%d.csv" % i)
+        
+        # Try opening the file, else open the null file
         try:
             f = open(fpath, 'w')
         except IOError:
@@ -83,9 +122,9 @@ class FileWriter(AsyncIOThread):
             return open(os.devnull, 'w')  # return a null file
         return f
 
-    def write_line(self, line):
+    def _write_line(self, line):
         """
-        Write a line to the currently open file.
+        Write a line to the currently open file, ending in a single new-line.
         """
         try:
             if line[-1] == '\n':
@@ -99,15 +138,17 @@ class FileWriter(AsyncIOThread):
         """
         Overrides Thread.run. Run the FileWriter
         """
-        prev_hour = datetime.datetime.now().hour - 1  # ensure starting file
+        prev_hour = datetime.now().hour - 1  # ensure starting file
+
+        GPIO.add_event_detect(self.eject_button, GPIO.RISING)
 
         while not self._cancelled:
-            hour = datetime.datetime.now().hour
+            hour = datetime.now().hour
             if prev_hour != hour:
                 self._f.close()
-                self._f = self.open_new_logfile()
+                self._f = self._get_new_logfile()
                 prev_hour = hour
-                self.write_line(self._csv_header)
+                self._write_line(self._csv_header)
 
             # Get lines to print
             more_items = True
@@ -117,9 +158,26 @@ class FileWriter(AsyncIOThread):
                 except queue.Empty:
                     more_items = False
                 else:
-                    self.write_line(line)
+                    self._write_line(line)
 
-            time.sleep(1.0)
+            # Reading the GPIO event detected flag resets it automatically
+            # See Adafruit_BBIO/sources/event_gpio.c:585
+            if GPIO.event_detected(self.eject_button):
+                try:
+                    check_call(["pumount", self.drive])
+                except CalledProcessError as e:
+                    self._logger.critical("Could not unmount " 
+                                          + self.drive
+                                          + ". Failed with error code "
+                                          + str(e.returncode))
+
+            directory = self.get_directory()
+            if directory is not None:
+                self._f.close()
+                self._f = self._get_new_logfile()
+                self._write_line(self._csv_header)
+
+            time.sleep(0.1)
 
     def cancel(self):
         """

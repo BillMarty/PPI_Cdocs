@@ -61,7 +61,7 @@
 
     # filewriter thread configuration (write data to disk)
     'filewriter': {
-        'ldir': '/home/hygen/dev/PPI_Cdocs/data_analysis/test_logs',
+        'ldir': 'logs',
     },
 
     # Program log
