@@ -43,7 +43,7 @@ class FileWriter(AsyncIOThread):
         self._f = open(os.devnull, 'w')
         self._csv_header = csv_header
 
-        self.eject_button = ""  # TODO fix this - this is bogus
+        # self.eject_button = ""  # TODO fix this - this is bogus
 
         self.drive = None
 
@@ -51,8 +51,11 @@ class FileWriter(AsyncIOThread):
         """
         Close the file object on object deletion.
         """
-        if self._f:
-            self._f.close()
+        try:
+            if self._f:
+                self._f.close()
+        except:
+            pass
 
     @staticmethod
     def check_config(lconfig):
@@ -73,12 +76,12 @@ class FileWriter(AsyncIOThread):
         """
         # Check for USB directory
         media = os.listdir('/media')
-        
+
         drive = None
         drives = ['sda', 'sda1', 'sda2']  # Possible mount points
         for d in drives:
             if d in media:
-                drive = os.join('/media', d)
+                drive = os.path.join('/media', d)
                 break
 
         if drive is not None:
@@ -113,7 +116,7 @@ class FileWriter(AsyncIOThread):
         fpath = os.path.join(
             self.log_directory,
             hour + "_run%d.csv" % i)
-        
+
         # Try opening the file, else open the null file
         try:
             f = open(fpath, 'w')
@@ -140,7 +143,7 @@ class FileWriter(AsyncIOThread):
         """
         prev_hour = datetime.now().hour - 1  # ensure starting file
 
-        GPIO.add_event_detect(self.eject_button, GPIO.RISING)
+        # GPIO.add_event_detect(self.eject_button, GPIO.RISING)
 
         while not self._cancelled:
             hour = datetime.now().hour
@@ -162,17 +165,16 @@ class FileWriter(AsyncIOThread):
 
             # Reading the GPIO event detected flag resets it automatically
             # See Adafruit_BBIO/sources/event_gpio.c:585
-            if GPIO.event_detected(self.eject_button):
-                try:
-                    check_call(["pumount", self.drive])
-                except CalledProcessError as e:
-                    self._logger.critical("Could not unmount " 
-                                          + self.drive
-                                          + ". Failed with error code "
-                                          + str(e.returncode))
+            # if GPIO.event_detected(self.eject_button):
+            #     try:
+            #         check_call(["pumount", self.drive])
+            #     except CalledProcessError as e:
+            #         self._logger.critical("Could not unmount "
+            #                               + self.drive
+            #                               + ". Failed with error code "
+            #                               + str(e.returncode))
 
-            directory = self.get_directory()
-            if directory is not None:
+            if not os.path.exists(self.log_directory):
                 self._f.close()
                 self._f = self._get_new_logfile()
                 self._write_line(self._csv_header)
