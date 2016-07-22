@@ -1,12 +1,10 @@
 import time
-# import subprocess
-# import Adafruit_BBIO.GPIO as GPIO
-import re
+import gpio
 
 LEDS_PER_INSTANCE = 12
 HIGH = 0xff
 LOW = 0x00
-RED = 0xdd
+RED = 0xcc
 
 
 class GroveLedBar:
@@ -34,11 +32,11 @@ class GroveLedBar:
         if not invert_direction:
             self._bit_states[0] = RED if 0 < level else LOW
             for i in range(1, LEDS_PER_INSTANCE):
-                self._bit_states[i] = HIGH if i <= level else LOW
+                self._bit_states[i] = HIGH if i < level else LOW
         else:
             self._bit_states[0] = RED if 10 == level else LOW
             for i in range(LEDS_PER_INSTANCE):
-                self._bit_states[i] = HIGH if (12 - i) <= (level + 2) else LOW
+                self._bit_states[i] = HIGH if (12 - i) < (level + 2) else LOW
 
         if self._auto_refresh:
             self.refresh()
@@ -50,63 +48,28 @@ class GroveLedBar:
         self.lock_data()
 
     def lock_data(self):
-        set_gpio(self._data_pin, 0)
-        # time.sleep(220e-6)  # Probably not needed since we're in Python, not C++
-
+        gpio.write(self._data_pin, 0)
+        # We don't need a sleep here to latch data,
+        # because we're not driving multiple bars
+        # in series.
         for i in range(4):
-            set_gpio(self._data_pin, 1)
-            set_gpio(self._data_pin, 0)
-
-        # time.sleep(1e-6)
+            gpio.write(self._data_pin, 1)
+            gpio.write(self._data_pin, 0)
+        # same here
 
     def send_16_bit_block(self, data):
         for i in range(16):
-            set_gpio(self._data_pin, data & 0x8000)
+            gpio.write(self._data_pin, data & 0x8000)
             self._clock_state = not self._clock_state
-            set_gpio(self._clock_pin, self._clock_state)
+            gpio.write(self._clock_pin, self._clock_state)
             data <<= 1
 
 
-def normalize_pin(pin):
-    return re.sub(r'[Pp]([8-9]).([0-9]{2})', r'P\1_\2', pin)
-
-
-def set_gpio(pin, value):
-    # Adafruit BBIO library
-    # CPU Usage: 9.2%
-    #    pins_exported = set()
-    #    if pin not in pins_exported:
-    #        GPIO.setup(pin, GPIO.OUT)
-    #        pins_exported.add(pin)
-    #    GPIO.output(pin, GPIO.HIGH if value else GPIO.LOW)
-
-    # Manual filesystem paths
-    # CPU Usage: 5.9
-    pin = normalize_pin(pin)
-    if pin == "P9_11":
-        path = "/sys/class/gpio/gpio30/value"
-    elif pin == "P9_12":
-        path = "/sys/class/gpio/gpio60/value"
-    elif pin == "P9_13":
-        path = "/sys/class/gpio/gpio31/value"
-    elif pin == "P9_14":
-        path = "/sys/class/gpio/gpio50/value"
-    else:
-        return  # Don't know that pin
-    with open(path, 'w') as f:
-        f.write('1' if value else '0')
-
-
-# Using config-pin utility
-#    subprocess.call(["config-pin",
-#                      str(pin),
-#                      "hi" if value else "lo"])
-
 def main():
-    bar = GroveLedBar("P9_11", "P9_12")
+    bar = GroveLedBar("P9_12", "P9_15")
 
     while True:
-        for i in range(10):
+        for i in range(11):
             bar.set_bar_level(i)
             time.sleep(1.0)
 
