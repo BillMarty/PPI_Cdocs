@@ -226,16 +226,6 @@ def main(config, handlers):
                     pass
                     # TODO What should we do here?
 
-            # Connect rpm to analog out
-            rpm_val = rpm_default
-            try:
-                rpm = data_store[1030]  # From DeepSea GenComm manual
-            except KeyError:
-                logger.warning('RPM is not being read in from the DeepSea')
-            if rpm and 2100 <= rpm <= 3000:
-                rpm_val = (rpm - 2100) / 900 * 100
-            PWM.set_duty_cycle(rpm_sig, rpm_val)
-
             # Connect the analog current in to the woodward process
             try:
                 cur = data_store['P9_40']
