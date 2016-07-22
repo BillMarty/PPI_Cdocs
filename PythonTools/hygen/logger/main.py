@@ -15,44 +15,26 @@ import socket
 import time
 import logging
 import serial
-import Adafruit_BBIO.PWM as PWM
-
-if sys.version_info[0] == 2:
-    import Queue as queue
-else:
-    import queue
+import monotonic
 
 ##############################
 # Import my files
 ##############################
-if __name__ == '__main__':
-    import sys
-    from os import path
+import deepseaclient
+import bmsclient
+import analogclient
+import woodwardcontrol
+import logfilewriter
+from config import get_configuration
+import pins
 
-    sys.path.append(path.dirname(path.abspath(__file__)))
-
-if __package__ is None:
-    import sys
-    from os import path
-
-    sys.path.append(
-        path.dirname(
-            path.dirname(
-                path.dirname(path.abspath(__file__)))))
-    from hygen.logger import deepseaclient
-    from hygen.logger import bmsclient
-    from hygen.logger import analogclient
-    from hygen.logger import woodwardcontrol
-    from hygen.logger import logfilewriter
-    from hygen.logger.config import get_configuration
+#################################################
+# Conditional import for Python 2/3 compatibility
+#################################################
+if sys.version_info[0] == 2:
+    import Queue as queue
 else:
-    import deepseaclient
-    import bmsclient
-    import analogclient
-    import woodwardcontrol
-    import logfilewriter
-    from config import get_configuration
-
+    import queue
 
 # Master values dictionary
 # Keys should be one of
@@ -62,11 +44,8 @@ else:
 # d) PWM pin out for Woodward signals
 data_store = {}
 
-# Modbus addresses
-RPM = 1030
 
-
-def main(config, handlers):
+def main(config, handlers, daemon=True):
     """
     Enter a main loop, polling values from sources enabled in config
     """
@@ -172,6 +151,8 @@ def main(config, handlers):
                          .format(str(e)))
         else:
             threads.append(filewriter)
+    else:
+        log_queue = None
 
     # Check whether we have some input
     if len(clients) == 0:
@@ -182,80 +163,112 @@ def main(config, handlers):
     for thread in threads:
         thread.start()
 
-    i = 0
-    reported = False
+    # Keeps track of the next scheduled time for each interval
+    # Key = period of job
+    # value = monotonic scheduled time
+    next_run = {
+        0.1: 0,
+        0.5: 0,
+        1.0: 0,
+        5.0: 0,
+        10.0: 0,
+    }
+
     going = True
-    # Start RPM analog signal
-    rpm_sig = "P9_22"
-    rpm_default = 0
-    PWM.start(rpm_sig, rpm_default, 100000)
     while going:
         try:
-            csv_parts = [str(time.time())]
-
-            # Every 10th time
-            if i >= 10:
-                i = 0
-                for client in clients:
-                    client.print_data()
-                    csv_parts.append(client.csv_line())
-                print('-' * 80)
-
-                # Check threads to ensure they're running
-                for thread in threads:
-                    if not thread.is_alive():
-                        thread.start()
-            else:
+            now = monotonic.monotonic()
+            now_time = time.time()
+            csv_parts = [str(now_time)]
+            ###########################
+            # Every tenth of a second
+            ###########################
+            if now >= next_run[0.1]:
+                # Get CSV data to the log file
                 for client in clients:
                     csv_parts.append(client.csv_line())
-            # Save woodward output
-            csv_parts.append(woodward.output)
+                csv_parts.append(woodward.output)
+                # Put the csv data in the logfile
+                if len(csv_parts) > 0 and log_queue:
+                    try:
+                        log_queue.put(','.join(csv_parts))
+                    except queue.Full:
+                        pass
+                        # TODO What should we do here?
 
-            # Read in the config file to update the tuning coefficients
-            try:
-                wc = get_configuration()['woodward']
-            except IOError:
-                pass
-            else:
-                woodward.set_tunings(wc['Kp'], wc['Ki'], wc['Kd'])
-                woodward.setpoint = wc['setpoint']
+                # Connect the analog current in to the woodward process
+                if woodward and not woodward.cancelled:
+                    try:
+                        cur = data_store[pins.GEN_CUR]
+                        if cur is not None:
+                            woodward.process_variable = cur
+                    except UnboundLocalError:
+                        pass
+                    except KeyError:
+                        logger.critical('Generator current is not being measured.')
+                        woodward.cancel()
 
-            # Put the csv data in the logfile
-            if len(csv_parts) > 0:
+                # Schedule next run
+                next_run[0.1] = now + 0.1
+
+            ###########################
+            # Twice a second
+            ###########################
+            if now >= next_run[0.5]:
+                # Connect the on / off signal from the deepSea to the PID
                 try:
-                    log_queue.put(','.join(csv_parts))
-                except queue.Full:
+                    pid_enable = data_store[3345]  # From DeepSea GenComm manual
+                    if pid_enable and int(pid_enable) & (1 << 6):
+                        woodward.set_auto(True)
+                    else:
+                        woodward.set_auto(False)
+                        woodward.output = 0.0
+                except UnboundLocalError:
                     pass
-                    # TODO What should we do here?
+                except KeyError:
+                    logger.critical("Key does not exist for the PID enable flag")
 
-            # Connect the analog current in to the woodward process
-            try:
-                cur = data_store['P9_40']
-                if cur is not None:
-                    woodward.process_variable = cur
-            except UnboundLocalError:
-                pass
-            except KeyError:
-                if not reported:
-                    logger.critical('Current is not being read in.')
-                    reported = True
-                pass
+                # Schedule next run
+                next_run[0.5] = now + 0.5
 
-            # Connect the on / off signal from the deepSea to the PID
-            try:
-                pid_enable = data_store[3345]  # From DeepSea GenComm manual
-                if pid_enable and int(pid_enable) & (1 << 6):
-                    woodward.set_auto(True)
+            ###########################
+            # Once a second
+            ###########################
+            if now >= next_run[1.0]:
+                # If not in daemon, print to screen
+                if not daemon:
+                    print_data(clients)
+
+                # Read in the config file to update the tuning coefficients
+                try:
+                    wc = get_configuration()['woodward']
+                except IOError:
+                    pass
                 else:
-                    woodward.set_auto(False)
-                    woodward.output = 0.0
-            except UnboundLocalError:
-                pass
-            except KeyError:
-                logger.critical("Key does not exist for the PID enable flag")
+                    woodward.set_tunings(wc['Kp'], wc['Ki'], wc['Kd'])
+                    woodward.setpoint = wc['setpoint']
 
-            i += 1
-            time.sleep(0.1)
+                # Schedule next run
+                next_run[1.0] = now + 1.0
+
+            ###########################
+            # Once every 5 seconds
+            ###########################
+            if dt[5.0] >= 5.0:
+                pass
+                # Schedule next run
+                next_run[5.0] = now + 5.0
+
+            ###########################
+            # Once every 10 seconds
+            ###########################
+            if dt[10.0] >= 10.0:
+                # Check threads to ensure they're running
+                revive(threads)
+                # Schedule next run
+                next_run[10.0] = now + 10.0
+
+            time.sleep(0.01)
 
         except SystemExit:
             going = False
@@ -275,12 +288,23 @@ def stop_threads(threads, logger):
         logger.debug("Joined " + str(thread))
 
 
+def print_data(clients):
+    for client in clients:
+        client.print_data()
+    print('-' * 80)
+
+
+def revive(threads):
+    for thread in threads:
+        if not thread.is_alive():
+            thread.start()
+
+
 if __name__ == "__main__":
     sh = logging.StreamHandler()
     sh.setFormatter(
         logging.Formatter(
             '%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
-    from config import get_configuration
 
     configuration = get_configuration()
-    main(configuration, [sh])
+    main(configuration, [sh], daemon=False)
