@@ -7,4 +7,4 @@
 # For most flash drives, the partition will appear on /dev/sda1. For some,
 # however, the main partition appears on /dev/sda. 
 # pmount mounts the USB drive partitions on /media/sda*.
-ACTION=="add", KERNEL=="sda*", RUN+="/usr/bin/pmount --umask 000 %k"
+ACTION=="add", KERNEL=="sd?*", RUN+="/usr/bin/pmount --umask 000 %k"
