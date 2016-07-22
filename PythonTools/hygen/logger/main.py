@@ -208,8 +208,10 @@ def main(config, handlers):
             else:
                 for client in clients:
                     csv_parts.append(client.csv_line())
+            # Save woodward output
+            csv_parts.append(woodward.output)
 
-            # Read in the config file to update the coefficients
+            # Read in the config file to update the tuning coefficients
             try:
                 wc = get_configuration()['woodward']
             except IOError:
