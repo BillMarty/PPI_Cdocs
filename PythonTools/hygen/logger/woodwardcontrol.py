@@ -23,7 +23,7 @@ class WoodwardPWM(AsyncIOThread):
         WoodwardPWM.check_config(wconfig)
 
         # Initialize member variables
-        self._cancelled = False
+        self.cancelled = False
         self._pin = wconfig['pin']
         self._sample_time = wconfig['period']
         self._direction = DIRECT
@@ -220,7 +220,7 @@ class WoodwardPWM(AsyncIOThread):
         if self.mode == 'step':
             # If we're in step mode, we do a square wave
             half_period = 0.5 * self.period
-            while not self._cancelled:
+            while not self.cancelled:
                 # Period
                 if i >= half_period:
                     if self.on:
@@ -232,7 +232,7 @@ class WoodwardPWM(AsyncIOThread):
                 i += 1
                 time.sleep(1.0)
         elif self.mode == 'pid':
-            while not self._cancelled:
+            while not self.cancelled:
                 # output property automatically adjusts PWM output
                 self.output = self.compute()
                 time.sleep(0.1)  # avoid tight looping

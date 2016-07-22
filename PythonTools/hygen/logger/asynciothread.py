@@ -19,7 +19,7 @@ class AsyncIOThread(Thread):
         """
         super(AsyncIOThread, self).__init__()
         self.daemon = False
-        self._cancelled = False
+        self.cancelled = False
 
         self._logger = None
         self.start_logger(handlers)
@@ -40,5 +40,5 @@ class AsyncIOThread(Thread):
     #####################################
 
     def cancel(self):
-        self._cancelled = True
+        self.cancelled = True
         self._logger.debug("Stopping " + str(self) + "...")

@@ -203,7 +203,7 @@ class DeepSeaClient(AsyncIOThread):
         """
         Overloads Thread.run, runs and reads from the DeepSea.
         """
-        while not self._cancelled:
+        while not self.cancelled:
             for m in self._input_list:
                 key = m[ADDRESS]
                 t, last_time = monotonic(), self._last_updated[key]

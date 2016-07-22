@@ -79,7 +79,7 @@ class AnalogClient(AsyncIOThread):
         """
         Overloads Thread.run, runs and reads analog inputs
         """
-        while not self._cancelled:
+        while not self.cancelled:
             t = monotonic.monotonic()
             # If we've passed the ideal time, get the value
             if t >= self.last_updated + self.mfrequency:
