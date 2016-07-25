@@ -192,6 +192,7 @@ class DeepSeaClient(AsyncIOThread):
         self._data_store = data_store
         self._data_store.update({m[ADDRESS]: None for m in self._input_list})
         self._last_updated = {m[ADDRESS]: 0 for m in self._input_list}
+        self._last_written = {m[ADDRESS]: 0 for m in self._input_list}
         self._logger.debug("Started deepsea client")
 
     def __del__(self):
@@ -351,16 +352,16 @@ class DeepSeaClient(AsyncIOThread):
         Return a CSV line of the data we currently have.
         Does not include newline or trailing comma.
         """
-        self.last_written = 0
         values = []
+        now = monotonic()
         for m in self._input_list:
             key = m[ADDRESS]
             val = self._data_store[key]
             updated = self._last_updated[key]
-            if updated > self.last_written and val is not None:
+            if updated > self.last_written[key] and val is not None:
                 values.append(str(val))
+                self._last_written[key] = now
             else:
                 values.append('')
-        self.last_written = monotonic()
         return ','.join(values)
 
