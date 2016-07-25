@@ -1,4 +1,0 @@
-modbus_tk==0.5
-pyserial==2.7
-Adafruit_BBIO==0.0.30
-monotonic>=1.1
