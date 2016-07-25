@@ -37,7 +37,7 @@ sh.setLevel(logging.DEBUG)
 
 # Create file handler
 fh = logging.FileHandler(
-    '/home/hygen/dev/PPI_Cdocs/PythonTools/hygen/logger/errors.log')
+    '/home/hygen/log/errors.log')
 fh.setLevel(logging.DEBUG)
 
 # create formatter

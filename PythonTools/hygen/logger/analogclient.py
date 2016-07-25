@@ -148,7 +148,7 @@ class AnalogClient(AsyncIOThread):
         for m in self._input_list:
             val = self.data_store[m[PIN]]
             if val is not None:
-                values.append(str(val))
+                values.append("{:.3f}".format(val))
             else:
                 values.append('')
         return ','.join(values)

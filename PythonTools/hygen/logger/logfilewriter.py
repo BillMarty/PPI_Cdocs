@@ -92,7 +92,10 @@ class FileWriter(AsyncIOThread):
 
         # Make any necessary paths
         try:
-            os.makedirs(log_directory, exist_ok=True)
+            if sys.version_info[0] == 3:
+                os.makedirs(log_directory, exist_ok=True)
+            else:
+                os.makedirs(log_directory)
         except OSError:
             # Directory already exists
             pass
@@ -104,6 +107,8 @@ class FileWriter(AsyncIOThread):
         returns the null file.
         """
         directory = self.get_directory()
+        if directory is None:
+            return open(os.devnull, 'w')
 
         # Find unique file name for this hour
         now = datetime.now()
@@ -174,7 +179,7 @@ class FileWriter(AsyncIOThread):
             #                               + ". Failed with error code "
             #                               + str(e.returncode))
 
-            if not os.path.exists(self.log_directory):
+            if self.log_directory is None or not os.path.exists(self.log_directory):
                 self._f.close()
                 self._f = self._get_new_logfile()
                 self._write_line(self._csv_header)

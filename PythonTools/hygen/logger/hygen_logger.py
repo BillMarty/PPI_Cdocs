@@ -30,8 +30,8 @@
     # Control signal to Woodward
     'woodward': {
         'pin': 'P9_21',
-        'Kp': 1.0,
-        'Ki': 0.8,
+        'Kp': 0.0,
+        'Ki': 0.5,
         'Kd': 0.0,
         'setpoint': 25.0,  # Amps
         'period': 1.0,
