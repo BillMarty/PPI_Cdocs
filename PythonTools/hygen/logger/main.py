@@ -264,7 +264,7 @@ def main(config, handlers, daemon=True):
             ###########################
             if dt[10.0] >= 10.0:
                 # Check threads to ensure they're running
-                revive(threads)
+                revive(threads, logger)
                 # Schedule next run
                 next_run[10.0] = now + 10.0
 
@@ -274,9 +274,11 @@ def main(config, handlers, daemon=True):
             going = False
             stop_threads(threads, logger)
 
-        except:
-            stop_threads(threads, logger)
-            raise
+        except Exception as e:
+            exc_type, exc_value = sys.exc_info()[:2]
+            logger.error("%s raised in main loop: %s"
+                         % (str(exc_type), str(exc_value)))
+            revive(threads, logger)
 
     exit(0)
 
@@ -294,9 +296,11 @@ def print_data(clients):
     print('-' * 80)
 
 
-def revive(threads):
+def revive(threads, logger):
     for thread in threads:
         if not thread.is_alive():
+            logger.error("%s not running. Restarting..."
+                         % str(thread))
             thread.start()
 
 
