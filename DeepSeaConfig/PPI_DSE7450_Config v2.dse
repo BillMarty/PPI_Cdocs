@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">29-Jun-16 10:49:56</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">01-Aug-16 12:06:23</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -1930,7 +1930,7 @@
       <Settings>
         <Settings_16_bit_-_RS232>
           <Slave_ID Comment="10">10</Slave_ID>
-          <Baud_Rate Comment="115200">13</Baud_Rate>
+          <Baud_Rate Comment="19200">9</Baud_Rate>
           <Language_Code Comment="2057">2057</Language_Code>
           <Modem_Mode Comment="No Modem">0</Modem_Mode>
           <Retries Comment="4">4</Retries>
@@ -4437,12 +4437,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>51049</CRC>
+      <CRC>7959</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">29-Jun-16 10:49:56</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">01-Aug-16 12:06:23</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14374,7 +14374,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>46215</CRC>
+        <CRC>62878</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
