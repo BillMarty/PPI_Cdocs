@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">01-Aug-16 12:14:27</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">01-Aug-16 14:29:33</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -1077,7 +1077,7 @@
     </Digital_Outputs>
     <Virtual_Outputs>
       <LED1>
-        <Control_Source Comment="Not Used">0</Control_Source>
+        <Control_Source Comment="PLC Output Flag 5">12292</Control_Source>
         <Polarity Comment="Lit">0</Polarity>
       </LED1>
       <LED2>
@@ -4437,12 +4437,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>63631</CRC>
+      <CRC>57825</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">01-Aug-16 12:14:27</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">01-Aug-16 14:29:33</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14374,7 +14374,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>34872</CRC>
+        <CRC>55803</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
