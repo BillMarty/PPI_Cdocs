@@ -1,0 +1,3 @@
+[submodule "HyGenCMS"]
+	path = HyGenCMS
+	url = https://github.com/BillMarty/HyGenCMS
