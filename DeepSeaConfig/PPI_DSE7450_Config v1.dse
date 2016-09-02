@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">29-Jun-16 15:02:38</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">02-Jul-16 10:36:27</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -1685,7 +1685,7 @@
         <Mains_VT_Primary Comment="111 V PhPh">111</Mains_VT_Primary>
         <Mains_VT_Secondary Comment="110 V PhPh">110</Mains_VT_Secondary>
         <Droop_Percent Comment="4.0 %">4.0</Droop_Percent>
-        <Oil_Sensor Comment="Digital open for alarm">2</Oil_Sensor>
+        <Oil_Sensor Comment="VDO 10 Bar">4</Oil_Sensor>
         <New Comment="398V PhPh">230</New>
         <Coolant_Sensor Comment="Digital closed for alarm">1</Coolant_Sensor>
         <Fuel_Sensor Comment="US Ohm range (240-33)">5</Fuel_Sensor>
@@ -1698,7 +1698,7 @@
     </Fixed_Misc_Items>
     <Sensor_Curves>
       <Oil_Pressure>
-        <CurveType>2 - Digital open for alarm</CurveType>
+        <CurveType>4 - VDO 10 Bar</CurveType>
       </Oil_Pressure>
       <Temperature>
         <CurveType>1 - Digital closed for alarm</CurveType>
@@ -1877,7 +1877,7 @@
       <Maintenance_Alarm_1>Maintenance Alarm 1</Maintenance_Alarm_1>
       <Maintenance_Alarm_2>Maintenance Alarm 2</Maintenance_Alarm_2>
       <Maintenance_Alarm_3>Maintenance Alarm 3</Maintenance_Alarm_3>
-      <Oil_Sensor_Curve_Name>Digital open for alarm</Oil_Sensor_Curve_Name>
+      <Oil_Sensor_Curve_Name>VDO 10 Bar</Oil_Sensor_Curve_Name>
       <Temperature_Sensor_Curve_Name>Digital closed for alarm</Temperature_Sensor_Curve_Name>
       <Fuel_Sensor_Curve_Name>US Ohm range (240-33)</Fuel_Sensor_Curve_Name>
       <Battery_Strings>
@@ -2078,8 +2078,8 @@
             <Arming Comment="From Safety On">3</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="3000 RPM">3000</Trip>
-            <Return Comment="3000 RPM">3000</Return>
+            <Trip Comment="3200 RPM">3200</Trip>
+            <Return Comment="3200 RPM">3200</Return>
           </Overspeed_Shutdown>
           <Under_Frequency_Warning>
             <Function Comment="User Configured">0</Function>
@@ -2222,8 +2222,8 @@
             <Arming Comment="Overshoot Activation">5</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0.7s">0.7</Timer>
-            <Trip Comment="3000 RPM">3000</Trip>
-            <Return Comment="3000 RPM">3000</Return>
+            <Trip Comment="3200 RPM">3200</Trip>
+            <Return Comment="3200 RPM">3200</Return>
           </Overspeed_Overshoot_Shutdown>
           <Overspeed_Delayed_Warning>
             <Function Comment="User Configured">0</Function>
@@ -2240,8 +2240,8 @@
             <Arming Comment="Overshoot Activation">5</Arming>
             <Type Comment="Analogue Greater Than">3</Type>
             <Timer Comment="0s">0</Timer>
-            <Trip Comment="3000 RPM">3000</Trip>
-            <Return Comment="3000 RPM">3000</Return>
+            <Trip Comment="3200 RPM">3200</Trip>
+            <Return Comment="3200 RPM">3200</Return>
           </Overspeed_Delayed_Shutdown>
           <Generator_Over_Frequency_Overshoot_Warning>
             <Function Comment="User Configured">0</Function>
@@ -4436,12 +4436,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>65315</CRC>
+      <CRC>37515</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">29-Jun-16 15:02:38</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">02-Jul-16 10:36:27</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -12355,7 +12355,7 @@
                   <High_Shutdown>
                     <Function_Arming_etc>
                       <Function Comment="User Configured">0</Function>
-                      <Action Comment="Shutdown">1</Action>
+                      <Action Comment="None">0</Action>
                       <Arming Comment="From Safety On">3</Arming>
                       <Type Comment="Analogue Greater Than">3</Type>
                       <Timer Comment="0">0</Timer>
@@ -14373,7 +14373,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>20331</CRC>
+        <CRC>4364</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
