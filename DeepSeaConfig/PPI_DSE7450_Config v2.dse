@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">29-Jun-16 11:06:14</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">08-Aug-16 14:18:21</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -776,7 +776,7 @@
       <Temperature_Sender_Open_Circuit>
         <Function Comment="User Configured">0</Function>
         <Action Comment="Shutdown">1</Action>
-        <Arming Comment="Always">1</Arming>
+        <Arming Comment="Never">0</Arming>
         <Type Comment="Close to Activate">0</Type>
         <Timer Comment="0">0</Timer>
         <Trip Comment="0">0</Trip>
@@ -1077,7 +1077,7 @@
     </Digital_Outputs>
     <Virtual_Outputs>
       <LED1>
-        <Control_Source Comment="Not Used">0</Control_Source>
+        <Control_Source Comment="PLC Output Flag 5">12292</Control_Source>
         <Polarity Comment="Lit">0</Polarity>
       </LED1>
       <LED2>
@@ -1689,7 +1689,7 @@
         <New Comment="398V PhPh">230</New>
         <Coolant_Sensor Comment="VDO 120 °C">3</Coolant_Sensor>
         <Fuel_Sensor Comment="User defined">255</Fuel_Sensor>
-        <Fuel_Tank_Capacity Comment="200">200</Fuel_Tank_Capacity>
+        <Fuel_Tank_Capacity Comment="175">175</Fuel_Tank_Capacity>
         <Fuel_Level_Change_Indicating_Filling Comment="5 %">5</Fuel_Level_Change_Indicating_Filling>
         <Fuel_Level_Change_Indicating_Stability Comment="1 %">1</Fuel_Level_Change_Indicating_Stability>
         <DC_Battery_Temperature_Sensor Comment="VDO 120 °C">3</DC_Battery_Temperature_Sensor>
@@ -1704,8 +1704,8 @@
         <CurveType>3 - VDO 120 °C</CurveType>
       </Temperature>
       <Fuel>
-        <CurveType>255 - VDO 50ohm full, 240ohm empty</CurveType>
-        <Values Value0="101" Value1="101" Value2="101" Value3="101" Value4="93" Value5="84" Value6="76" Value7="67" Value8="59" Value9="50" Value10="42" Value11="34" Value12="25" Value13="17" Value14="8" Value15="0" Value16="0" Value17="0" Value18="0" Value19="0" Value20="0" Value21="0" Value22="0" Value23="0" Value24="0" Value25="0" Value26="0" Value27="0" Value28="0" Value29="0" Value30="0" />
+        <CurveType>255 - VDOforV2</CurveType>
+        <Values Value0="105" Value1="85" Value2="65" Value3="45" Value4="25" Value5="5" Value6="0" Value7="0" Value8="0" Value9="0" Value10="0" Value11="0" Value12="0" Value13="0" Value14="0" Value15="0" Value16="0" Value17="0" Value18="0" Value19="0" Value20="0" Value21="0" Value22="0" Value23="0" Value24="0" Value25="0" Value26="0" Value27="0" Value28="0" Value29="0" Value30="0" />
       </Fuel>
       <DC_Battery_Temp>
         <CurveType>3 - VDO 120 °C</CurveType>
@@ -1880,7 +1880,7 @@
       <Maintenance_Alarm_3>Maintenance Alarm 3</Maintenance_Alarm_3>
       <Oil_Sensor_Curve_Name>VDO 10 Bar</Oil_Sensor_Curve_Name>
       <Temperature_Sensor_Curve_Name>VDO 120 °C</Temperature_Sensor_Curve_Name>
-      <Fuel_Sensor_Curve_Name>VDO 50ohm full, 240ohm empty</Fuel_Sensor_Curve_Name>
+      <Fuel_Sensor_Curve_Name>VDOforV2</Fuel_Sensor_Curve_Name>
       <Battery_Strings>
         <Temp_Sensor_Curve_Name>VDO 120 °C</Temp_Sensor_Curve_Name>
         <Maintenance_Alarm_1_String>Battery Maintenance Alarm 1</Maintenance_Alarm_1_String>
@@ -1930,7 +1930,7 @@
       <Settings>
         <Settings_16_bit_-_RS232>
           <Slave_ID Comment="10">10</Slave_ID>
-          <Baud_Rate Comment="115200">13</Baud_Rate>
+          <Baud_Rate Comment="19200">9</Baud_Rate>
           <Language_Code Comment="2057">2057</Language_Code>
           <Modem_Mode Comment="No Modem">0</Modem_Mode>
           <Retries Comment="4">4</Retries>
@@ -4437,12 +4437,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>52214</CRC>
+      <CRC>43515</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">29-Jun-16 11:06:14</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">08-Aug-16 14:18:21</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -12339,7 +12339,7 @@
                   <High_Warning>
                     <Function_Arming_etc>
                       <Function Comment="User Configured">0</Function>
-                      <Action Comment="Warning">5</Action>
+                      <Action Comment="None">0</Action>
                       <Arming Comment="Always">1</Arming>
                       <Type Comment="Analogue Greater Than">3</Type>
                       <Timer Comment="0">0</Timer>
@@ -12356,7 +12356,7 @@
                   <High_Shutdown>
                     <Function_Arming_etc>
                       <Function Comment="User Configured">0</Function>
-                      <Action Comment="Shutdown">1</Action>
+                      <Action Comment="None">0</Action>
                       <Arming Comment="Always">1</Arming>
                       <Type Comment="Analogue Greater Than">3</Type>
                       <Timer Comment="0">0</Timer>
@@ -14374,7 +14374,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>52744</CRC>
+        <CRC>20567</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
