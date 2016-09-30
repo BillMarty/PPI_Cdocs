@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">30-Sep-16 13:41:31</Saved_on>
+      <Saved_on ConfigSuite_Version="3.70.1.0">30-Sep-16 16:11:15</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -182,8 +182,8 @@
         <Arming Comment="Always">1</Arming>
         <Type Comment="Analogue Less Than">2</Type>
         <Timer Comment="1m">600</Timer>
-        <Trip Comment="12.0 V DC">12.0</Trip>
-        <Return Comment="12.5 V DC">12.5</Return>
+        <Trip Comment="11.1 V DC">11.1</Trip>
+        <Return Comment="11.5 V DC">11.5</Return>
       </Plant_Battery_Under_Voltage_Warning>
       <Plant_Battery_Over_Voltage_Warning>
         <Function Comment="User Configured">0</Function>
@@ -1232,12 +1232,36 @@
             <Action Type="Reset" Operator="0" ValueType="0" Value_1="26" />
           </Actions>
         </Ladder>
+        <Label Text="Engine start on low starter battery, stop on timer or main battery full" />
         <Ladder>
           <Conditions>
-            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
+            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="216" Value_3="110" Value_4="158" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="28" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="28" Value_2="6" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="28" Value_2="16" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <Or>
+              <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="6" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="39" />
+            </Or>
+          </Conditions>
+          <Actions>
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="33" Value_2="16" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <Or>
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12304" />
+            </Or>
+          </Conditions>
+          <Actions>
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="37" />
           </Actions>
         </Ladder>
         <Label Text="Engine warm up and cool down signal to Woodward throttle controller" />
@@ -1249,7 +1273,7 @@
             </Or>
           </Conditions>
           <Actions>
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="32" Value_2="1" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="41" Value_2="1" />
           </Actions>
         </Ladder>
         <Label Text="Turn on Omega controller when engine running at speed (not warm up or cool down)." />
@@ -1261,7 +1285,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="36" Value_2="1" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="45" Value_2="1" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1272,7 +1296,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="40" Value_2="4" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="49" Value_2="4" />
           </Actions>
         </Ladder>
         <Label Text="BMS Fault Detection, whether engine is running or not." />
@@ -1284,7 +1308,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="44" Value_2="1" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="53" Value_2="1" />
           </Actions>
         </Ladder>
         <Label Text="Trunk current zero fault (coupler, alternator, and rectifier failures)." />
@@ -1298,7 +1322,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="50" Value_2="2" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="59" Value_2="2" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1306,7 +1330,7 @@
             <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="2" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="52" Value_2="2" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="61" Value_2="2" />
           </Actions>
         </Ladder>
         <Label Text="If detect coupler resonance lock, shutdown." />
@@ -1318,7 +1342,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="56" Value_2="3" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="65" Value_2="3" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1330,7 +1354,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="61" Value_2="4" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="70" Value_2="4" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1341,7 +1365,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="65" Value_2="5" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="74" Value_2="5" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1352,7 +1376,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="69" Value_2="5" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="78" Value_2="5" />
           </Actions>
         </Ladder>
         <Label Text="Temporary DSE power off." />
@@ -1361,14 +1385,14 @@
             <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="20" />
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="71" Value_2="7" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="80" Value_2="7" />
           </Actions>
         </Ladder>
         <Label Text="Indicator blink timer." />
         <Ladder>
           <Conditions />
           <Actions>
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="73" Value_2="4" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="82" Value_2="4" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1376,8 +1400,8 @@
             <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="4" />
           </Conditions>
           <Actions>
-            <Action Type="Toggle" Operator="0" ValueType="0" Value_1="75" Value_2="8" />
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="75" Value_2="4" />
+            <Action Type="Toggle" Operator="0" ValueType="0" Value_1="84" Value_2="8" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="84" Value_2="4" />
           </Actions>
         </Ladder>
         <Label Text="Mode Switch Off" />
@@ -1390,8 +1414,8 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="81" Value_2="9" />
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="81" Value_2="5" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="90" Value_2="9" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="90" Value_2="5" />
           </Actions>
         </Ladder>
         <Label Text="     Off: Actually turn us off" />
@@ -1403,7 +1427,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="86" Value_2="7" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="95" Value_2="7" />
           </Actions>
         </Ladder>
         <Label Text="Mode Switch Service" />
@@ -1417,7 +1441,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="91" Value_2="12" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="100" Value_2="12" />
           </Actions>
         </Ladder>
         <Label Text="     Service: Blink while engine running" />
@@ -1434,7 +1458,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="99" Value_2="12" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="108" Value_2="12" />
           </Actions>
         </Ladder>
         <Label Text="     Service: State transition out of Auto" />
@@ -1450,8 +1474,8 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="106" Value_2="11" />
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="106" Value_2="13" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="115" Value_2="11" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="115" Value_2="13" />
           </Actions>
         </Ladder>
         <Label Text="     Service: State transition" />
@@ -1464,9 +1488,9 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="112" Value_2="3" />
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="112" Value_2="12" />
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="112" Value_2="10" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="121" Value_2="3" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="121" Value_2="12" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="121" Value_2="10" />
           </Actions>
         </Ladder>
         <Label Text="Mode Switch Auto" />
@@ -1480,7 +1504,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="119" Value_2="13" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="128" Value_2="13" />
           </Actions>
         </Ladder>
         <Label Text="    Auto: State transition" />
@@ -1496,11 +1520,11 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="126" Value_2="10" />
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="126" Value_2="12" />
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="126" Value_2="5" />
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="126" Value_2="11" />
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="126" Value_2="13" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="135" Value_2="10" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="135" Value_2="12" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="135" Value_2="5" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="135" Value_2="11" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="135" Value_2="13" />
           </Actions>
         </Ladder>
         <Label Text="Start mode: DSE can't tell start mode from BMS low volts" />
@@ -1509,7 +1533,7 @@
             <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="40" />
           </Conditions>
           <Actions>
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="132" Value_2="14" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="141" Value_2="14" />
           </Actions>
         </Ladder>
         <Label Text="Mute Switch" />
@@ -1518,8 +1542,8 @@
             <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="36" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="134" Value_2="6" />
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="134" Value_2="15" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="143" Value_2="6" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="143" Value_2="15" />
           </Actions>
         </Ladder>
       </Logic_Blocks>
@@ -1530,6 +1554,7 @@
         <Timer Index="3" Label="Coupler Resonance Lock Detection" />
         <Timer Index="4" Label="Indicator blink" />
         <Timer Index="5" Label="Off mode duration b4 pwr cut" />
+        <Timer Index="6" Label="Engine run on low starter battery" />
       </Strings>
       <Alarm_Blocks>
         <Alarm1>
@@ -1714,7 +1739,7 @@
         </Alarm20>
       </Alarm_Blocks>
       <Counter_Limits Comment="1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,">1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,</Counter_Limits>
-      <Timer_Limits Comment="10,50,600,15,6,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,">10,50,600,15,6,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,</Timer_Limits>
+      <Timer_Limits Comment="10,50,600,15,6,4,638,0,0,0,0,0,0,0,0,0,0,0,0,0,">10,50,600,15,6,4,12000,0,0,0,0,0,0,0,0,0,0,0,0,0,</Timer_Limits>
     </PLC>
     <Timers>
       <Pre-heat Comment="3s">3</Pre-heat>
@@ -4605,12 +4630,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>13507</CRC>
+      <CRC>57270</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">30-Sep-16 13:41:31</Saved_on>
+        <Saved_on ConfigSuite_Version="3.70.1.0">30-Sep-16 16:11:15</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14600,7 +14625,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>46378</CRC>
+        <CRC>12856</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
