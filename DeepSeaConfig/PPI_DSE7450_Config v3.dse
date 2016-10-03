@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.70.1.0">30-Sep-16 16:11:15</Saved_on>
+      <Saved_on ConfigSuite_Version="3.77.1.0">03-Oct-16 10:53:08</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -1276,7 +1276,7 @@
             <Action Type="Drive" Operator="0" ValueType="0" Value_1="41" Value_2="1" />
           </Actions>
         </Ladder>
-        <Label Text="Turn on Omega controller when engine running at speed (not warm up or cool down)." />
+        <Label Text="Turn on CMS controller when engine running at speed (not warm up or cool down)." />
         <Ladder>
           <Conditions>
             <And>
@@ -2123,9 +2123,9 @@
       <Settings>
         <Settings_16_bit_-_RS232>
           <Slave_ID Comment="10">10</Slave_ID>
-          <Baud_Rate Comment="115200">13</Baud_Rate>
+          <Baud_Rate Comment="19200">9</Baud_Rate>
           <Language_Code Comment="2057">2057</Language_Code>
-          <Modem_Mode Comment="Incoming Modem Calls">1</Modem_Mode>
+          <Modem_Mode Comment="No Modem">0</Modem_Mode>
           <Retries Comment="4">4</Retries>
           <SMS_Enable>False</SMS_Enable>
         </Settings_16_bit_-_RS232>
@@ -4630,12 +4630,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>57270</CRC>
+      <CRC>44229</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.70.1.0">30-Sep-16 16:11:15</Saved_on>
+        <Saved_on ConfigSuite_Version="3.77.1.0">03-Oct-16 10:53:08</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14625,7 +14625,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>12856</CRC>
+        <CRC>10147</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
