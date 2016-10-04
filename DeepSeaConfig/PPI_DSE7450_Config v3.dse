@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.77.1.0">03-Oct-16 17:29:55</Saved_on>
+      <Saved_on ConfigSuite_Version="3.77.1.0">03-Oct-16 17:58:06</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -182,7 +182,7 @@
         <Arming Comment="Always">1</Arming>
         <Type Comment="Analogue Less Than">2</Type>
         <Timer Comment="1m">600</Timer>
-        <Trip Comment="11.1 V DC">11.1</Trip>
+        <Trip Comment="10.6 V DC">10.6</Trip>
         <Return Comment="11.5 V DC">11.5</Return>
       </Plant_Battery_Under_Voltage_Warning>
       <Plant_Battery_Over_Voltage_Warning>
@@ -1235,7 +1235,7 @@
         <Label Text="Engine start on low starter battery, stop on timer or main battery full" />
         <Ladder>
           <Conditions>
-            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="216" Value_3="110" Value_4="158" />
+            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="216" Value_3="105" Value_4="158" />
           </Conditions>
           <Actions>
             <Action Type="Delay" Operator="0" ValueType="0" Value_1="28" Value_2="6" />
@@ -1539,6 +1539,7 @@
             <Action Type="Trigger" Operator="0" ValueType="0" Value_1="140" Value_2="3" />
             <Action Type="Set" Operator="0" ValueType="0" Value_1="140" Value_2="12" />
             <Action Type="Set" Operator="0" ValueType="0" Value_1="140" Value_2="10" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="140" />
           </Actions>
         </Ladder>
         <Label Text="Mode Switch Auto" />
@@ -1552,8 +1553,8 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="147" Value_2="13" />
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="147" Value_2="12" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="148" Value_2="13" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="148" Value_2="12" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1565,8 +1566,8 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="153" Value_2="13" />
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="153" Value_2="12" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="154" Value_2="13" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="154" Value_2="12" />
           </Actions>
         </Ladder>
         <Label Text="    Auto: State transition" />
@@ -1580,11 +1581,11 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="160" Value_2="10" />
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="160" Value_2="12" />
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="160" Value_2="5" />
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="160" Value_2="11" />
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="160" Value_2="13" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="161" Value_2="10" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="161" Value_2="12" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="161" Value_2="5" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="161" Value_2="11" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="161" Value_2="13" />
           </Actions>
         </Ladder>
         <Label Text="Start mode: DSE can't tell start mode from BMS low volts" />
@@ -1593,7 +1594,7 @@
             <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="40" />
           </Conditions>
           <Actions>
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="166" Value_2="14" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="167" Value_2="14" />
           </Actions>
         </Ladder>
         <Label Text="Mute Switch" />
@@ -1602,8 +1603,8 @@
             <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="36" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="168" Value_2="6" />
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="168" Value_2="15" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="169" Value_2="6" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="169" Value_2="15" />
           </Actions>
         </Ladder>
       </Logic_Blocks>
@@ -4688,12 +4689,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>17654</CRC>
+      <CRC>49663</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.77.1.0">03-Oct-16 17:29:55</Saved_on>
+        <Saved_on ConfigSuite_Version="3.77.1.0">03-Oct-16 17:58:06</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14683,7 +14684,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>34845</CRC>
+        <CRC>55595</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
