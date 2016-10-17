@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.77.1.0">13-Oct-16 14:04:15</Saved_on>
+      <Saved_on ConfigSuite_Version="3.77.1.0">17-Oct-16 11:52:54</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -624,7 +624,7 @@
         <Maintenance_Alarm>
           <Function Comment="User Configured">0</Function>
           <Action Comment="Warning">5</Action>
-          <Arming Comment="Always">1</Arming>
+          <Arming Comment="Never">0</Arming>
           <Timer Comment="0">0</Timer>
           <Type Comment="Close to Activate">0</Type>
           <Param1_Hours Comment="250 hrs">250</Param1_Hours>
@@ -1162,263 +1162,263 @@
         <Label Text="Bootstrap BMS at power up." />
         <Ladder>
           <Conditions>
-            <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" Description="Test flag 'PLC Output Flag 4'" />
+            <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" />
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_2="2" Description="Set flag 3" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_2="2" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" Description="Test flag 'PLC Output Flag 4'" />
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="38" Description="Test flag 'Digital Input H'" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="38" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="4" Description="Timer delay 'BMS Bootstrap delay' (1.0s)" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="4" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" Description="Test flag 'PLC Output Flag 4'" />
-              <Condition Type="Timer" Polarity="FalseOrOpen" Description="Test timer 'BMS Bootstrap delay' has reached 1.0s" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" />
+              <Condition Type="Timer" Polarity="FalseOrOpen" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="8" Value_2="3" Description="Set flag 4" />
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="8" Value_2="2" Description="Reset flag 3" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="8" Value_2="3" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="8" Value_2="2" />
           </Actions>
         </Ladder>
         <Label Text="Prevent Auto Mode or Engine Start during BMS bootstrap." />
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" Description="Test flag 'PLC Output Flag 4'" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" />
               <Or>
-                <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
-                <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="19" Description="Test flag 'System In Manual Mode'" />
-                <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="20" Description="Test flag 'System In Test Mode'" />
+                <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+                <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="19" />
+                <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="20" />
               </Or>
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="16" Value_2="3" Description="Trigger PLC function 4" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="16" Value_2="3" />
           </Actions>
         </Ladder>
         <Label Text="Engine Start/Stop based on voltqge warnings from BMS" />
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="40" Description="Test flag 'Digital Input J'" />
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12288" Description="Test flag 'PLC Output Flag 1'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="40" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12288" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="21" Description="Set flag 1" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="21" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="39" Description="Test flag 'Digital Input I'" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" Description="Test flag 'PLC Output Flag 1'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="39" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="26" Description="Reset flag 1" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="26" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
-            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" Description="Test flag 'PLC Output Flag 1'" />
+            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="28" Description="Trigger PLC function 1" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="28" />
           </Actions>
         </Ladder>
         <Label Text="Engine warm up and cool down signal to Woodward throttle controller" />
         <Ladder>
           <Conditions>
             <Or>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="15" Description="Test flag 'Smoke Limiting'" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12" Description="Test flag 'Cooling Down'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="15" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12" />
             </Or>
           </Conditions>
           <Actions>
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="32" Value_2="1" Description="Drive flag 2" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="32" Value_2="1" />
           </Actions>
         </Ladder>
         <Label Text="Turn on CMS controller when engine running at speed (not warm up or cool down)." />
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" Description="Test flag 'PLC Output Flag 1'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="36" Value_2="1" Description="Timer delay 'CMS Controller Delay' (5.0s)" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="36" Value_2="1" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="1" Description="Test timer 'CMS Controller Delay' has reached 5.0s" />
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12289" Description="Test flag 'PLC Output Flag 2'" />
+              <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="1" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12289" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="40" Value_2="4" Description="Drive flag 5" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="40" Value_2="4" />
           </Actions>
         </Ladder>
         <Label Text="BMS Fault Detection, whether engine is running or not." />
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12291" Description="Test flag 'PLC Output Flag 4'" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="38" Description="Test flag 'Digital Input H'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12291" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="38" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="44" Value_2="1" Description="Trigger PLC function 2" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="44" Value_2="1" />
           </Actions>
         </Ladder>
         <Label Text="Trunk current zero fault (coupler, alternator, and rectifier failures)." />
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" Description="Test flag 'System In Auto Mode'" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" Description="Test flag 'PLC Output Flag 1'" />
-              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="84" Value_2="4" Value_3="2200" Value_4="2201" Description="'Engine Speed' is more than 2200RPM" />
-              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="283" Value_3="1" Value_4="2" Description="'DC Charger Current' is less than 0.1A" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="18" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12288" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="84" Value_2="4" Value_3="2200" Value_4="2201" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="283" Value_3="1" Value_4="2" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="50" Value_2="2" Description="Timer delay 'Zero Trunk Current Delay' (1m)" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="50" Value_2="2" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
-            <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="2" Description="Test timer 'Zero Trunk Current Delay' has reached 1m" />
+            <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="2" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="52" Value_2="2" Description="Trigger PLC function 3" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="52" Value_2="2" />
           </Actions>
         </Ladder>
         <Label Text="If detect coupler resonance lock, shutdown." />
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12293" Description="Test flag 'PLC Output Flag 6'" />
-              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="84" Value_2="4" Value_3="500" Value_4="501" Description="'Engine Speed' is more than 500RPM" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12293" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="84" Value_2="4" Value_3="500" Value_4="501" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="56" Value_2="3" Description="Timer delay 'Coupler Resonance Lock Detection' (1.5s)" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="56" Value_2="3" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12293" Description="Test flag 'PLC Output Flag 6'" />
-              <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="3" Description="Test timer 'Coupler Resonance Lock Detection' has reached 1.5s" />
-              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="84" Value_3="1500" Value_4="2501" Description="'Engine Speed' is less than 1500RPM" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12293" />
+              <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="3" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="84" Value_3="1500" Value_4="2501" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="61" Value_2="4" Description="Trigger PLC function 5" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="61" Value_2="4" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12293" Description="Test flag 'PLC Output Flag 6'" />
-              <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="3" Description="Test timer 'Coupler Resonance Lock Detection' has reached 1.5s" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12293" />
+              <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="3" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="65" Value_2="5" Description="Set flag 6" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="65" Value_2="5" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12293" Description="Test flag 'PLC Output Flag 6'" />
-              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="84" Value_3="50" Value_4="51" Description="'Engine Speed' is less than 50RPM" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12293" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="84" Value_3="50" Value_4="51" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="69" Value_2="5" Description="Reset flag 6" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="69" Value_2="5" />
           </Actions>
         </Ladder>
         <Label Text="Temporary DSE power off." />
         <Ladder>
           <Conditions>
-            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="20" Description="Test flag 'System In Test Mode'" />
+            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="20" />
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="71" Value_2="7" Description="Set flag 8" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="71" Value_2="7" />
           </Actions>
         </Ladder>
         <Label Text="Indicator blink timer." />
         <Ladder>
           <Conditions>
-            <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12296" Description="Test flag 'PLC Output Flag 9'" />
+            <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12296" />
           </Conditions>
           <Actions>
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="73" Value_2="4" Description="Timer delay 'Indicator blink' (0.9s)" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="73" Value_2="4" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
-            <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="4" Description="Test timer 'Indicator blink' has reached 0.9s" />
+            <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="4" />
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="75" Value_2="8" Description="Set flag 9" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="75" Value_2="8" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
-            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12296" Description="Test flag 'PLC Output Flag 9'" />
+            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12296" />
           </Conditions>
           <Actions>
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="77" Value_2="7" Description="Timer delay 'Indicator blink 2' (0.9s)" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="77" Value_2="7" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
-            <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="7" Description="Test timer 'Indicator blink 2' has reached 0.9s" />
+            <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="7" />
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="79" Value_2="8" Description="Reset flag 9" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="79" Value_2="8" />
           </Actions>
         </Ladder>
         <Label Text="Mode Switch Off" />
         <Ladder>
           <Conditions>
-            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="33" Description="Test flag 'Digital Input C'" />
+            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="33" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="81" Value_2="3" Description="Trigger PLC function 4" />
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="81" Value_2="5" Description="Timer delay 'Off mode duration b4 pwr cut' (2.0s)" />
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="81" Value_2="9" Description="Set flag 10" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="81" Value_2="3" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="81" Value_2="5" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="81" Value_2="9" />
           </Actions>
         </Ladder>
         <Label Text="     Off: Actually turn us off" />
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="5" Description="Test timer 'Off mode duration b4 pwr cut' has reached 2.0s" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12297" Description="Test flag 'PLC Output Flag 10'" />
-              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="84" Value_3="50" Value_4="51" Description="'Engine Speed' is less than 50RPM" />
+              <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="5" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12297" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="84" Value_3="50" Value_4="51" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="88" Value_2="7" Description="Set flag 8" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="88" Value_2="7" />
           </Actions>
         </Ladder>
         <Label Text="Mode Switch Service" />
@@ -1426,27 +1426,27 @@
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="34" Description="Test flag 'Digital Input D'" />
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" Description="Test flag 'PLC Output Flag 4'" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12296" Description="Test flag 'PLC Output Flag 9'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="34" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12296" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="93" Value_2="12" Description="Set flag 13" />
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="93" Value_2="13" Description="Reset flag 14" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="93" Value_2="12" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="93" Value_2="13" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="34" Description="Test flag 'Digital Input D'" />
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" Description="Test flag 'PLC Output Flag 4'" />
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12296" Description="Test flag 'PLC Output Flag 9'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="34" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12296" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="99" Value_2="12" Description="Reset flag 13" />
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="99" Value_2="13" Description="Reset flag 14" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="99" Value_2="12" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="99" Value_2="13" />
           </Actions>
         </Ladder>
         <Label Text="     Service: Blink while engine running" />
@@ -1454,32 +1454,32 @@
           <Conditions>
             <And>
               <Or>
-                <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="34" Description="Test flag 'Digital Input D'" />
-                <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="33" Description="Test flag 'Digital Input C'" />
+                <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="34" />
+                <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="33" />
               </Or>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12299" Description="Test flag 'PLC Output Flag 12'" />
-              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="84" Value_2="4" Value_3="50" Value_4="51" Description="'Engine Speed' is more than 50RPM" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12296" Description="Test flag 'PLC Output Flag 9'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12299" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="84" Value_2="4" Value_3="50" Value_4="51" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12296" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="108" Value_2="12" Description="Set flag 13" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="108" Value_2="12" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
               <Or>
-                <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="34" Description="Test flag 'Digital Input D'" />
-                <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="33" Description="Test flag 'Digital Input C'" />
+                <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="34" />
+                <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="33" />
               </Or>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12299" Description="Test flag 'PLC Output Flag 12'" />
-              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="84" Value_2="4" Value_3="50" Value_4="51" Description="'Engine Speed' is more than 50RPM" />
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12296" Description="Test flag 'PLC Output Flag 9'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12299" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="84" Value_2="4" Value_3="50" Value_4="51" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12296" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="116" Value_2="12" Description="Reset flag 13" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="116" Value_2="12" />
           </Actions>
         </Ladder>
         <Label Text="     Service: State transition out of Auto" />
@@ -1487,33 +1487,33 @@
           <Conditions>
             <And>
               <Or>
-                <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="34" Description="Test flag 'Digital Input D'" />
-                <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="33" Description="Test flag 'Digital Input C'" />
+                <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="34" />
+                <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="33" />
               </Or>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12299" Description="Test flag 'PLC Output Flag 12'" />
-              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="84" Value_3="50" Value_4="51" Description="'Engine Speed' is less than 50RPM" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12299" />
+              <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="84" Value_3="50" Value_4="51" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="123" Value_2="11" Description="Reset flag 12" />
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="123" Value_2="13" Description="Reset flag 14" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="123" Value_2="11" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="123" Value_2="13" />
           </Actions>
         </Ladder>
         <Label Text="     Service: State transition" />
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="34" Description="Test flag 'Digital Input D'" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12291" Description="Test flag 'PLC Output Flag 4'" />
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12299" Description="Test flag 'PLC Output Flag 12'" />
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12298" Description="Test flag 'PLC Output Flag 11'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="34" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12291" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12299" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12298" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="130" Value_2="3" Description="Trigger PLC function 4" />
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="130" Value_2="12" Description="Set flag 13" />
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="130" Value_2="10" Description="Set flag 11" />
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="130" Description="Reset flag 1" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="130" Value_2="3" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="130" Value_2="12" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="130" Value_2="10" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="130" />
           </Actions>
         </Ladder>
         <Label Text="Mode Switch Auto" />
@@ -1521,62 +1521,62 @@
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="35" Description="Test flag 'Digital Input E'" />
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" Description="Test flag 'PLC Output Flag 4'" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12296" Description="Test flag 'PLC Output Flag 9'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="35" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12296" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="138" Value_2="13" Description="Set flag 14" />
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="138" Value_2="12" Description="Reset flag 13" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="138" Value_2="13" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="138" Value_2="12" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="35" Description="Test flag 'Digital Input E'" />
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" Description="Test flag 'PLC Output Flag 4'" />
-              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12296" Description="Test flag 'PLC Output Flag 9'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="35" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12291" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12296" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="144" Value_2="13" Description="Reset flag 14" />
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="144" Value_2="12" Description="Reset flag 13" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="144" Value_2="13" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="144" Value_2="12" />
           </Actions>
         </Ladder>
         <Label Text="    Auto: State transition" />
         <Ladder>
           <Conditions>
             <And>
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="35" Description="Test flag 'Digital Input E'" />
-              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12291" Description="Test flag 'PLC Output Flag 4'" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="35" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12291" />
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="149" Value_2="10" Description="Reset flag 11" />
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="149" Value_2="12" Description="Reset flag 13" />
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="149" Value_2="5" Description="Trigger PLC function 6" />
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="149" Value_2="11" Description="Set flag 12" />
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="149" Value_2="13" Description="Set flag 14" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="149" Value_2="10" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="149" Value_2="12" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="149" Value_2="5" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="149" Value_2="11" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="149" Value_2="13" />
           </Actions>
         </Ladder>
         <Label Text="Start mode: DSE can't tell start mode from BMS low volts" />
         <Ladder>
           <Conditions>
-            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="40" Description="Test flag 'Digital Input J'" />
+            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="40" />
           </Conditions>
           <Actions>
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="155" Value_2="14" Description="Drive flag 15" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="155" Value_2="14" />
           </Actions>
         </Ladder>
         <Label Text="Mute Switch" />
         <Ladder>
           <Conditions>
-            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="36" Description="Test flag 'Digital Input F'" />
+            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="36" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="157" Value_2="6" Description="Trigger PLC function 7" />
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="157" Value_2="15" Description="Drive flag 16" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="157" Value_2="6" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="157" Value_2="15" />
           </Actions>
         </Ladder>
       </Logic_Blocks>
@@ -1810,7 +1810,7 @@
       <Start_Delay_Mains_Failure Comment="5s">50</Start_Delay_Mains_Failure>
       <Start_Delay_Telemetry Comment="5s">50</Start_Delay_Telemetry>
       <Fuel_Logging_Interval Comment="0s">0</Fuel_Logging_Interval>
-      <Fuel_Stable_Timer Comment="0.5s">5</Fuel_Stable_Timer>
+      <Fuel_Stable_Timer Comment="0s">0</Fuel_Stable_Timer>
       <ECU_On_Time>1200</ECU_On_Time>
       <ECU_Periodic_Wakeup Comment="1h">36000</ECU_Periodic_Wakeup>
       <Pre-start_Wait Comment="0.5s">5</Pre-start_Wait>
@@ -1859,7 +1859,7 @@
           <Maintenance_on_date_2>False</Maintenance_on_date_2>
           <Maintenance_on_date_3>False</Maintenance_on_date_3>
           <Event_Log_Display_Mode Comment="Date and time">0</Event_Log_Display_Mode>
-          <Event_Log_Disable_Flags Comment="0">0</Event_Log_Disable_Flags>
+          <Event_Log_Disable_Flags Comment="256">256</Event_Log_Disable_Flags>
           <Manual_Fuel_Pump_Control>False</Manual_Fuel_Pump_Control>
           <Disable_Coolant_Cooler_Output_When_Set_Not_Available>False</Disable_Coolant_Cooler_Output_When_Set_Not_Available>
           <Start_Button_Hold_to_Crank>False</Start_Button_Hold_to_Crank>
@@ -1916,11 +1916,11 @@
         <Oil_Sensor Comment="VDO 10 Bar">4</Oil_Sensor>
         <New Comment="398V PhPh">230</New>
         <Coolant_Sensor Comment="VDO 120 °C">3</Coolant_Sensor>
-        <Fuel_Sensor Comment="VDO Tube type (90-0)">4</Fuel_Sensor>
+        <Fuel_Sensor Comment="User defined">255</Fuel_Sensor>
         <Fuel_Tank_Capacity Comment="208">208</Fuel_Tank_Capacity>
-        <Fuel_Level_Change_Indicating_Filling Comment="10 %">10</Fuel_Level_Change_Indicating_Filling>
-        <Fuel_Level_Change_Indicating_Stability Comment="1 %">1</Fuel_Level_Change_Indicating_Stability>
-        <DC_Battery_Temperature_Sensor Comment="VDO 120 °C">3</DC_Battery_Temperature_Sensor>
+        <Fuel_Level_Change_Indicating_Filling Comment="100 %">100</Fuel_Level_Change_Indicating_Filling>
+        <Fuel_Level_Change_Indicating_Stability Comment="100 %">100</Fuel_Level_Change_Indicating_Stability>
+        <DC_Battery_Temperature_Sensor Comment="Veglia">9</DC_Battery_Temperature_Sensor>
         <Fuel_Usage_Sample_Window Comment="10s">100</Fuel_Usage_Sample_Window>
       </Misc_32_Bit>
     </Fixed_Misc_Items>
@@ -1932,10 +1932,11 @@
         <CurveType>3 - VDO 120 °C</CurveType>
       </Temperature>
       <Fuel>
-        <CurveType>4 - VDO Tube type (90-0)</CurveType>
+        <CurveType>255 - VDO fuel sender 480ohm</CurveType>
+        <Values Value0="100" Value1="81" Value2="61" Value3="41" Value4="21" Value5="0" Value6="0" Value7="0" Value8="0" Value9="0" Value10="0" Value11="0" Value12="0" Value13="0" Value14="0" Value15="0" Value16="0" Value17="0" Value18="0" Value19="0" Value20="0" Value21="0" Value22="0" Value23="0" Value24="0" Value25="0" Value26="0" Value27="0" Value28="0" Value29="0" Value30="0" />
       </Fuel>
       <DC_Battery_Temp>
-        <CurveType>3 - VDO 120 °C</CurveType>
+        <CurveType>9 - Veglia</CurveType>
       </DC_Battery_Temp>
       <Flexible_Sender_1>
       </Flexible_Sender_1>
@@ -2059,7 +2060,7 @@
       </Misc>
       <Comms>
         <Site_ID>PPI</Site_ID>
-        <Gen_Set_ID>HyGen V1 testbed</Gen_Set_ID>
+        <Gen_Set_ID>HyGen Engineering Unit "Jack"</Gen_Set_ID>
       </Comms>
       <Insert_Card>
         <LED_Text>
@@ -2103,9 +2104,9 @@
       <Maintenance_Alarm_3>Maintenance Alarm 3</Maintenance_Alarm_3>
       <Oil_Sensor_Curve_Name>VDO 10 Bar</Oil_Sensor_Curve_Name>
       <Temperature_Sensor_Curve_Name>VDO 120 °C</Temperature_Sensor_Curve_Name>
-      <Fuel_Sensor_Curve_Name>VDO Tube type (90-0)</Fuel_Sensor_Curve_Name>
+      <Fuel_Sensor_Curve_Name>VDO fuel sender 480ohm</Fuel_Sensor_Curve_Name>
       <Battery_Strings>
-        <Temp_Sensor_Curve_Name>VDO 120 °C</Temp_Sensor_Curve_Name>
+        <Temp_Sensor_Curve_Name>Veglia</Temp_Sensor_Curve_Name>
         <Maintenance_Alarm_1_String>Battery Maintenance Alarm 1</Maintenance_Alarm_1_String>
         <Maintenance_Alarm_2_String>Battery Maintenance Alarm 2</Maintenance_Alarm_2_String>
         <Maintenance_Alarm_3_String>Battery Maintenance Alarm 3</Maintenance_Alarm_3_String>
@@ -2258,7 +2259,7 @@
             <Battery_Full_Charge_Level Comment="90 %">90</Battery_Full_Charge_Level>
             <Battery_Charge_Voltage Comment="500 V DC">50.0</Battery_Charge_Voltage>
             <Battery_Peukerts_Const Comment="100 ">1.00</Battery_Peukerts_Const>
-            <Float_Charge_Enable>True</Float_Charge_Enable>
+            <Float_Charge_Enable>False</Float_Charge_Enable>
             <Charger_Efficiency Comment="100 %">100</Charger_Efficiency>
           </Battery_Misc_16_Alt>
           <Run_Generator_on_Low_Battery>False</Run_Generator_on_Low_Battery>
@@ -2598,7 +2599,7 @@
             <Low_Charge_Shutdown>
               <Function Comment="User Configured">0</Function>
               <Action Comment="Shutdown">1</Action>
-              <Arming Comment="Always">1</Arming>
+              <Arming Comment="Never">0</Arming>
               <Type Comment="Analogue Less Than">2</Type>
               <Timer Comment="0.0s">0.0</Timer>
               <Trip Comment="0 %">0</Trip>
@@ -4661,12 +4662,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>2591</CRC>
+      <CRC>23361</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.77.1.0">13-Oct-16 14:04:15</Saved_on>
+        <Saved_on ConfigSuite_Version="3.77.1.0">17-Oct-16 11:52:54</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -8003,16 +8004,16 @@
                 </High_Shutdown>
               </Alarms>
               <Sensor_Category Comment="Percentage Sensor">3</Sensor_Category>
-              <MeasuredQuantity Comment="Voltage">0</MeasuredQuantity>
+              <MeasuredQuantity Comment="Resistive">2</MeasuredQuantity>
               <Sensor_Type>
                 <MCFlexibleSenderSelection_Fuel Comment="255">255</MCFlexibleSenderSelection_Fuel>
               </Sensor_Type>
               <Wide_Range>False</Wide_Range>
               <Multifunction_Sender_Curve_Block>
                 <SCFlexibleSender_Fuel>
-                  <CurveType>255 - User defined</CurveType>
-                  <Values Value0="0" Value1="2" Value2="5" Value3="8" Value4="10" Value5="12" Value6="15" Value7="18" Value8="20" Value9="22" Value10="25" Value11="28" Value12="30" Value13="32" Value14="35" Value15="38" Value16="40" Value17="42" Value18="45" Value19="48" Value20="50" Value21="52" Value22="55" Value23="58" Value24="60" Value25="62" Value26="65" Value27="68" Value28="70" Value29="72" Value30="75" Value31="78" Value32="80" Value33="82" Value34="85" Value35="88" Value36="90" Value37="92" Value38="95" Value39="98" Value40="100" />
-                  <Axis MaximumValue="255" OhmsInterval="250" HighThreshold="10000" MeasuredQuantity="0" CurveType="2" />
+                  <CurveType>255 - VDO fuel level</CurveType>
+                  <Values Value0="101" Value1="94" Value2="87" Value3="79" Value4="72" Value5="64" Value6="57" Value7="50" Value8="42" Value9="35" Value10="27" Value11="20" Value12="13" Value13="5" Value14="0" Value15="0" Value16="0" Value17="0" Value18="0" Value19="0" Value20="0" Value21="0" Value22="0" Value23="0" Value24="0" Value25="0" Value26="0" Value27="0" Value28="0" Value29="0" Value30="0" Value31="0" Value32="0" Value33="0" Value34="0" Value35="0" Value36="0" Value37="0" Value38="0" Value39="0" Value40="0" />
+                  <Axis MaximumValue="255" OhmsInterval="6" HighThreshold="240" MeasuredQuantity="2" CurveType="2" />
                 </SCFlexibleSender_Fuel>
               </Multifunction_Sender_Curve_Block>
               <Strings>
@@ -8020,7 +8021,7 @@
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
-                  <CurveName_Fuel>User defined</CurveName_Fuel>
+                  <CurveName_Fuel>VDO fuel level</CurveName_Fuel>
                 </Transducer_Curve_Name>
               </Strings>
             </Analogue_D>
@@ -8228,7 +8229,7 @@
               <Wide_Range>False</Wide_Range>
               <Multifunction_Sender_Curve_Block>
                 <SCFlexibleSender_Fuel>
-                  <CurveType>255 - User defined</CurveType>
+                  <CurveType>255 - Filterminder HD</CurveType>
                   <Values Value0="0" Value1="0" Value2="0" Value3="6" Value4="12" Value5="19" Value6="25" Value7="31" Value8="38" Value9="44" Value10="50" Value11="56" Value12="62" Value13="69" Value14="75" Value15="81" Value16="88" Value17="94" Value18="100" Value19="106" Value20="112" Value21="119" Value22="125" Value23="131" Value24="138" Value25="144" Value26="150" Value27="156" Value28="162" Value29="169" Value30="175" Value31="181" Value32="188" Value33="194" Value34="200" Value35="200" Value36="200" Value37="200" Value38="200" Value39="200" Value40="200" />
                   <Axis MaximumValue="255" OhmsInterval="250" HighThreshold="10000" MeasuredQuantity="0" CurveType="2" />
                 </SCFlexibleSender_Fuel>
@@ -8238,7 +8239,7 @@
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
-                  <CurveName_Fuel>User defined</CurveName_Fuel>
+                  <CurveName_Fuel>Filterminder HD</CurveName_Fuel>
                 </Transducer_Curve_Name>
               </Strings>
             </Analogue_F>
@@ -8248,7 +8249,7 @@
                   <Function_Arming_etc>
                     <Function Comment="User Configured">0</Function>
                     <Action Comment="None">0</Action>
-                    <Arming Comment="Always">1</Arming>
+                    <Arming Comment="From Safety On">3</Arming>
                     <Type Comment="Analogue Less Than">2</Type>
                     <Timer Comment="0">0</Timer>
                   </Function_Arming_etc>
@@ -8268,8 +8269,8 @@
                 <Low_Warning>
                   <Function_Arming_etc>
                     <Function Comment="User Configured">0</Function>
-                    <Action Comment="None">0</Action>
-                    <Arming Comment="Always">1</Arming>
+                    <Action Comment="Warning">5</Action>
+                    <Arming Comment="From Safety On">3</Arming>
                     <Type Comment="Analogue Less Than">2</Type>
                     <Timer Comment="0">0</Timer>
                   </Function_Arming_etc>
@@ -8277,8 +8278,8 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
-                      <Trip Comment="30 %">30</Trip>
-                      <Return Comment="40 %">40</Return>
+                      <Trip Comment="60 %">60</Trip>
+                      <Return Comment="61 %">61</Return>
                     </Params_Fuel>
                     <Params_Temp>
                     </Params_Temp>
@@ -8290,7 +8291,7 @@
                   <Function_Arming_etc>
                     <Function Comment="User Configured">0</Function>
                     <Action Comment="None">0</Action>
-                    <Arming Comment="Always">1</Arming>
+                    <Arming Comment="From Safety On">3</Arming>
                     <Type Comment="Analogue Greater Than">3</Type>
                     <Timer Comment="0">0</Timer>
                   </Function_Arming_etc>
@@ -8298,8 +8299,8 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
-                      <Trip Comment="60 %">60</Trip>
-                      <Return Comment="50 %">50</Return>
+                      <Trip Comment="68 %">68</Trip>
+                      <Return Comment="67 %">67</Return>
                     </Params_Fuel>
                     <Params_Temp>
                     </Params_Temp>
@@ -8311,7 +8312,7 @@
                   <Function_Arming_etc>
                     <Function Comment="User Configured">0</Function>
                     <Action Comment="None">0</Action>
-                    <Arming Comment="Always">1</Arming>
+                    <Arming Comment="From Safety On">3</Arming>
                     <Type Comment="Analogue Greater Than">3</Type>
                     <Timer Comment="0">0</Timer>
                   </Function_Arming_etc>
@@ -8337,17 +8338,17 @@
               <Wide_Range>False</Wide_Range>
               <Multifunction_Sender_Curve_Block>
                 <SCFlexibleSender_Fuel>
-                  <CurveType>255 - User defined</CurveType>
+                  <CurveType>255 - Filterminder HD</CurveType>
                   <Values Value0="0" Value1="0" Value2="0" Value3="6" Value4="12" Value5="19" Value6="25" Value7="31" Value8="38" Value9="44" Value10="50" Value11="56" Value12="62" Value13="69" Value14="75" Value15="81" Value16="88" Value17="94" Value18="100" Value19="106" Value20="112" Value21="119" Value22="125" Value23="131" Value24="138" Value25="144" Value26="150" Value27="156" Value28="162" Value29="169" Value30="175" Value31="181" Value32="188" Value33="194" Value34="200" Value35="200" Value36="200" Value37="200" Value38="200" Value39="200" Value40="200" />
                   <Axis MaximumValue="255" OhmsInterval="250" HighThreshold="10000" MeasuredQuantity="0" CurveType="2" />
                 </SCFlexibleSender_Fuel>
               </Multifunction_Sender_Curve_Block>
               <Strings>
                 <Title>Secondary Fuel Pressure</Title>
-                <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
+                <Low_Alarm_String>Low Fuel Supply Pressure</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
-                  <CurveName_Fuel>User defined</CurveName_Fuel>
+                  <CurveName_Fuel>Filterminder HD</CurveName_Fuel>
                 </Transducer_Curve_Name>
               </Strings>
             </Analogue_G>
@@ -8474,8 +8475,8 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
-                      <Trip Comment="32 %">32</Trip>
-                      <Return Comment="32 %">32</Return>
+                      <Trip Comment="26 %">26</Trip>
+                      <Return Comment="26 %">26</Return>
                     </Params_Fuel>
                     <Params_Temp>
                     </Params_Temp>
@@ -8495,8 +8496,8 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
-                      <Trip Comment="33 %">33</Trip>
-                      <Return Comment="34 %">34</Return>
+                      <Trip Comment="40 %">40</Trip>
+                      <Return Comment="41 %">41</Return>
                     </Params_Fuel>
                     <Params_Temp>
                     </Params_Temp>
@@ -8516,8 +8517,8 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
-                      <Trip Comment="67 %">67</Trip>
-                      <Return Comment="66 %">66</Return>
+                      <Trip Comment="61 %">61</Trip>
+                      <Return Comment="60 %">60</Return>
                     </Params_Fuel>
                     <Params_Temp>
                     </Params_Temp>
@@ -8528,7 +8529,7 @@
                 <High_Shutdown>
                   <Function_Arming_etc>
                     <Function Comment="User Configured">0</Function>
-                    <Action Comment="Shutdown">1</Action>
+                    <Action Comment="None">0</Action>
                     <Arming Comment="Always">1</Arming>
                     <Type Comment="Analogue Greater Than">3</Type>
                     <Timer Comment="0">0</Timer>
@@ -8537,8 +8538,8 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
-                      <Trip Comment="71 %">71</Trip>
-                      <Return Comment="71 %">71</Return>
+                      <Trip Comment="100 %">100</Trip>
+                      <Return Comment="100 %">100</Return>
                     </Params_Fuel>
                     <Params_Temp>
                     </Params_Temp>
@@ -8556,7 +8557,7 @@
               <Multifunction_Sender_Curve_Block>
                 <SCFlexibleSender_Fuel>
                   <CurveType>255 - User defined</CurveType>
-                  <Values Value0="25" Value1="25" Value2="25" Value3="25" Value4="25" Value5="25" Value6="25" Value7="25" Value8="25" Value9="25" Value10="25" Value11="25" Value12="25" Value13="25" Value14="25" Value15="25" Value16="25" Value17="50" Value18="50" Value19="50" Value20="50" Value21="50" Value22="50" Value23="50" Value24="50" Value25="50" Value26="50" Value27="50" Value28="75" Value29="75" Value30="75" Value31="75" Value32="75" Value33="75" Value34="75" Value35="75" Value36="75" Value37="75" Value38="75" Value39="75" Value40="75" />
+                  <Values Value0="0" Value1="0" Value2="0" Value3="0" Value4="0" Value5="0" Value6="0" Value7="0" Value8="50" Value9="50" Value10="50" Value11="50" Value12="250" Value13="250" Value14="250" Value15="250" Value16="250" Value17="250" Value18="250" Value19="250" Value20="250" Value21="250" Value22="250" Value23="250" Value24="250" Value25="250" Value26="250" Value27="250" Value28="250" Value29="250" Value30="250" Value31="250" Value32="250" Value33="250" Value34="250" Value35="250" Value36="250" Value37="250" Value38="250" Value39="250" Value40="250" />
                   <Axis MaximumValue="255" OhmsInterval="250" HighThreshold="10000" MeasuredQuantity="0" CurveType="2" />
                 </SCFlexibleSender_Fuel>
               </Multifunction_Sender_Curve_Block>
@@ -8604,8 +8605,8 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
-                      <Trip Comment="20 %">20</Trip>
-                      <Return Comment="21 %">21</Return>
+                      <Trip Comment="10 %">10</Trip>
+                      <Return Comment="11 %">11</Return>
                     </Params_Fuel>
                     <Params_Temp>
                     </Params_Temp>
@@ -8625,8 +8626,8 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
-                      <Trip Comment="50 %">50</Trip>
-                      <Return Comment="49 %">49</Return>
+                      <Trip Comment="52 %">52</Trip>
+                      <Return Comment="51 %">51</Return>
                     </Params_Fuel>
                     <Params_Temp>
                     </Params_Temp>
@@ -8665,7 +8666,7 @@
               <Multifunction_Sender_Curve_Block>
                 <SCFlexibleSender_Fuel>
                   <CurveType>255 - User defined</CurveType>
-                  <Values Value0="0" Value1="0" Value2="0" Value3="0" Value4="0" Value5="0" Value6="0" Value7="0" Value8="0" Value9="0" Value10="0" Value11="0" Value12="0" Value13="0" Value14="0" Value15="0" Value16="0" Value17="0" Value18="0" Value19="0" Value20="0" Value21="100" Value22="100" Value23="100" Value24="100" Value25="100" Value26="100" Value27="100" Value28="100" Value29="100" Value30="100" Value31="100" Value32="100" Value33="100" Value34="100" Value35="100" Value36="100" Value37="100" Value38="100" Value39="100" Value40="100" />
+                  <Values Value0="100" Value1="100" Value2="100" Value3="100" Value4="100" Value5="100" Value6="100" Value7="100" Value8="100" Value9="0" Value10="0" Value11="0" Value12="0" Value13="0" Value14="0" Value15="0" Value16="0" Value17="0" Value18="0" Value19="0" Value20="0" Value21="0" Value22="0" Value23="0" Value24="0" Value25="0" Value26="0" Value27="0" Value28="0" Value29="0" Value30="0" Value31="0" Value32="0" Value33="0" Value34="0" Value35="0" Value36="0" Value37="0" Value38="0" Value39="0" Value40="0" />
                   <Axis MaximumValue="255" OhmsInterval="250" HighThreshold="10000" MeasuredQuantity="0" CurveType="2" />
                 </SCFlexibleSender_Fuel>
               </Multifunction_Sender_Curve_Block>
@@ -13077,11 +13078,11 @@
                   </High_Shutdown>
                 </Alarms>
                 <Sensor_Type>
-                  <MCFlexibleSenderSelection_Temp_Resistive Comment="10">10</MCFlexibleSenderSelection_Temp_Resistive>
+                  <MCFlexibleSenderSelection_Temp_Resistive Comment="0">0</MCFlexibleSenderSelection_Temp_Resistive>
                 </Sensor_Type>
                 <Wide_Range>False</Wide_Range>
                 <Strings>
-                  <Title>Bellhousing Temp</Title>
+                  <Title>2133 ID1 Flexible Sensor G</Title>
                   <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                   <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 </Strings>
@@ -14674,7 +14675,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>31107</CRC>
+        <CRC>29556</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
