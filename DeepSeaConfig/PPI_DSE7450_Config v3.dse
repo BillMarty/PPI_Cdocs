@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.77.1.0">17-Oct-16 14:06:39</Saved_on>
+      <Saved_on ConfigSuite_Version="3.77.1.0">18-Oct-16 16:39:25</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -624,10 +624,10 @@
         <Maintenance_Alarm>
           <Function Comment="User Configured">0</Function>
           <Action Comment="Warning">5</Action>
-          <Arming Comment="Never">0</Arming>
+          <Arming Comment="Always">1</Arming>
           <Timer Comment="0">0</Timer>
           <Type Comment="Close to Activate">0</Type>
-          <Param1_Hours Comment="250 hrs">250</Param1_Hours>
+          <Param1_Hours Comment="500 hrs">500</Param1_Hours>
           <Param2_Months Comment="1 months">1</Param2_Months>
         </Maintenance_Alarm>
         <Maintenance_Alarm_2>
@@ -1569,14 +1569,80 @@
             <Action Type="Drive" Operator="0" ValueType="0" Value_1="155" Value_2="14" />
           </Actions>
         </Ladder>
-        <Label Text="Mute Switch" />
+        <Label Text="Mute/Reset switch prototype code." />
+        <Label Text="     One shot resets." />
+        <Ladder>
+          <Conditions>
+            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12305" />
+          </Conditions>
+          <Actions>
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="157" Value_2="17" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12307" />
+          </Conditions>
+          <Actions>
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="159" Value_2="19" />
+          </Actions>
+        </Ladder>
+        <Label Text="     Set one shots on edges." />
+        <Ladder>
+          <Conditions>
+            <And>
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="36" />
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12306" />
+            </And>
+          </Conditions>
+          <Actions>
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="163" Value_2="18" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="163" Value_2="17" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <And>
+              <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="36" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12306" />
+            </And>
+          </Conditions>
+          <Actions>
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="168" Value_2="18" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="168" Value_2="19" />
+          </Actions>
+        </Ladder>
+        <Label Text="     Launch one shot actions." />
+        <Ladder>
+          <Conditions>
+            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12305" />
+          </Conditions>
+          <Actions>
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="171" Value_2="6" />
+          </Actions>
+        </Ladder>
         <Ladder>
           <Conditions>
             <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="36" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="157" Value_2="6" />
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="157" Value_2="15" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="173" Value_2="8" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="8" />
+          </Conditions>
+          <Actions>
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="175" Value_2="7" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12307" />
+          </Conditions>
+          <Actions>
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="177" Value_2="8" />
           </Actions>
         </Ladder>
       </Logic_Blocks>
@@ -1589,6 +1655,7 @@
         <Timer Index="5" Label="Off mode duration b4 pwr cut" />
         <Timer Index="6" Label="Engine run on low starter battery" />
         <Timer Index="7" Label="Indicator blink 2" />
+        <Timer Index="8" Label="Mute Switch Long Press" />
       </Strings>
       <Alarm_Blocks>
         <Alarm1>
@@ -1664,8 +1731,8 @@
           <Param2 Comment="0">0</Param2>
         </Alarm8>
         <Alarm9>
-          <Function Comment="User Configured">0</Function>
-          <Action Comment="Warning">5</Action>
+          <Function Comment="Reset Maintenance Alarm 1">42</Function>
+          <Action Comment="None">0</Action>
           <Arming Comment="Always">1</Arming>
           <Polarity Comment="Close to Activate">0</Polarity>
           <Timer Comment="0s">0</Timer>
@@ -1773,7 +1840,7 @@
         </Alarm20>
       </Alarm_Blocks>
       <Counter_Limits Comment="1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,">1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,</Counter_Limits>
-      <Timer_Limits Comment="10,50,600,15,9,20,638,9,0,0,0,0,0,0,0,0,0,0,0,0,">10,50,600,15,9,20,12000,9,0,0,0,0,0,0,0,0,0,0,0,0,</Timer_Limits>
+      <Timer_Limits Comment="10,50,600,15,9,20,638,9,100,0,0,0,0,0,0,0,0,0,0,0,">10,50,600,15,9,20,12000,9,100,0,0,0,0,0,0,0,0,0,0,0,</Timer_Limits>
     </PLC>
     <Timers>
       <Pre-heat Comment="3s">3</Pre-heat>
@@ -2060,7 +2127,7 @@
       </Misc>
       <Comms>
         <Site_ID>PPI</Site_ID>
-        <Gen_Set_ID>HyGen Engineering Unit "Jack"</Gen_Set_ID>
+        <Gen_Set_ID>HyGen Engineering Unit</Gen_Set_ID>
       </Comms>
       <Insert_Card>
         <LED_Text>
@@ -2123,8 +2190,7 @@
         </Alarm6>
         <Alarm7>
         </Alarm7>
-        <Alarm8>
-        </Alarm8>
+        <Alarm8>Testing: Alarm Reset Function</Alarm8>
         <Alarm9>
         </Alarm9>
         <Alarm10>
@@ -4059,7 +4125,7 @@
         <Octet2 Comment="0 ">0</Octet2>
         <Octet1 Comment="0 ">0</Octet1>
       </Preferred_Connection_Address>
-      <DHCPEnable>False</DHCPEnable>
+      <DHCPEnable>True</DHCPEnable>
       <ModbusPort Comment="1003">1003</ModbusPort>
     </TCPIP>
     <ConfigurableGencommP166>
@@ -4662,12 +4728,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>24206</CRC>
+      <CRC>32707</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.77.1.0">17-Oct-16 14:06:39</Saved_on>
+        <Saved_on ConfigSuite_Version="3.77.1.0">18-Oct-16 16:39:25</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14675,7 +14741,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>52921</CRC>
+        <CRC>27461</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
