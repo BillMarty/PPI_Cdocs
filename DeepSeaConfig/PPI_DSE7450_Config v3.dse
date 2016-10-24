@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.77.1.0">24-Oct-16 10:32:25</Saved_on>
+      <Saved_on ConfigSuite_Version="3.77.1.0">24-Oct-16 11:58:28</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -4728,12 +4728,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>50005</CRC>
+      <CRC>32066</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.77.1.0">24-Oct-16 10:32:25</Saved_on>
+        <Saved_on ConfigSuite_Version="3.77.1.0">24-Oct-16 11:58:28</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -8296,7 +8296,7 @@
               <Multifunction_Sender_Curve_Block>
                 <SCFlexibleSender_Fuel>
                   <CurveType>255 - Filterminder HD</CurveType>
-                  <Values Value0="0" Value1="0" Value2="0" Value3="6" Value4="12" Value5="19" Value6="25" Value7="31" Value8="38" Value9="44" Value10="50" Value11="56" Value12="62" Value13="69" Value14="75" Value15="81" Value16="88" Value17="94" Value18="100" Value19="106" Value20="112" Value21="119" Value22="125" Value23="131" Value24="138" Value25="144" Value26="150" Value27="156" Value28="162" Value29="169" Value30="175" Value31="181" Value32="188" Value33="194" Value34="200" Value35="200" Value36="200" Value37="200" Value38="200" Value39="200" Value40="200" />
+                  <Values Value0="0" Value1="0" Value2="0" Value3="6" Value4="12" Value5="19" Value6="25" Value7="31" Value8="38" Value9="44" Value10="50" Value11="56" Value12="62" Value13="69" Value14="75" Value15="81" Value16="88" Value17="94" Value18="100" Value19="100" Value20="100" Value21="100" Value22="100" Value23="100" Value24="100" Value25="100" Value26="100" Value27="100" Value28="100" Value29="100" Value30="100" Value31="100" Value32="100" Value33="100" Value34="100" Value35="100" Value36="100" Value37="100" Value38="100" Value39="100" Value40="100" />
                   <Axis MaximumValue="255" OhmsInterval="250" HighThreshold="10000" MeasuredQuantity="0" CurveType="2" />
                 </SCFlexibleSender_Fuel>
               </Multifunction_Sender_Curve_Block>
@@ -8323,8 +8323,8 @@
                     <Params_Oil>
                     </Params_Oil>
                     <Params_Fuel>
-                      <Trip Comment="25 %">25</Trip>
-                      <Return Comment="25 %">25</Return>
+                      <Trip Comment="5 %">5</Trip>
+                      <Return Comment="5 %">5</Return>
                     </Params_Fuel>
                     <Params_Temp>
                     </Params_Temp>
@@ -8405,7 +8405,7 @@
               <Multifunction_Sender_Curve_Block>
                 <SCFlexibleSender_Fuel>
                   <CurveType>255 - Filterminder HD</CurveType>
-                  <Values Value0="0" Value1="0" Value2="0" Value3="6" Value4="12" Value5="19" Value6="25" Value7="31" Value8="38" Value9="44" Value10="50" Value11="56" Value12="62" Value13="69" Value14="75" Value15="81" Value16="88" Value17="94" Value18="100" Value19="106" Value20="112" Value21="119" Value22="125" Value23="131" Value24="138" Value25="144" Value26="150" Value27="156" Value28="162" Value29="169" Value30="175" Value31="181" Value32="188" Value33="194" Value34="200" Value35="200" Value36="200" Value37="200" Value38="200" Value39="200" Value40="200" />
+                  <Values Value0="0" Value1="0" Value2="0" Value3="6" Value4="12" Value5="19" Value6="25" Value7="31" Value8="38" Value9="44" Value10="50" Value11="56" Value12="62" Value13="69" Value14="75" Value15="81" Value16="88" Value17="94" Value18="100" Value19="100" Value20="100" Value21="100" Value22="100" Value23="100" Value24="100" Value25="100" Value26="100" Value27="100" Value28="100" Value29="100" Value30="100" Value31="100" Value32="100" Value33="100" Value34="100" Value35="100" Value36="100" Value37="100" Value38="100" Value39="100" Value40="100" />
                   <Axis MaximumValue="255" OhmsInterval="250" HighThreshold="10000" MeasuredQuantity="0" CurveType="2" />
                 </SCFlexibleSender_Fuel>
               </Multifunction_Sender_Curve_Block>
@@ -14741,7 +14741,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>23686</CRC>
+        <CRC>44395</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
