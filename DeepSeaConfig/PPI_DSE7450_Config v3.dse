@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.77.1.0">18-Oct-16 16:39:25</Saved_on>
+      <Saved_on ConfigSuite_Version="3.77.1.0">24-Oct-16 10:32:25</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -303,7 +303,7 @@
         <Action Comment="Warning">5</Action>
         <Arming Comment="Always">1</Arming>
         <Type Comment="Analogue Less Than">2</Type>
-        <Timer Comment="5s">50</Timer>
+        <Timer Comment="5m">3000</Timer>
         <Trip Comment="10 %">10</Trip>
         <Return Comment="10 %">10</Return>
       </Low_Fuel_Level>
@@ -4728,12 +4728,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>32707</CRC>
+      <CRC>50005</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.77.1.0">18-Oct-16 16:39:25</Saved_on>
+        <Saved_on ConfigSuite_Version="3.77.1.0">24-Oct-16 10:32:25</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14741,7 +14741,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>27461</CRC>
+        <CRC>23686</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
