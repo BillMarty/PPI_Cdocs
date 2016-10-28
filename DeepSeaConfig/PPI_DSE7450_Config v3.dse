@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.77.1.0">28-Oct-16 11:01:48</Saved_on>
+      <Saved_on ConfigSuite_Version="3.77.1.0">28-Oct-16 13:44:20</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -1275,7 +1275,7 @@
             <Action Type="Drive" Operator="0" ValueType="0" Value_1="40" Value_2="4" Description="Drive flag 5" />
           </Actions>
         </Ladder>
-        <Label Text="BMS Fault Detection, whether engine is running or not, but not when we're in OFF mode." />
+        <Label Text="BMS Fault Detection, whether engine is running or not, but not during OFF mode." />
         <Ladder>
           <Conditions>
             <And>
@@ -1285,7 +1285,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="44" Value_2="1" Description="Trigger PLC function 2" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="45" Value_2="1" Description="Trigger PLC function 2" />
           </Actions>
         </Ladder>
         <Label Text="Trunk current zero fault (coupler, alternator, and rectifier failures)." />
@@ -1299,7 +1299,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="50" Value_2="2" Description="Timer delay 'Zero Trunk Current Delay' (1m)" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="51" Value_2="2" Description="Timer delay 'Zero Trunk Current Delay' (1m)" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1307,7 +1307,7 @@
             <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="2" Description="Test timer 'Zero Trunk Current Delay' has reached 1m" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="52" Value_2="2" Description="Trigger PLC function 3" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="53" Value_2="2" Description="Trigger PLC function 3" />
           </Actions>
         </Ladder>
         <Label Text="If detect coupler resonance lock, shutdown.  (Removed for v2TuningWork.)" />
@@ -1317,7 +1317,7 @@
             <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="20" Description="Test flag 'System In Test Mode'" />
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="54" Value_2="7" Description="Set flag 8" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="55" Value_2="7" Description="Set flag 8" />
           </Actions>
         </Ladder>
         <Label Text="Indicator blink timer." />
@@ -1326,7 +1326,7 @@
             <Condition Type="Flag" Polarity="TrueOrClosed" Value_1="12296" Description="Test flag 'PLC Output Flag 9'" />
           </Conditions>
           <Actions>
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="56" Value_2="4" Description="Timer delay 'Indicator blink' (0.9s)" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="57" Value_2="4" Description="Timer delay 'Indicator blink' (0.9s)" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1334,7 +1334,7 @@
             <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="4" Description="Test timer 'Indicator blink' has reached 0.9s" />
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="58" Value_2="8" Description="Set flag 9" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="59" Value_2="8" Description="Set flag 9" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1342,7 +1342,7 @@
             <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12296" Description="Test flag 'PLC Output Flag 9'" />
           </Conditions>
           <Actions>
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="60" Value_2="7" Description="Timer delay 'Indicator blink 2' (0.9s)" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="61" Value_2="7" Description="Timer delay 'Indicator blink 2' (0.9s)" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1350,7 +1350,7 @@
             <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="7" Description="Test timer 'Indicator blink 2' has reached 0.9s" />
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="62" Value_2="8" Description="Reset flag 9" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="63" Value_2="8" Description="Reset flag 9" />
           </Actions>
         </Ladder>
         <Label Text="Mode Switch Off" />
@@ -1359,9 +1359,9 @@
             <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="33" Description="Test flag 'Digital Input C'" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="64" Value_2="3" Description="Trigger PLC function 4" />
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="64" Value_2="5" Description="Timer delay 'Off mode duration b4 pwr cut' (2.0s)" />
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="64" Value_2="9" Description="Set flag 10" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="65" Value_2="3" Description="Trigger PLC function 4" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="65" Value_2="5" Description="Timer delay 'Off mode duration b4 pwr cut' (2.0s)" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="65" Value_2="9" Description="Set flag 10" />
           </Actions>
         </Ladder>
         <Label Text="     Off: Actually turn us off" />
@@ -1374,7 +1374,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="71" Value_2="7" Description="Set flag 8" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="72" Value_2="7" Description="Set flag 8" />
           </Actions>
         </Ladder>
         <Label Text="Mode Switch Service" />
@@ -1388,8 +1388,8 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="76" Value_2="12" Description="Set flag 13" />
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="76" Value_2="13" Description="Reset flag 14" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="77" Value_2="12" Description="Set flag 13" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="77" Value_2="13" Description="Reset flag 14" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1401,8 +1401,8 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="82" Value_2="12" Description="Reset flag 13" />
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="82" Value_2="13" Description="Reset flag 14" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="83" Value_2="12" Description="Reset flag 13" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="83" Value_2="13" Description="Reset flag 14" />
           </Actions>
         </Ladder>
         <Label Text="     Service: Blink while engine running" />
@@ -1419,7 +1419,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="91" Value_2="12" Description="Set flag 13" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="92" Value_2="12" Description="Set flag 13" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1435,7 +1435,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="99" Value_2="12" Description="Reset flag 13" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="100" Value_2="12" Description="Reset flag 13" />
           </Actions>
         </Ladder>
         <Label Text="     Service: State transition out of Auto" />
@@ -1451,8 +1451,8 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="106" Value_2="11" Description="Reset flag 12" />
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="106" Value_2="13" Description="Reset flag 14" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="107" Value_2="11" Description="Reset flag 12" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="107" Value_2="13" Description="Reset flag 14" />
           </Actions>
         </Ladder>
         <Label Text="     Service: State transition" />
@@ -1466,10 +1466,10 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="113" Value_2="3" Description="Trigger PLC function 4" />
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="113" Value_2="12" Description="Set flag 13" />
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="113" Value_2="10" Description="Set flag 11" />
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="113" Description="Reset flag 1" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="114" Value_2="3" Description="Trigger PLC function 4" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="114" Value_2="12" Description="Set flag 13" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="114" Value_2="10" Description="Set flag 11" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="114" Description="Reset flag 1" />
           </Actions>
         </Ladder>
         <Label Text="Mode Switch Auto" />
@@ -1483,8 +1483,8 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="121" Value_2="13" Description="Set flag 14" />
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="121" Value_2="12" Description="Reset flag 13" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="122" Value_2="13" Description="Set flag 14" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="122" Value_2="12" Description="Reset flag 13" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1496,8 +1496,8 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="127" Value_2="13" Description="Reset flag 14" />
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="127" Value_2="12" Description="Reset flag 13" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="128" Value_2="13" Description="Reset flag 14" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="128" Value_2="12" Description="Reset flag 13" />
           </Actions>
         </Ladder>
         <Label Text="    Auto: State transition" />
@@ -1509,11 +1509,11 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="132" Value_2="10" Description="Reset flag 11" />
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="132" Value_2="12" Description="Reset flag 13" />
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="132" Value_2="5" Description="Trigger PLC function 6" />
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="132" Value_2="11" Description="Set flag 12" />
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="132" Value_2="13" Description="Set flag 14" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="133" Value_2="10" Description="Reset flag 11" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="133" Value_2="12" Description="Reset flag 13" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="133" Value_2="5" Description="Trigger PLC function 6" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="133" Value_2="11" Description="Set flag 12" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="133" Value_2="13" Description="Set flag 14" />
           </Actions>
         </Ladder>
         <Label Text="Start mode: DSE can't tell start mode from BMS low volts" />
@@ -1522,7 +1522,7 @@
             <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="40" Description="Test flag 'Digital Input J'" />
           </Conditions>
           <Actions>
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="138" Value_2="14" Description="Drive flag 15" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="139" Value_2="14" Description="Drive flag 15" />
           </Actions>
         </Ladder>
         <Label Text="Mute/Reset switch prototype code." />
@@ -1532,7 +1532,7 @@
             <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12305" Description="Test flag 'PLC Output Flag 18'" />
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="140" Value_2="17" Description="Reset flag 18" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="141" Value_2="17" Description="Reset flag 18" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1540,7 +1540,7 @@
             <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12307" Description="Test flag 'PLC Output Flag 20'" />
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="142" Value_2="19" Description="Reset flag 20" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="143" Value_2="19" Description="Reset flag 20" />
           </Actions>
         </Ladder>
         <Label Text="     Set one shots on edges." />
@@ -1552,8 +1552,8 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="146" Value_2="18" Description="Set flag 19" />
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="146" Value_2="17" Description="Set flag 18" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="147" Value_2="18" Description="Set flag 19" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="147" Value_2="17" Description="Set flag 18" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1564,8 +1564,8 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="151" Value_2="18" Description="Reset flag 19" />
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="151" Value_2="19" Description="Set flag 20" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="152" Value_2="18" Description="Reset flag 19" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="152" Value_2="19" Description="Set flag 20" />
           </Actions>
         </Ladder>
         <Label Text="     Launch one shot actions." />
@@ -1574,7 +1574,7 @@
             <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12305" Description="Test flag 'PLC Output Flag 18'" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="154" Value_2="6" Description="Trigger PLC function 7" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="155" Value_2="6" Description="Trigger PLC function 7" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1582,7 +1582,7 @@
             <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="36" Description="Test flag 'Digital Input F'" />
           </Conditions>
           <Actions>
-            <Action Type="Delay" Operator="0" ValueType="0" Value_1="156" Value_2="8" Description="Timer delay 'Mute Switch Long Press' (10.0s)" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="157" Value_2="8" Description="Timer delay 'Mute Switch Long Press' (10.0s)" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1590,7 +1590,7 @@
             <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="8" Description="Test timer 'Mute Switch Long Press' has reached 10.0s" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="158" Value_2="7" Description="Trigger PLC function 8" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="159" Value_2="7" Description="Trigger PLC function 8" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1598,7 +1598,7 @@
             <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12307" Description="Test flag 'PLC Output Flag 20'" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="160" Value_2="8" Description="Trigger PLC function 9" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="161" Value_2="8" Description="Trigger PLC function 9" />
           </Actions>
         </Ladder>
       </Logic_Blocks>
@@ -4684,12 +4684,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>6510</CRC>
+      <CRC>52075</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.77.1.0">28-Oct-16 11:01:48</Saved_on>
+        <Saved_on ConfigSuite_Version="3.77.1.0">28-Oct-16 13:44:20</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14697,7 +14697,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>3963</CRC>
+        <CRC>35209</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
