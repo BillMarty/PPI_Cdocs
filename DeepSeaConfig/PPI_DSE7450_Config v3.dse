@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.77.1.0">24-Oct-16 12:27:53</Saved_on>
+      <Saved_on ConfigSuite_Version="3.77.1.0">28-Oct-16 16:17:15</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -4728,12 +4728,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>29028</CRC>
+      <CRC>11777</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.77.1.0">24-Oct-16 12:27:53</Saved_on>
+        <Saved_on ConfigSuite_Version="3.77.1.0">28-Oct-16 16:17:15</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -7750,8 +7750,8 @@
               <Wide_Range>False</Wide_Range>
               <Multifunction_Sender_Curve_Block>
                 <SCFlexibleSender_Temp>
-                  <CurveType>255 - User defined</CurveType>
-                  <Values Value0="100" Value1="97" Value2="95" Value3="92" Value4="89" Value5="86" Value6="84" Value7="81" Value8="78" Value9="76" Value10="73" Value11="70" Value12="68" Value13="65" Value14="62" Value15="59" Value16="57" Value17="54" Value18="51" Value19="49" Value20="46" Value21="43" Value22="41" Value23="38" Value24="35" Value25="32" Value26="30" Value27="27" Value28="24" Value29="22" Value30="19" Value31="16" Value32="14" Value33="11" Value34="8" Value35="5" Value36="3" Value37="0" Value38="0" Value39="0" Value40="0" />
+                  <CurveType>255 - Delphi 25037225 Air Temp Sensor</CurveType>
+                  <Values Value0="188" Value1="148" Value2="120" Value3="105" Value4="94" Value5="86" Value6="80" Value7="74" Value8="70" Value9="66" Value10="62" Value11="59" Value12="56" Value13="53" Value14="50" Value15="47" Value16="45" Value17="42" Value18="40" Value19="38" Value20="36" Value21="34" Value22="32" Value23="30" Value24="28" Value25="26" Value26="24" Value27="21" Value28="19" Value29="17" Value30="15" Value31="13" Value32="11" Value33="9" Value34="7" Value35="5" Value36="3" Value37="1" Value38="0" Value39="0" Value40="0" />
                   <Axis MaximumValue="250" OhmsInterval="48" HighThreshold="1920" MeasuredQuantity="2" CurveType="1" />
                 </SCFlexibleSender_Temp>
               </Multifunction_Sender_Curve_Block>
@@ -7760,7 +7760,7 @@
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
-                  <CurveName_Temp>User defined</CurveName_Temp>
+                  <CurveName_Temp>Delphi 25037225 Air Temp Sensor</CurveName_Temp>
                 </Transducer_Curve_Name>
               </Strings>
             </Analogue_A>
@@ -7859,8 +7859,8 @@
               <Wide_Range>False</Wide_Range>
               <Multifunction_Sender_Curve_Block>
                 <SCFlexibleSender_Temp>
-                  <CurveType>255 - User defined</CurveType>
-                  <Values Value0="100" Value1="97" Value2="95" Value3="92" Value4="89" Value5="86" Value6="84" Value7="81" Value8="78" Value9="76" Value10="73" Value11="70" Value12="68" Value13="65" Value14="62" Value15="59" Value16="57" Value17="54" Value18="51" Value19="49" Value20="46" Value21="43" Value22="41" Value23="38" Value24="35" Value25="32" Value26="30" Value27="27" Value28="24" Value29="22" Value30="19" Value31="16" Value32="14" Value33="11" Value34="8" Value35="5" Value36="3" Value37="0" Value38="0" Value39="0" Value40="0" />
+                  <CurveType>255 - Delphi 25037225 Air Temp Sensor</CurveType>
+                  <Values Value0="188" Value1="148" Value2="120" Value3="105" Value4="94" Value5="86" Value6="80" Value7="74" Value8="70" Value9="66" Value10="62" Value11="59" Value12="56" Value13="53" Value14="50" Value15="47" Value16="45" Value17="42" Value18="40" Value19="38" Value20="36" Value21="34" Value22="32" Value23="30" Value24="28" Value25="26" Value26="24" Value27="21" Value28="19" Value29="17" Value30="15" Value31="13" Value32="11" Value33="9" Value34="7" Value35="5" Value36="3" Value37="1" Value38="0" Value39="0" Value40="0" />
                   <Axis MaximumValue="250" OhmsInterval="48" HighThreshold="1920" MeasuredQuantity="2" CurveType="1" />
                 </SCFlexibleSender_Temp>
               </Multifunction_Sender_Curve_Block>
@@ -7869,7 +7869,7 @@
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
-                  <CurveName_Temp>User defined</CurveName_Temp>
+                  <CurveName_Temp>Delphi 25037225 Air Temp Sensor</CurveName_Temp>
                 </Transducer_Curve_Name>
               </Strings>
             </Analogue_B>
@@ -14741,7 +14741,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>31904</CRC>
+        <CRC>38716</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
