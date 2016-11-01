@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.77.1.0">28-Oct-16 16:17:15</Saved_on>
+      <Saved_on ConfigSuite_Version="3.77.1.0">01-Nov-16 15:11:50</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -300,12 +300,12 @@
       </Calibration_Lost>
       <Low_Fuel_Level>
         <Function Comment="User Configured">0</Function>
-        <Action Comment="Warning">5</Action>
+        <Action Comment="Shutdown">1</Action>
         <Arming Comment="Always">1</Arming>
         <Type Comment="Analogue Less Than">2</Type>
         <Timer Comment="5m">3000</Timer>
-        <Trip Comment="10 %">10</Trip>
-        <Return Comment="10 %">10</Return>
+        <Trip Comment="2 %">2</Trip>
+        <Return Comment="2 %">2</Return>
       </Low_Fuel_Level>
       <Fuel_Pump_Control>
         <Function Comment="Fuel Pump Control">30</Function>
@@ -1000,7 +1000,7 @@
           <Polarity Comment="Energise">0</Polarity>
         </Aux_OP_2>
         <Aux_OP_3>
-          <Control_Source Comment="PLC Output Flag 5">12292</Control_Source>
+          <Control_Source Comment="PLC Output Flag 21">12308</Control_Source>
           <Polarity Comment="Energise">0</Polarity>
         </Aux_OP_3>
         <Aux_OP_4>
@@ -1645,6 +1645,24 @@
             <Action Type="Trigger" Operator="0" ValueType="0" Value_1="177" Value_2="8" />
           </Actions>
         </Ladder>
+        <Label Text="Low fuel warning at 10%." />
+        <Ladder>
+          <Conditions>
+            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="200" Value_3="10" Value_4="25" />
+          </Conditions>
+          <Actions>
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="179" Value_2="9" />
+          </Actions>
+        </Ladder>
+        <Label Text="High fuel warning &gt; 90%." />
+        <Ladder>
+          <Conditions>
+            <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="200" Value_2="3" Value_3="90" Value_4="99" />
+          </Conditions>
+          <Actions>
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="181" Value_2="20" />
+          </Actions>
+        </Ladder>
       </Logic_Blocks>
       <Strings>
         <Timer Index="0" Label="BMS Bootstrap delay" />
@@ -1744,7 +1762,7 @@
           <Action Comment="Warning">5</Action>
           <Arming Comment="Always">1</Arming>
           <Polarity Comment="Close to Activate">0</Polarity>
-          <Timer Comment="0s">0</Timer>
+          <Timer Comment="5s">5</Timer>
           <Param1 Comment="0">0</Param1>
           <Param2 Comment="0">0</Param2>
         </Alarm10>
@@ -1984,8 +2002,8 @@
         <New Comment="398V PhPh">230</New>
         <Coolant_Sensor Comment="VDO 120 °C">3</Coolant_Sensor>
         <Fuel_Sensor Comment="User defined">255</Fuel_Sensor>
-        <Fuel_Tank_Capacity Comment="208">208</Fuel_Tank_Capacity>
-        <Fuel_Level_Change_Indicating_Filling Comment="100 %">100</Fuel_Level_Change_Indicating_Filling>
+        <Fuel_Tank_Capacity Comment="811">811</Fuel_Tank_Capacity>
+        <Fuel_Level_Change_Indicating_Filling Comment="50 %">50</Fuel_Level_Change_Indicating_Filling>
         <Fuel_Level_Change_Indicating_Stability Comment="100 %">100</Fuel_Level_Change_Indicating_Stability>
         <DC_Battery_Temperature_Sensor Comment="Veglia">9</DC_Battery_Temperature_Sensor>
         <Fuel_Usage_Sample_Window Comment="10s">100</Fuel_Usage_Sample_Window>
@@ -1999,8 +2017,8 @@
         <CurveType>3 - VDO 120 °C</CurveType>
       </Temperature>
       <Fuel>
-        <CurveType>255 - VDO fuel sender 480ohm</CurveType>
-        <Values Value0="100" Value1="81" Value2="61" Value3="41" Value4="21" Value5="0" Value6="0" Value7="0" Value8="0" Value9="0" Value10="0" Value11="0" Value12="0" Value13="0" Value14="0" Value15="0" Value16="0" Value17="0" Value18="0" Value19="0" Value20="0" Value21="0" Value22="0" Value23="0" Value24="0" Value25="0" Value26="0" Value27="0" Value28="0" Value29="0" Value30="0" />
+        <CurveType>255 - PPI measured VDO 224-265</CurveType>
+        <Values Value0="100" Value1="80" Value2="60" Value3="40" Value4="20" Value5="0" Value6="0" Value7="0" Value8="0" Value9="0" Value10="0" Value11="0" Value12="0" Value13="0" Value14="0" Value15="0" Value16="0" Value17="0" Value18="0" Value19="0" Value20="0" Value21="0" Value22="0" Value23="0" Value24="0" Value25="0" Value26="0" Value27="0" Value28="0" Value29="0" Value30="0" />
       </Fuel>
       <DC_Battery_Temp>
         <CurveType>9 - Veglia</CurveType>
@@ -2171,7 +2189,7 @@
       <Maintenance_Alarm_3>Maintenance Alarm 3</Maintenance_Alarm_3>
       <Oil_Sensor_Curve_Name>VDO 10 Bar</Oil_Sensor_Curve_Name>
       <Temperature_Sensor_Curve_Name>VDO 120 °C</Temperature_Sensor_Curve_Name>
-      <Fuel_Sensor_Curve_Name>VDO fuel sender 480ohm</Fuel_Sensor_Curve_Name>
+      <Fuel_Sensor_Curve_Name>PPI measured VDO 224-265</Fuel_Sensor_Curve_Name>
       <Battery_Strings>
         <Temp_Sensor_Curve_Name>Veglia</Temp_Sensor_Curve_Name>
         <Maintenance_Alarm_1_String>Battery Maintenance Alarm 1</Maintenance_Alarm_1_String>
@@ -2193,8 +2211,7 @@
         <Alarm8>Testing: Alarm Reset Function</Alarm8>
         <Alarm9>
         </Alarm9>
-        <Alarm10>
-        </Alarm10>
+        <Alarm10>Low Fuel Warning &lt; 10%</Alarm10>
         <Alarm11>
         </Alarm11>
         <Alarm12>
@@ -4728,12 +4745,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>11777</CRC>
+      <CRC>27781</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.77.1.0">28-Oct-16 16:17:15</Saved_on>
+        <Saved_on ConfigSuite_Version="3.77.1.0">01-Nov-16 15:11:50</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14741,7 +14758,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>38716</CRC>
+        <CRC>57758</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
