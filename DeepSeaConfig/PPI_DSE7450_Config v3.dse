@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.77.1.0">01-Nov-16 15:26:57</Saved_on>
+      <Saved_on ConfigSuite_Version="3.77.1.0">01-Nov-16 16:40:33</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -1669,15 +1669,15 @@
             <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="85" Description="Test flag 'Common Warning'" />
           </Conditions>
           <Actions>
-            <Action Type="Delay" Operator="0" ValueType="0" Value_2="9" Description="Timer delay 'Warning Beep Duration Limit' (1m)" />
+            <Action Type="Delay" Operator="0" ValueType="0" Value_1="183" Value_2="9" Description="Timer delay 'Warning Beep Duration Limit' (2m)" />
           </Actions>
         </Ladder>
         <Ladder>
           <Conditions>
-            <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="9" Description="Test timer 'Warning Beep Duration Limit' has reached 1m" />
+            <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="9" Description="Test timer 'Warning Beep Duration Limit' has reached 2m" />
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_2="6" Description="Trigger PLC function 7" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="185" Value_2="6" Description="Trigger PLC function 7" />
           </Actions>
         </Ladder>
       </Logic_Blocks>
@@ -1876,7 +1876,7 @@
         </Alarm20>
       </Alarm_Blocks>
       <Counter_Limits Comment="1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,">1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,</Counter_Limits>
-      <Timer_Limits Comment="10,50,600,15,9,20,638,9,100,600,0,0,0,0,0,0,0,0,0,0,">10,50,600,15,9,20,12000,9,100,600,0,0,0,0,0,0,0,0,0,0,</Timer_Limits>
+      <Timer_Limits Comment="10,50,600,15,9,20,638,9,100,602,0,0,0,0,0,0,0,0,0,0,">10,50,600,15,9,20,12000,9,100,1200,0,0,0,0,0,0,0,0,0,0,</Timer_Limits>
     </PLC>
     <Timers>
       <Pre-heat Comment="3s">3</Pre-heat>
@@ -4763,12 +4763,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>51367</CRC>
+      <CRC>20909</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.77.1.0">01-Nov-16 15:26:57</Saved_on>
+        <Saved_on ConfigSuite_Version="3.77.1.0">01-Nov-16 16:40:33</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14776,7 +14776,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>52759</CRC>
+        <CRC>11022</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
