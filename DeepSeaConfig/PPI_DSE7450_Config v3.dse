@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.77.1.0">04-Nov-16 16:18:51</Saved_on>
+      <Saved_on ConfigSuite_Version="3.77.1.0">07-Nov-16 14:48:10</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -68,7 +68,7 @@
         <Digital_Input_7>
           <Function Comment="User Configured">0</Function>
           <Action Comment="Warning">5</Action>
-          <Arming Comment="Never">0</Arming>
+          <Arming Comment="Always">1</Arming>
           <Polarity Comment="Close to Activate">0</Polarity>
           <Timer Comment="0s">0</Timer>
           <Param1 Comment="0">0</Param1>
@@ -1066,7 +1066,7 @@
           <Polarity Comment="Lit">0</Polarity>
         </Programmable_LED_2>
         <Programmable_LED_3>
-          <Control_Source Comment="Not Used">0</Control_Source>
+          <Control_Source Comment="PLC Output Flag 18">12305</Control_Source>
           <Polarity Comment="Lit">0</Polarity>
         </Programmable_LED_3>
         <Programmable_LED_4>
@@ -1639,10 +1639,13 @@
         </Ladder>
         <Ladder>
           <Conditions>
-            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12307" />
+            <And>
+              <Condition Type="Timer" Polarity="FalseOrOpen" Value_1="8" />
+              <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12307" />
+            </And>
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="177" Value_2="8" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="179" Value_2="8" />
           </Actions>
         </Ladder>
         <Label Text="Low fuel warning at 10%. Don't spam the event log." />
@@ -1654,8 +1657,8 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="181" Value_2="9" />
-            <Action Type="Set" Operator="0" ValueType="0" Value_1="181" Value_2="21" />
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="183" Value_2="9" />
+            <Action Type="Set" Operator="0" ValueType="0" Value_1="183" Value_2="21" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1666,7 +1669,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="186" Value_2="21" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="188" Value_2="21" />
           </Actions>
         </Ladder>
         <Label Text="High fuel warning &gt; 90%." />
@@ -1675,7 +1678,7 @@
             <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="200" Value_2="3" Value_3="90" Value_4="99" />
           </Conditions>
           <Actions>
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="188" Value_2="20" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="190" Value_2="20" />
           </Actions>
         </Ladder>
       </Logic_Blocks>
@@ -1750,7 +1753,7 @@
           <Function Comment="Alarm Mute">5</Function>
           <Action Comment="None">0</Action>
           <Arming Comment="Always">1</Arming>
-          <Polarity Comment="Open to Activate">1</Polarity>
+          <Polarity Comment="Close to Activate">0</Polarity>
           <Timer Comment="0s">0</Timer>
           <Param1 Comment="0">0</Param1>
           <Param2 Comment="0">0</Param2>
@@ -2136,8 +2139,7 @@
           <Digital_Input_4>Service mode switch</Digital_Input_4>
           <Digital_Input_5>Auto mode switch</Digital_Input_5>
           <Digital_Input_6>Mute switch</Digital_Input_6>
-          <Digital_Input_7>
-          </Digital_Input_7>
+          <Digital_Input_7>Input G Warning</Digital_Input_7>
           <Digital_Input_8>BMS Contactor State</Digital_Input_8>
           <Digital_Input_9>Battery Full</Digital_Input_9>
           <Digital_Input_10>Battery Low</Digital_Input_10>
@@ -4761,12 +4763,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>5349</CRC>
+      <CRC>4114</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.77.1.0">04-Nov-16 16:18:51</Saved_on>
+        <Saved_on ConfigSuite_Version="3.77.1.0">07-Nov-16 14:48:10</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14774,7 +14776,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>53238</CRC>
+        <CRC>33039</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
