@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.77.1.0">07-Nov-16 16:30:37</Saved_on>
+      <Saved_on ConfigSuite_Version="3.77.1.0">17-Nov-16 11:05:28</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -303,7 +303,7 @@
         <Action Comment="Shutdown">1</Action>
         <Arming Comment="Always">1</Arming>
         <Type Comment="Analogue Less Than">2</Type>
-        <Timer Comment="5m">3000</Timer>
+        <Timer Comment="10s">100</Timer>
         <Trip Comment="2 %">2</Trip>
         <Return Comment="2 %">2</Return>
       </Low_Fuel_Level>
@@ -1617,8 +1617,15 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="171" Value_2="9" Description="Trigger PLC function 10" />
             <Action Type="Set" Operator="0" ValueType="0" Value_1="171" Value_2="21" Description="Set flag 22" />
+          </Actions>
+        </Ladder>
+        <Ladder>
+          <Conditions>
+            <Condition Type="Flag" Polarity="FalseOrOpen" Value_1="12309" Description="Test flag 'PLC Output Flag 22'" />
+          </Conditions>
+          <Actions>
+            <Action Type="Trigger" Operator="0" ValueType="0" Value_1="173" Value_2="9" Description="Trigger PLC function 10" />
           </Actions>
         </Ladder>
         <Ladder>
@@ -1629,7 +1636,7 @@
             </And>
           </Conditions>
           <Actions>
-            <Action Type="Reset" Operator="0" ValueType="0" Value_1="176" Value_2="21" Description="Reset flag 22" />
+            <Action Type="Reset" Operator="0" ValueType="0" Value_1="177" Value_2="21" Description="Reset flag 22" />
           </Actions>
         </Ladder>
         <Label Text="High fuel warning &gt; 90%." />
@@ -1638,7 +1645,7 @@
             <Condition Type="Instrumentation" Polarity="FalseOrOpen" Value_1="200" Value_2="3" Value_3="90" Value_4="99" Description="'Fuel Level' is at least 90%" />
           </Conditions>
           <Actions>
-            <Action Type="Drive" Operator="0" ValueType="0" Value_1="178" Value_2="20" Description="Drive flag 21" />
+            <Action Type="Drive" Operator="0" ValueType="0" Value_1="179" Value_2="20" Description="Drive flag 21" />
           </Actions>
         </Ladder>
       </Logic_Blocks>
@@ -1741,7 +1748,7 @@
           <Action Comment="Warning">5</Action>
           <Arming Comment="Always">1</Arming>
           <Polarity Comment="Close to Activate">0</Polarity>
-          <Timer Comment="5s">5</Timer>
+          <Timer Comment="0s">0</Timer>
           <Param1 Comment="0">0</Param1>
           <Param2 Comment="0">0</Param2>
         </Alarm10>
@@ -4724,12 +4731,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>44672</CRC>
+      <CRC>28489</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.77.1.0">07-Nov-16 16:30:37</Saved_on>
+        <Saved_on ConfigSuite_Version="3.77.1.0">17-Nov-16 11:05:28</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -14737,7 +14744,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>42728</CRC>
+        <CRC>26492</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
