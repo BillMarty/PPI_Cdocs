@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.77.1.0">09-Dec-16 10:19:13</Saved_on>
+      <Saved_on ConfigSuite_Version="3.77.1.0">09-Dec-16 12:10:19</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -4731,12 +4731,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>14207</CRC>
+      <CRC>5672</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.77.1.0">09-Dec-16 10:19:13</Saved_on>
+        <Saved_on ConfigSuite_Version="3.77.1.0">09-Dec-16 12:10:19</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -8195,7 +8195,7 @@
                 </SCFlexibleSender_Fuel>
               </Multifunction_Sender_Curve_Block>
               <Strings>
-                <Title>Output Amps</Title>
+                <Title>Genset Amps</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
@@ -14744,7 +14744,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>60727</CRC>
+        <CRC>4394</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
