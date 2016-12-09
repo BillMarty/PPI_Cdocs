@@ -2,7 +2,7 @@
   <ConfigurationFile ModuleTypeCode="7450" ModuleMajorVersion="2" ModuleMinorVersion="1">
     <Header>
       <Description>7450 Configuration file</Description>
-      <Saved_on ConfigSuite_Version="3.77.1.0">17-Nov-16 12:05:50</Saved_on>
+      <Saved_on ConfigSuite_Version="3.77.1.0">09-Dec-16 10:19:13</Saved_on>
       <MajorVersion>2</MajorVersion>
       <MinorVersion>1</MinorVersion>
     </Header>
@@ -627,7 +627,7 @@
           <Arming Comment="Always">1</Arming>
           <Timer Comment="0">0</Timer>
           <Type Comment="Close to Activate">0</Type>
-          <Param1_Hours Comment="500 hrs">500</Param1_Hours>
+          <Param1_Hours Comment="1000 hrs">1000</Param1_Hours>
           <Param2_Months Comment="1 months">1</Param2_Months>
         </Maintenance_Alarm>
         <Maintenance_Alarm_2>
@@ -1990,7 +1990,7 @@
         <Fuel_Sensor Comment="User defined">255</Fuel_Sensor>
         <Fuel_Tank_Capacity Comment="811">811</Fuel_Tank_Capacity>
         <Fuel_Level_Change_Indicating_Filling Comment="50 %">50</Fuel_Level_Change_Indicating_Filling>
-        <Fuel_Level_Change_Indicating_Stability Comment="100 %">100</Fuel_Level_Change_Indicating_Stability>
+        <Fuel_Level_Change_Indicating_Stability Comment="90 %">90</Fuel_Level_Change_Indicating_Stability>
         <DC_Battery_Temperature_Sensor Comment="Veglia">9</DC_Battery_Temperature_Sensor>
         <Fuel_Usage_Sample_Window Comment="10s">100</Fuel_Usage_Sample_Window>
       </Misc_32_Bit>
@@ -2004,7 +2004,7 @@
       </Temperature>
       <Fuel>
         <CurveType>255 - PPI measured VDO 224-265</CurveType>
-        <Values Value0="100" Value1="80" Value2="60" Value3="40" Value4="20" Value5="0" Value6="0" Value7="0" Value8="0" Value9="0" Value10="0" Value11="0" Value12="0" Value13="0" Value14="0" Value15="0" Value16="0" Value17="0" Value18="0" Value19="0" Value20="0" Value21="0" Value22="0" Value23="0" Value24="0" Value25="0" Value26="0" Value27="0" Value28="0" Value29="0" Value30="0" />
+        <Values Value0="110" Value1="88" Value2="66" Value3="44" Value4="22" Value5="0" Value6="0" Value7="0" Value8="0" Value9="0" Value10="0" Value11="0" Value12="0" Value13="0" Value14="0" Value15="0" Value16="0" Value17="0" Value18="0" Value19="0" Value20="0" Value21="0" Value22="0" Value23="0" Value24="0" Value25="0" Value26="0" Value27="0" Value28="0" Value29="0" Value30="0" />
       </Fuel>
       <DC_Battery_Temp>
         <CurveType>9 - Veglia</CurveType>
@@ -4731,12 +4731,12 @@
       <Item6 Comment="Not Used">0</Item6>
     </User_Editor>
     <Footer>
-      <CRC>38765</CRC>
+      <CRC>14207</CRC>
     </Footer>
     <Expansion>
       <Header>
         <Description>7310 Configuration file</Description>
-        <Saved_on ConfigSuite_Version="3.77.1.0">17-Nov-16 12:05:50</Saved_on>
+        <Saved_on ConfigSuite_Version="3.77.1.0">09-Dec-16 10:19:13</Saved_on>
         <MajorVersion>2</MajorVersion>
         <MinorVersion>0</MinorVersion>
       </Header>
@@ -7868,7 +7868,7 @@
                 </SCFlexibleSender_Temp>
               </Multifunction_Sender_Curve_Block>
               <Strings>
-                <Title>Bellhousing Temp</Title>
+                <Title>Bell Housing Temp</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
@@ -7977,7 +7977,7 @@
                 </SCFlexibleSender_Fuel>
               </Multifunction_Sender_Curve_Block>
               <Strings>
-                <Title>Neg 48 Volt</Title>
+                <Title>Output Voltage</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
@@ -8073,24 +8073,24 @@
                 </High_Shutdown>
               </Alarms>
               <Sensor_Category Comment="Percentage Sensor">3</Sensor_Category>
-              <MeasuredQuantity Comment="Resistive">2</MeasuredQuantity>
+              <MeasuredQuantity Comment="Voltage">0</MeasuredQuantity>
               <Sensor_Type>
                 <MCFlexibleSenderSelection_Fuel Comment="255">255</MCFlexibleSenderSelection_Fuel>
               </Sensor_Type>
               <Wide_Range>False</Wide_Range>
               <Multifunction_Sender_Curve_Block>
                 <SCFlexibleSender_Fuel>
-                  <CurveType>255 - VDO fuel level</CurveType>
-                  <Values Value0="101" Value1="94" Value2="87" Value3="79" Value4="72" Value5="64" Value6="57" Value7="50" Value8="42" Value9="35" Value10="27" Value11="20" Value12="13" Value13="5" Value14="0" Value15="0" Value16="0" Value17="0" Value18="0" Value19="0" Value20="0" Value21="0" Value22="0" Value23="0" Value24="0" Value25="0" Value26="0" Value27="0" Value28="0" Value29="0" Value30="0" Value31="0" Value32="0" Value33="0" Value34="0" Value35="0" Value36="0" Value37="0" Value38="0" Value39="0" Value40="0" />
-                  <Axis MaximumValue="255" OhmsInterval="6" HighThreshold="240" MeasuredQuantity="2" CurveType="2" />
+                  <CurveType>255 - CR5210 Current Sensor</CurveType>
+                  <Values Value0="0" Value1="8" Value2="15" Value3="22" Value4="30" Value5="38" Value6="45" Value7="52" Value8="60" Value9="68" Value10="75" Value11="82" Value12="90" Value13="98" Value14="105" Value15="112" Value16="120" Value17="128" Value18="135" Value19="142" Value20="150" Value21="150" Value22="150" Value23="150" Value24="150" Value25="150" Value26="150" Value27="150" Value28="150" Value29="150" Value30="150" Value31="150" Value32="150" Value33="150" Value34="150" Value35="150" Value36="150" Value37="150" Value38="150" Value39="150" Value40="150" />
+                  <Axis MaximumValue="255" OhmsInterval="250" HighThreshold="10000" MeasuredQuantity="0" CurveType="2" />
                 </SCFlexibleSender_Fuel>
               </Multifunction_Sender_Curve_Block>
               <Strings>
-                <Title>CMS Output</Title>
+                <Title>Solar Amps</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
-                  <CurveName_Fuel>VDO fuel level</CurveName_Fuel>
+                  <CurveName_Fuel>CR5210 Current Sensor</CurveName_Fuel>
                 </Transducer_Curve_Name>
               </Strings>
             </Analogue_D>
@@ -8189,17 +8189,17 @@
               <Wide_Range>False</Wide_Range>
               <Multifunction_Sender_Curve_Block>
                 <SCFlexibleSender_Fuel>
-                  <CurveType>255 - User defined</CurveType>
+                  <CurveType>255 - CR5210 Current Sensor</CurveType>
                   <Values Value0="0" Value1="8" Value2="15" Value3="22" Value4="30" Value5="38" Value6="45" Value7="52" Value8="60" Value9="68" Value10="75" Value11="82" Value12="90" Value13="98" Value14="105" Value15="112" Value16="120" Value17="128" Value18="135" Value19="142" Value20="150" Value21="150" Value22="150" Value23="150" Value24="150" Value25="150" Value26="150" Value27="150" Value28="150" Value29="150" Value30="150" Value31="150" Value32="150" Value33="150" Value34="150" Value35="150" Value36="150" Value37="150" Value38="150" Value39="150" Value40="150" />
                   <Axis MaximumValue="255" OhmsInterval="250" HighThreshold="10000" MeasuredQuantity="0" CurveType="2" />
                 </SCFlexibleSender_Fuel>
               </Multifunction_Sender_Curve_Block>
               <Strings>
-                <Title>Neg 48 Amp</Title>
+                <Title>Output Amps</Title>
                 <Low_Alarm_String>Flexible Sensor Low</Low_Alarm_String>
                 <High_Alarm_String>Flexible Sensor High</High_Alarm_String>
                 <Transducer_Curve_Name>
-                  <CurveName_Fuel>User defined</CurveName_Fuel>
+                  <CurveName_Fuel>CR5210 Current Sensor</CurveName_Fuel>
                 </Transducer_Curve_Name>
               </Strings>
             </Analogue_E>
@@ -14744,7 +14744,7 @@
         </Address3>
       </E2152Modules>
       <Footer>
-        <CRC>26884</CRC>
+        <CRC>60727</CRC>
       </Footer>
     </Expansion>
   </ConfigurationFile>
